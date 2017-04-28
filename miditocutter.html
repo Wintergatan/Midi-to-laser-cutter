@@ -38,14 +38,14 @@
 				}
 			}
 
-			function generateScale(root, majororminor, mode) {
+			function generateScale(root, scale, mode) {
 				var result = [];
-				var scale = scaleModes[majororminor][mode];
-				if (scale === undefined) return undefined;
+				var gaps = scaleModes[scale][mode];
+				if (gaps === undefined) return undefined;
 				result.push(root);
 				var lastNoteNum = noteLetters.indexOf(root);
-				for (var i=0; i<scale.length; i++) {
-					lastNoteNum += scale[i];
+				for (var i=0; i<gaps.length; i++) {
+					lastNoteNum += gaps[i];
 					result.push(noteLetters[lastNoteNum%12]);
 				}
 
@@ -56,7 +56,7 @@
 				notes.push(noteLetters[num%12] + Math.floor(num/12));
 			}
 
-			console.log(generateScale("c", "harmonic_minor", "harm_minor"));
+			console.log(generateScale("c", "harmonic_minor", "harmminor"));
 
 			var events = [];
 			var notesAgainstTime = [];
