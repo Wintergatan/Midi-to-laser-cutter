@@ -8,9 +8,36 @@
 		<script type="text/javascript">
 			var noteLetters = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
 			var notes = [];
+			var scaleModes = {
+				major: {
+					ionian:  	[2,2,1,2,2,2],
+					dorian: 	[2,1,2,2,2,1],
+					phyrigian:  [1,2,2,2,1,2],
+					lydian:     [2,2,2,1,2,2],
+					mixolydian: [2,2,1,2,2,1],
+					aeolian:    [2,1,2,2,1,2],
+					locrian:    [1,2,2,1,2,2] 
+				}
+			}
+
+			function generateScale(tonic, majororminor, mode) {
+				var result = [];
+				var scale = scaleModes[majororminor][mode];
+				result.push(tonic);
+				var lastNoteNum = noteLetters.indexOf(tonic);
+				for (var i=0; i<scale.length; i++) {
+					lastNoteNum += scale[i];
+					result.push(noteLetters[lastNoteNum%12]);
+				}
+
+				return result;
+			}
+
 			for (var num = 0; num < 128; num++) {
 				notes.push(noteLetters[num%12] + Math.floor(num/12));
 			}
+
+			console.log(generateScale("c", "major", "phyrigian"));
 
 			var events = [];
 			var notesAgainstTime = [];
