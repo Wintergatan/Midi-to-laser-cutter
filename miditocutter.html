@@ -50,12 +50,22 @@
 					}
 					if (event.type == "noteon") {
 						var rtime = timeAtLastTempoChange + tempo * (event.tick - ticksAtLastTempoChange) / ppq;
-						notesAgainstTime.push({time: rtime, pitch: event.pitch});
+						notesAgainstTime.push({time: rtime, pitch: event.pitch, x: 0, y: 0});
 					}
 				}
 				notesAgainstTime.sort(function(a,b) {
 					return a.time > b.time;
 				});
+				
+				var machineTempo = 1000000;
+				var xOffset = .4;
+				var yOffset = .3;
+				
+				for (var i=0; i<notesAgainstTime.length; i++) {
+					var note = notesAgainstTime[i];
+					note.x = (note.time/machineTempo)*xOffset;
+					note.y = (note.pitch-60)*yOffset;
+				}
 				console.log(notesAgainstTime);
 			};
 			
