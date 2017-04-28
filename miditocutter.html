@@ -53,13 +53,10 @@
 						notesAgainstTime.push({time: rtime, pitch: event.pitch, x: 0, y: 0});
 					}
 				}
-				notesAgainstTime.sort(function(a,b) {
-					return a.time > b.time;
-				});
 				
 				var machineTempo = 1000000;
-				var xOffset = .4;
-				var yOffset = .3;
+				var xOffset = 4;
+				var yOffset = 3;
 				
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
