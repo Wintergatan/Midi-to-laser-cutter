@@ -86,7 +86,7 @@
 				var drawing = Snap(document.getElementById('svg'));
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
-					var circle = drawing.circle(mm(note.x), mm(note.y), mm(holeDiameter));
+					var circle = drawing.circle(mm(note.x), mm(note.y), mm(holeDiameter/2));
 					circle.attr({
 						fillOpacity: 0,
 						stroke: '#000',
