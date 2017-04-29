@@ -89,7 +89,7 @@
 
 			function processData(midiData) {
 				console.log(midiData);
-				var scale = generateScale("c", "major", "phyrigian");
+				var scale = generateScale("c", "major", "ionian");
 				console.log(scale);
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
