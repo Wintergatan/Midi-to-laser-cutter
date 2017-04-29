@@ -104,7 +104,7 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="starting-edge">Startin edge</label>
+                    <label for="starting-edge">Starting edge</label>
                     <select id="starting-edge" class="selectpicker form-control">
                         <option>Straight</option>
                         <option>Diagonal</option>
@@ -205,8 +205,8 @@
                         <input id="midi-file" class="form-control" readonly type="text">
                     </div>
                 </div>
-                <button class="btn btn-default">Import settings</button>
-                <button class="btn btn-default pull-right">Export settings</button>
+                <button type="button" id="import-settings" class="btn btn-default">Import settings</button>
+                <button type="button" id="export-settings" class="btn btn-default pull-right">Export settings</button>
             </div>
 
             <div class="col-md-4">
@@ -254,7 +254,7 @@
             </div>
 
             <div class="col-md-4 text-center">
-                <button id="download-btn" class="btn btn-primary">Download Laser Cutter plans</button>
+                <button type="button" id="download-btn" class="btn btn-primary">Download Laser Cutter plans</button>
             </div>
         </div>
 
@@ -288,9 +288,35 @@
             });
 
             $("#line-color").change(function () {
-                
                 var lineColor = $(this).val().toUpperCase();
                 $("#color-suffix").text(lineColor);
+            });
+
+            $("#export-settings").click(function () {
+                var settings = {
+                    units: $("#units option:selected").text(),
+                    workpieceWidth: $("#workpiece-width").val(),
+                    workpieceHeight: $("#workpiece-height").val(),
+                    startingEdge: $("#starting-edge option:selected").text(),
+                    jointEdge: $("#joint-edge option:selected").text(),
+                    endingEdge: $("#ending-edge option:selected").text(),
+                    holeShape: $("#hole-shape option:selected").text(),
+                    holeWidth: $("#hole-width").val(),
+                    holeHeight: $("#hole-height").val(),
+                    scale: $("#scale option:selected").text(),
+                    scaleType: $("#scale-type option:selected").text(),
+                    scaleMode: $("#scale-mode option:selected").text(),
+                    amountOfPins: $("#amount-of-pins").val(),
+                    horizontalMargins: $("#horizontal-margins").val(),
+                    verticalMargins: $("#vertical-margins").val(),
+                    exportFormat: $("#export-format option:selected").text(),
+                    lineColor: $("#line-color").val()
+                }
+                json_export = JSON.stringify(settings); 
+                console.log(settings);
+                console.log(json_export);
+                uriContent = "data:application/octet-stream," + encodeURIComponent(json_export);
+                newWindow = window.open(uriContent, 'neuesDokument');
             });
         });
     </script>
