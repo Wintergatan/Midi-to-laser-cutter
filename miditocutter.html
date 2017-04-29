@@ -1,6 +1,7 @@
 <html>
 	<body>
 		<script src="inc/midi-parser.js"></script>
+		<script src="inc/snap.svg-min.js"></script>
 		<form>
 			<input type="file" name="fileupload" value="fileupload" id="fileupload">
 			<label for="fileupload"> Select a file to upload</label>
@@ -74,6 +75,45 @@
 				document.body.removeChild(element);
 			}
 
+			function svgGenerate(notesAgainstTime, holeDiameter) {
+				function mm(mmtopix) {return mmtopix*3.7795275590551};
+
+				var svgelement = document.createElement('svg');
+				svgelement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+				svgelement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+				svgelement.setAttribute('version', '1.1');
+
+				var drawing = Snap(document.getElementById('svg'));
+				for (var i=0; i<notesAgainstTime.length; i++) {
+					var note = notesAgainstTime[i];
+					var circle = drawing.circle(mm(note.x), mm(note.y), mm(holeDiameter));
+					circle.attr({
+						fillOpacity: 0,
+						stroke: '#000',
+						strokewidth: 1
+					});				
+				}
+
+				drawing.attr({
+					style: 'padding: 0; margin: 0;'
+				});
+
+				var svg = drawing.toString();
+				var filename = "test.svg";
+
+				
+				var element = document.createElement('a');
+				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(svg));
+				element.setAttribute('download', filename);
+
+				element.style.display = 'none';
+				document.body.appendChild(element);
+
+				element.click();
+
+				document.body.removeChild(element);
+			}
+
 			for (var num = 0; num < 128; num++) {
 				notes.push(noteLetters[num%12] + Math.floor(num/12));
 			}
@@ -136,7 +176,8 @@
 					note.y = (note.pitch)*yOffset;
 				}
 				console.log(notesAgainstTime);
-				autoCadGenerate(notesAgainstTime, .75)
+				//autoCadGenerate(notesAgainstTime, .75);
+				svgGenerate(notesAgainstTime, .75);
 			};
 			
 			var file = document.getElementById("fileupload");
