@@ -100,7 +100,7 @@
 					var note = notesAgainstTime[i];
 					var oval = new makerjs.models.Oval(holeLength,holeWidth);
 					oval.units = makerjs.unitType.Millimeter;
-					oval.origin = [note.x-(holeLength-(holeWidth/2)), note.y];
+					oval.origin = [note.x-(holeLength-(holeWidth/2)), note.y-(holeWidth/2)];
 					punchHoles.push(oval);
 				}
 				model.models = punchHoles;
@@ -171,15 +171,15 @@
 					note.y = (note.pitch)*yOffset;
 				}
 				console.log(notesAgainstTime);
-				//autoCadGenerate(notesAgainstTime, .75);
-				//svgGenerate(notesAgainstTime, .75);
 
 				var model = generateModel(notesAgainstTime, 1.5, 2);
-				var svg = makerjs.exporter.toSVG(model);
+				console.log(model);
+				
+				var svg = makerjs.exporter.toSVG(model, {units: makerjs.unitType.Millimeter});
 				var dxf = makerjs.exporter.toDXF(model);
 				
-				//downloadFile("Test.svg", svg);
-				//downloadFile("Test.dxf", dxf)
+				downloadFile("Test.svg", svg);
+				downloadFile("Test.dxf", dxf)
 			};
 			
 			var file = document.getElementById("fileupload");
