@@ -1,7 +1,7 @@
 <html>
 	<body>
 		<script src="inc/midi-parser.js"></script>
-		<script src="inc/snap.svg-min.js"></script>
+		<script src="inc/maker.js"></script>
 		<form>
 			<input type="file" name="fileupload" value="fileupload" id="fileupload">
 			<label for="fileupload"> Select a file to upload</label>
@@ -9,11 +9,14 @@
 		<script type="text/javascript">
 			var noteLetters = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
 			var notes = [];
+
 			for (var num = 0; num < 128; num++) {
 				notes.push({note: noteLetters[num%12], octave: Math.floor(num/12)});
 			}
 
 			console.log(notes);
+
+			var makerjs = require('makerjs');
 
 			var scaleModes = {
 				major: {
@@ -65,16 +68,7 @@
 				console.log(startingNoteNum);
 			}
 			
-			function autoCadGenerate(notesAgainstTime, holeDiameter) {
-				var cadCommand = '_.circle\n';
-				var fileName = 'AutoCAD.scr';
-				var fileText = '';
-				
-				for (var i=0; i<notesAgainstTime.length; i++) {
-					var note = notesAgainstTime[i];
-					fileText = fileText + cadCommand + note.x + ',' + note.y + '\n' + holeDiameter + '\n';
-				}
-				
+			function downloadFile(fileName, fileText) {
 				var element = document.createElement('a');
 				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileText));
 				element.setAttribute('download', fileName);
@@ -86,44 +80,19 @@
 
 				document.body.removeChild(element);
 			}
-
-			function svgGenerate(notesAgainstTime, holeDiameter) {
-				function mm(mmtopix) {return mmtopix*3.7795275590551};
-
-				var svgelement = document.createElement('svg');
-				svgelement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-				svgelement.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-				svgelement.setAttribute('version', '1.1');
-
-				var drawing = Snap(document.getElementById('svg'));
+			
+			function generateModel(notesAgainstTime, holeWidth, holeLength) {				
+				var punchHoles = [];
+				var model = { models: {}};
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
-					var circle = drawing.circle(mm(note.x), mm(note.y), mm(holeDiameter/2));
-					circle.attr({
-						fillOpacity: 0,
-						stroke: '#000',
-						strokewidth: 1
-					});				
+					var oval = new makerjs.models.Oval(holeLength,holeWidth);
+					oval.origin = [note.x-(holeWidth/2), note.y*5];
+					oval.units = makerjs.unitType.Millimeter;
+					punchHoles.push(oval);
 				}
-
-				drawing.attr({
-					style: 'padding: 0; margin: 0;'
-				});
-
-				var svg = drawing.toString();
-				var filename = "test.svg";
-
-				
-				var element = document.createElement('a');
-				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(svg));
-				element.setAttribute('download', filename);
-
-				element.style.display = 'none';
-				document.body.appendChild(element);
-
-				element.click();
-
-				document.body.removeChild(element);
+				model.models = punchHoles;
+				return model;
 			}
 
 			var events = [];
@@ -134,10 +103,8 @@
 			function processData(midiData) {
 				console.log(midiData);
 
-				var scale = generateScale("c", "major", "phyrigian");
-				var startingNote = 0;
-				var musicBoxSize = 0;
-
+				var scale = generateScale("c", "major", "ionian");
+				console.log(scale);
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
 					for(var j=0; j<midiData.track[i].event.length; j++) {
@@ -195,6 +162,13 @@
 				console.log(notesAgainstTime);
 				//autoCadGenerate(notesAgainstTime, .75);
 				//svgGenerate(notesAgainstTime, .75);
+
+				var model = generateModel(notesAgainstTime, 1.5, 2);
+				var svg = makerjs.exporter.toSVG(model);
+				var dxf = makerjs.exporter.toDXF(model);
+				
+				downloadFile("Test.svg", svg);
+				downloadFile("Test.dxf", dxf)
 			};
 			
 			var file = document.getElementById("fileupload");
