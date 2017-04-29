@@ -51,25 +51,51 @@
 
 				return result;
 			}
+			
+			function autoCadGenerate(notesAgainstTime, holeDiameter) {
+				var cadCommand = '_.circle\n';
+				var fileName = 'AutoCAD.scr';
+				var fileText = '';
+				
+				for (var i=0; i<notesAgainstTime.length; i++) {
+					var note = notesAgainstTime[i];
+					fileText = fileText + cadCommand + note.x + ',' + note.y + '\n' + holeDiameter + '\n';
+				}
+				
+				var element = document.createElement('a');
+				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileText));
+				element.setAttribute('download', fileName);
+
+				element.style.display = 'none';
+				document.body.appendChild(element);
+
+				element.click();
+
+				document.body.removeChild(element);
+			}
 
 			for (var num = 0; num < 128; num++) {
 				notes.push(noteLetters[num%12] + Math.floor(num/12));
 			}
-
-			console.log(generateScale("c", "harmonic_minor", "harmminor"));
-
 			var events = [];
 			var notesAgainstTime = [];
 
 			function processData(midiData) {
 				console.log(midiData);
+				var scale = generateScale("c", "major", "phyrigian");
+				console.log(scale);
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
 					for(var j=0; j<midiData.track[i].event.length; j++) {
 						var event = midiData.track[i].event[j];
 						currentTick+=event.deltaTime;
 						if (event.type == 9){ //note on events
-							events.push({type: "noteon", tick: currentTick, pitch: event.data[0], note: notes[event.data[0]], channel: event.channel, track: i});
+							var noteLetter = noteLetters[(event.data[0]-60)%12];
+							var indexOfNote = scale.indexOf(noteLetter);
+							var adjustedIndex = indexOfNote + scale.length*(Math.trunc((event.data[0]-60)/12))
+							if (indexOfNote != -1) {
+								events.push({type: "noteon", tick: currentTick, pitch: adjustedIndex, note: notes[event.data[0]], channel: event.channel, track: i});
+							}
 						}	
 						else if (event.type == 255) { //meta events
 							if(event.metaType == 81) { //tempo change events
@@ -107,9 +133,10 @@
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
 					note.x = (note.time/machineTempo)*xOffset;
-					note.y = (note.pitch-60)*yOffset;
+					note.y = (note.pitch)*yOffset;
 				}
 				console.log(notesAgainstTime);
+				autoCadGenerate(notesAgainstTime, .75)
 			};
 			
 			var file = document.getElementById("fileupload");
