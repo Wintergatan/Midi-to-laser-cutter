@@ -11,7 +11,7 @@
 			var notes = [];
 
 			for (var num = 0; num < 128; num++) {
-				notes.push({note: noteLetters[num%12], octave: Math.floor(num/12)});
+				notes.push({letter: noteLetters[num%12], octave: Math.floor(num/12)});
 			}
 
 			var makerjs = require('makerjs');
@@ -66,7 +66,7 @@
 
 				for (var i=1; i<size; i++) {
 					var lastNote = result[i-1];
-					var lastNoteNum = noteLetters.indexOf(lastNote.note);
+					var lastNoteNum = noteLetters.indexOf(lastNote.letter);
 					var noteNum = lastNoteNum;
 					var lastOctave = lastNote.octave;
 
@@ -75,7 +75,7 @@
 						noteNum %= 12;
 					} while(scale.find(function(note){return note==noteLetters[noteNum]}) == undefined);
 
-					result.push({note: noteLetters[noteNum], octave: (noteNum < lastNoteNum) ? (lastOctave + 1) : lastOctave}); //if noteNum < lastNoteNum, that means we are in a new octave
+					result.push({letter: noteLetters[noteNum], octave: (noteNum < lastNoteNum) ? (lastOctave + 1) : lastOctave}); //if noteNum < lastNoteNum, that means we are in a new octave
 				}
 				return result;
 			}
@@ -113,7 +113,7 @@
 			function processData(midiData) {
 				console.log(midiData);
 
-				var musicBox = generateMusicBox({note: "c", octave: 5}, generateScale("c", "major", "ionian"), 20);
+				var musicBox = generateMusicBox({letter: "c", octave: 5}, generateScale("c", "major", "ionian"), 20);
 
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
@@ -123,7 +123,7 @@
 						if (event.type == 9){ //note on events
 							var note = notes[event.data[0]];
 							console.log(note);
-							var index = musicBox.indexOf(musicBox.find(function(x){return x.note == note.note && x.octave == note.octave;}));
+							var index = musicBox.indexOf(musicBox.find(function(x){return x.letter == note.letter && x.octave == note.octave;}));
 							console.log(index);
 							if (index != -1) {
 								events.push({type: "noteon", tick: currentTick, pitch: index, note: notes[event.data[0]], channel: event.channel, track: i});
