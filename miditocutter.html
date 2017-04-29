@@ -9,6 +9,12 @@
 		<script type="text/javascript">
 			var noteLetters = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"]
 			var notes = [];
+			for (var num = 0; num < 128; num++) {
+				notes.push({note: noteLetters[num%12], octave: Math.floor(num/12)});
+			}
+
+			console.log(notes);
+
 			var scaleModes = {
 				major: {
 					ionian:  	[2,2,1,2,2,2],
@@ -51,6 +57,12 @@
 				}
 
 				return result;
+			}
+
+			function generateMusicBox (startingNote, scale, size) {
+				var result = [];
+				var startingNoteNum = notes.indexOf(notes.find(function (x){return x.note == startingNote.note && x.octave == startingNote.octave;}));
+				console.log(startingNoteNum);
 			}
 			
 			function autoCadGenerate(notesAgainstTime, holeDiameter) {
@@ -114,16 +126,18 @@
 				document.body.removeChild(element);
 			}
 
-			for (var num = 0; num < 128; num++) {
-				notes.push(noteLetters[num%12] + Math.floor(num/12));
-			}
 			var events = [];
 			var notesAgainstTime = [];
 
+			generateMusicBox({note: "c", octave: 4}, null, null);
+
 			function processData(midiData) {
 				console.log(midiData);
+
 				var scale = generateScale("c", "major", "phyrigian");
-				console.log(scale);
+				var startingNote = 0;
+				var musicBoxSize = 0;
+
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
 					for(var j=0; j<midiData.track[i].event.length; j++) {
@@ -169,15 +183,18 @@
 				var machineTempo = 1000000;
 				var xOffset = 4;
 				var yOffset = 3;
+				var minDistanceBetweenSameNote = 8;
+				var notesByPitch = [];
 				
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
+					console.log(note.pitch);
 					note.x = (note.time/machineTempo)*xOffset;
 					note.y = (note.pitch)*yOffset;
 				}
 				console.log(notesAgainstTime);
 				//autoCadGenerate(notesAgainstTime, .75);
-				svgGenerate(notesAgainstTime, .75);
+				//svgGenerate(notesAgainstTime, .75);
 			};
 			
 			var file = document.getElementById("fileupload");
