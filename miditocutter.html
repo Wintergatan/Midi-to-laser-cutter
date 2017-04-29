@@ -101,8 +101,8 @@
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
 					var oval = new makerjs.models.Oval(holeLength,holeWidth);
-					oval.origin = [note.x-(holeWidth/2), note.y*5];
 					oval.units = makerjs.unitType.Millimeter;
+					oval.origin = [note.x-(holeLength-(holeWidth/2)), note.y];
 					punchHoles.push(oval);
 				}
 				model.models = punchHoles;
@@ -161,7 +161,7 @@
 					}
 				}
 				
-				var machineTempo = 1000000;
+				var machineTempo = 250000;
 				var xOffset = 4;
 				var yOffset = 3;
 				var minDistanceBetweenSameNote = 8;
