@@ -14,8 +14,6 @@
 				notes.push({note: noteLetters[num%12], octave: Math.floor(num/12)});
 			}
 
-			console.log(notes);
-
 			var makerjs = require('makerjs');
 
 			var scaleModes = {
@@ -112,24 +110,23 @@
 			var events = [];
 			var notesAgainstTime = [];
 
-			generateMusicBox({note: "d", octave: 4}, generateScale("c", "major", "ionian"), 15);
-
 			function processData(midiData) {
 				console.log(midiData);
 
-				var scale = generateScale("c", "major", "ionian");
-				console.log(scale);
+				var musicBox = generateMusicBox({note: "c", octave: 5}, generateScale("c", "major", "ionian"), 20);
+
 				for(var i=0; i<midiData.tracks; i++){
 					var currentTick = 0;
 					for(var j=0; j<midiData.track[i].event.length; j++) {
 						var event = midiData.track[i].event[j];
 						currentTick+=event.deltaTime;
 						if (event.type == 9){ //note on events
-							var noteLetter = noteLetters[(event.data[0]-60)%12];
-							var indexOfNote = scale.indexOf(noteLetter);
-							var adjustedIndex = indexOfNote + scale.length*(Math.trunc((event.data[0]-60)/12))
-							if (indexOfNote != -1) {
-								events.push({type: "noteon", tick: currentTick, pitch: adjustedIndex, note: notes[event.data[0]], channel: event.channel, track: i});
+							var note = notes[event.data[0]];
+							console.log(note);
+							var index = musicBox.indexOf(musicBox.find(function(x){return x.note == note.note && x.octave == note.octave;}));
+							console.log(index);
+							if (index != -1) {
+								events.push({type: "noteon", tick: currentTick, pitch: index, note: notes[event.data[0]], channel: event.channel, track: i});
 							}
 						}	
 						else if (event.type == 255) { //meta events
@@ -181,8 +178,8 @@
 				var svg = makerjs.exporter.toSVG(model);
 				var dxf = makerjs.exporter.toDXF(model);
 				
-				downloadFile("Test.svg", svg);
-				downloadFile("Test.dxf", dxf)
+				//downloadFile("Test.svg", svg);
+				//downloadFile("Test.dxf", dxf)
 			};
 			
 			var file = document.getElementById("fileupload");
