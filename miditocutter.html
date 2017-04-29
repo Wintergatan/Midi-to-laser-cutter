@@ -122,9 +122,8 @@
 						currentTick+=event.deltaTime;
 						if (event.type == 9){ //note on events
 							var note = notes[event.data[0]];
-							console.log(note);
 							var index = musicBox.indexOf(musicBox.find(function(x){return x.letter == note.letter && x.octave == note.octave;}));
-							console.log(index);
+
 							if (index != -1) {
 								events.push({type: "noteon", tick: currentTick, pitch: index, note: notes[event.data[0]], channel: event.channel, track: i});
 							}
@@ -159,16 +158,32 @@
 				}
 				
 				var machineTempo = 250000;
-				var xOffset = 4;
 				var yOffset = 3;
-				var minDistanceBetweenSameNote = 8;
+
+				var shortestDeltaTBetweenNotes = Number.MAX_SAFE_INTEGER;
+				
 				var notesByPitch = [];
+				for (var i=0; i<musicBox.length; i++) {
+					var notesInThisPitch = [];
+					for (var j=0; j<notesAgainstTime.length; j++) {
+						var note = notesAgainstTime[j];
+						if (note.pitch == i) {notesInThisPitch.push(note)}
+					}
+					for (var j=0; j<notesInThisPitch.length-1; j++) {
+						var deltaT = notesInThisPitch[j+1].time - notesInThisPitch[j].time;
+						if (deltaT < shortestDeltaTBetweenNotes) shortestDeltaTBetweenNotes = deltaT;
+					}
+				}
+
+				var xOffset = 8/shortestDeltaTBetweenNotes;
+
+				console.log(shortestDeltaTBetweenNotes);
+
 				
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
-					console.log(note.pitch);
-					note.x = (note.time/machineTempo)*xOffset;
-					note.y = (note.pitch)*yOffset;
+					note.x = note.time*xOffset;
+					note.y = note.pitch*yOffset;
 				}
 				console.log(notesAgainstTime);
 
