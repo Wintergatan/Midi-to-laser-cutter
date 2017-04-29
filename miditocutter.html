@@ -157,9 +157,6 @@
 					}
 				}
 				
-				var machineTempo = 250000;
-				var yOffset = 3;
-
 				var shortestDeltaTBetweenNotes = Number.MAX_SAFE_INTEGER;
 				
 				var notesByPitch = [];
@@ -175,14 +172,16 @@
 					}
 				}
 
-				var xOffset = 8/shortestDeltaTBetweenNotes;
+				var minimumDistanceBetweenNotes=8;
+				var paperSpeed = minimumDistanceBetweenNotes/shortestDeltaTBetweenNotes;
+				var yOffset = 3;
 
 				console.log(shortestDeltaTBetweenNotes);
 
 				
 				for (var i=0; i<notesAgainstTime.length; i++) {
 					var note = notesAgainstTime[i];
-					note.x = note.time*xOffset;
+					note.x = note.time*paperSpeed;
 					note.y = note.pitch*yOffset;
 				}
 				console.log(notesAgainstTime);
