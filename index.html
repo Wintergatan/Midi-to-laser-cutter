@@ -14,6 +14,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Select element CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
     <!-- Custom CSS -->
     <style>
         body {
@@ -44,19 +47,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
+                <a class="navbar-brand" href="#">Wintergatan midi to lasercutter</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
+                        <a href="#">How to use</a>
+                    </li>
+                    <li>
                         <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -67,18 +67,190 @@
 
     <!-- Page Content -->
     <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="units">Units</label>
+                    <select id="units" class="selectpicker form-control">
+                        <option>Millimeters</option>
+                        <option>Inches</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="workpiece-width">Workpiece width</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="workpiece-width" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="workpiece-height">Workpiece height</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="workpiece-height" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="starting-edge">Startin edge</label>
+                    <select id="starting-edge" class="selectpicker form-control">
+                        <option>Straight</option>
+                        <option>Diagonal</option>
+                        <option>Jagged</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="joint-edge">Joint edge</label>
+                    <select id="joint-edge" class="selectpicker form-control">
+                        <option>Straight</option>
+                        <option>Diagonal</option>
+                        <option>Jagged</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ending-edge">Ending edge</label>
+                    <select id="ending-edge" class="selectpicker form-control">
+                        <option>Straight</option>
+                        <option>Diagonal</option>
+                        <option>Jagged</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="hole-shape">Hole shape</label>
+                    <select id="hole-shape" class="selectpicker form-control">
+                        <option>Rounded</option>
+                        <option>Square</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="hole-width">Hole width</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="hole-width" value="4" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hole-height">Hole height</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="hole-height" value="4" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.row -->
 
         <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>A Bootstrap Starter Template</h1>
-                <p class="lead">Complete with pre-defined file paths that you won't have to change!!</p>
-                <ul class="list-unstyled">
-                    <li>Bootstrap v3.3.7</li>
-                    <li>jQuery v3.2.1</li>
-                </ul>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="scale">Scale</label>
+                    <select id="scale" class="selectpicker form-control">
+                        <option>C</option>
+                        <option>D</option>
+                        <option>E</option>
+                        <option>F</option>
+                        <option>G</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scale-type">Scale type</label>
+                    <select id="scale-type" class="selectpicker form-control">
+                        <option>Minor</option>
+                        <option>Major</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scale-mode">Scale mode</label>
+                    <select id="scale-mode" class="selectpicker form-control">
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="amount-of-pins">Amount of pins</label>
+                    <input type="number" class="form-control" id="amount-of-pins" value="20" min="0" step="1" max="10000">
+                </div>
+                <div class="form-group">
+                    <label for="file-picker-midi">Midi file</label>
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                        <span class="btn btn-default">
+                            Browse <input id="file-picker-midi" style="display: none;" type="file">
+                        </span>
+                    </label>
+                        <input id="midi-file" class="form-control" readonly type="text">
+                    </div>
+                </div>
+                <button class="btn btn-default">Import settings</button>
+                <button class="btn btn-default pull-right">Export settings</button>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="horizontal-margins">Horizontal margins</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="horizontal-margins" value="5" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="vertical-margins">Vertical margins</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="vertical-margins" value="5" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.row -->
+
+        <div class="row">
+            <div class="well well-lg">Preview comes here<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="export-format">Export format</label>
+                    <select id="export-format" class="selectpicker form-control">
+                        <option>SVG</option>
+                        <option>DXF</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="line-color">Line color</label>
+                    <div class="input-group">
+                        <input type="color" class="form-control" id="line-color" value="#FF0000">
+                        <span id="color-suffix" class="input-group-addon">#FF0000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary">Download Laser Cutter plans</button>
+            </div>
+        </div>
 
     </div>
     <!-- /.container -->
@@ -90,6 +262,32 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- Bootstrap select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#units").change(function () {
+                if ($("#units option:selected").text() == "Inches") {
+                    $('.unit-suffix').text('in');
+                } else {
+                    $('.unit-suffix').text('mm');
+                }
+
+            });
+
+            $("input:file").change(function () {
+                var fileName = $(this).val();
+                $("#midi-file").val(fileName);
+            });
+
+            $("#line-color").change(function () {
+                
+                var lineColor = $(this).val().toUpperCase();
+                $("#color-suffix").text(lineColor);
+            });
+        });
+    </script>
 </body>
 
 </html>
