@@ -64,8 +64,22 @@
 
 			function generateMusicBox (startingNote, scale, size) {
 				var result = [];
-				var startingNoteNum = notes.indexOf(notes.find(function (x){return x.note == startingNote.note && x.octave == startingNote.octave;}));
-				console.log(startingNoteNum);
+				result.push(startingNote);
+
+				for (var i=1; i<size; i++) {
+					var lastNote = result[i-1];
+					var lastNoteNum = noteLetters.indexOf(lastNote.note);
+					var noteNum = lastNoteNum;
+					var lastOctave = lastNote.octave;
+
+					do { //find next note that belongs to the scale
+						noteNum += 1;
+						noteNum %= 12;
+					} while(scale.find(function(note){return note==noteLetters[noteNum]}) == undefined);
+
+					result.push({note: noteLetters[noteNum], octave: (noteNum < lastNoteNum) ? (lastOctave + 1) : lastOctave}); //if noteNum < lastNoteNum, that means we are in a new octave
+				}
+				return result;
 			}
 			
 			function downloadFile(fileName, fileText) {
@@ -98,7 +112,7 @@
 			var events = [];
 			var notesAgainstTime = [];
 
-			generateMusicBox({note: "c", octave: 4}, null, null);
+			generateMusicBox({note: "d", octave: 4}, generateScale("c", "major", "ionian"), 15);
 
 			function processData(midiData) {
 				console.log(midiData);
