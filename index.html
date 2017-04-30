@@ -205,8 +205,10 @@
                         <input id="midi-file" class="form-control" readonly type="text">
                     </div>
                 </div>
-                <button type="button" id="import-settings" class="btn btn-default">Import settings</button>
-                <button type="button" id="export-settings" class="btn btn-default pull-right">Export settings</button>
+                <div class="form-group">
+                    <label for="current-scale">Current scale</label>
+                    <input type="text" class="form-control" id="current-scale" value="C D Eb F G Ab Bb" readonly>
+                </div>
             </div>
 
             <div class="col-md-4">
@@ -224,6 +226,9 @@
                         <span class="input-group-addon unit-suffix">mm</span>
                     </div>
                 </div>
+                
+                <button type="button" id="import-settings" class="btn btn-default">Import settings</button>
+                <button type="button" id="export-settings" class="btn btn-default pull-right">Export settings</button>
             </div>
         </div>
         <!-- /.row -->

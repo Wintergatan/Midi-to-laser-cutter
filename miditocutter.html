@@ -114,18 +114,46 @@
 			}
 
 			function stringifyScale (scale) {
+				var noteAlternativesSharpToFlat = {
+					"c#": "db", 
+					"d#": "eb", 
+					"e#": "f", 
+					"f#": "gb", 
+					"g#": "ab", 
+					"a#": "bb", 
+					"b#": "c"
+				};
+
+				var noteGaps = [];
+				for (var i=1; i<scale.length; i++) {
+					noteGaps.push(noteLetters.indexOf(scale[i])-noteLetters.indexOf(scale[i-1]));
+				}
 				var arr = [];
 				arr.push(scale[0]);
 				for (var i=1; i<scale.length; i++) {
-
+					if (!scale[i-1].includes("#") && noteGaps[i-1] == 1 && scale[i-1] != "e" && scale[i-1] != "b") {
+						arr.push(noteAlternativesSharpToFlat[scale[i]]);
+					}
+					else if (arr[i-1].includes("b") && noteGaps[i-1] == 2 && arr[i-1] != "eb" && scale[i-1] != "bb") {
+						arr.push(noteAlternativesSharpToFlat[scale[i]]);
+					}
+					else {arr.push(scale[i]);}
 				}
+				for (var i=0; i<arr.length; i++) {
+					arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+				}
+
+				console.log(arr.join(" "));
 			}
 			
 			function downloadFile(fileName, fileText) {
-				var element = document.createElement('a');
-				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileText));
-				element.setAttribute('download', fileName);
+				var dataType = "text/plain";
+				if(fileName.includes("svg")) dataText="image/svg";
 
+				var element = document.createElement('a');
+				element.setAttribute('href', "data:" + dataType + ";charset=utf-8," + encodeURIComponent(fileText));
+				element.setAttribute('download', fileName);
+				
 				element.style.display = 'none';
 				document.body.appendChild(element);
 
@@ -154,6 +182,7 @@
 			function processData(midiData) {
 				console.log(midiData);
 
+				stringifyScale(generateScale("c", "major", "aeolian"));
 				var musicBox = generateMusicBox({letter: "c", octave: 5}, generateScale("c", "major", "ionian"), 20);
 
 				for(var i=0; i<midiData.tracks; i++){
@@ -205,10 +234,6 @@
 					return compare(a.time, b.time);
 				});
 
-				for(var i=0; i<notesAgainstTime.length; i++){
-					console.log(notesAgainstTime[i]);
-				}
-
 				for (var i=0; i<musicBox.length; i++) {
 					var notesInThisPitch = [];
 					for (var j=0; j<notesAgainstTime.length; j++) {
@@ -238,11 +263,11 @@
 				var model = generateModel(notesAgainstTime, 1.5, 2);
 				console.log(model);
 				
-				var svg = makerjs.exporter.toSVG(model, {units: makerjs.unitType.Millimeter});
+				var svg = makerjs.exporter.toSVG(model, {units: makerjs.unitType.Millimeter, useSvgPathOnly: false});
 				var dxf = makerjs.exporter.toDXF(model);
 				
-				downloadFile("Test.svg", svg);
-				downloadFile("Test.dxf", dxf)
+				//downloadFile("Test.svg", svg);
+				//downloadFile("Test.dxf", dxf)
 			};
 			
 			var file = document.getElementById("fileupload");
