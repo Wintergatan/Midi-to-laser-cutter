@@ -2,6 +2,43 @@
 <html lang="en">
 
 <head>
+    <script type="text/javascript">
+        if (!Array.prototype.find) {
+            Object.defineProperty(Array.prototype, "find", {
+                value: function(predicate) {
+                    if (this === null) {
+                        throw new TypeError('Array.prototype.find called on null or undefined');
+                    }
+                    if (typeof predicate !== 'function') {
+                        throw new TypeError('predicate must be a function');
+                    }
+                    var list = Object(this);
+                    var length = list.length >>> 0;
+                    var thisArg = arguments[1];
+                    var value;
+
+                    for (var i = 0; i < length; i++) {
+                        value = list[i];
+                        if (predicate.call(thisArg, value, i, list)) {
+                            return value;
+                        }
+                    }
+                    return undefined;
+                }
+            });
+        }
+
+        function compare (a,b) {
+            if (a > b) return 1;
+            if (a < b) return -1;
+            return 0;
+        }
+    </script>
+    <script src="inc/midi-parser.js"></script>
+    <script src="inc/maker.js"></script>
+    <script src="inc/scaleandmusicbox.js"> </script>
+    <script src="inc/processing.js"> </script>
+    <script src="inc/drawing.js"> </script>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -202,7 +239,7 @@
                             Browse <input id="file-picker-midi" style="display: none;" type="file">
                         </span>
                     </label>
-                        <input id="midi-file" class="form-control" readonly type="text">
+                        <input id="midi-file" class="form-control" readonly type="file">
                     </div>
                 </div>
                 <div class="form-group">
@@ -242,8 +279,8 @@
                 <div class="form-group">
                     <label for="export-format">Export format</label>
                     <select id="export-format" class="selectpicker form-control">
-                        <option>SVG</option>
-                        <option>DXF</option>
+                        <option value="svg">SVG</option>
+                        <option value="dxf">DXF</option>
                     </select>
                 </div>
             </div>
@@ -259,7 +296,10 @@
             </div>
 
             <div class="col-md-4 text-center">
-                <button type="button" id="download-btn" class="btn btn-primary">Download Laser Cutter plans</button>
+                <button type="button" id="download-btn" class="btn btn-primary" onclick="
+                var value = document.getElementById('export-format').options[document.getElementById('export-format').selectedIndex].value;
+                downloadFile('data.'+value, fileTexts[value]);
+                ">Download Laser Cutter plans</button>
             </div>
         </div>
 
@@ -324,6 +364,10 @@
                 newWindow = window.open(uriContent, 'neuesDokument');
             });
         });
+    </script>
+    <script type="text/javascript">
+        MIDIParser.addListener(document.getElementById('midi-file'), function(data){prepareFiles(data)});
+        console.log("listener added");
     </script>
 </body>
 
