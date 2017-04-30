@@ -79,6 +79,14 @@
 				}
 				return result;
 			}
+
+			function stringifyScale (scale) {
+				var arr = [];
+				arr.push(scale[0]);
+				for (var i=1; i<scale.length; i++) {
+
+				}
+			}
 			
 			function downloadFile(fileName, fileText) {
 				var element = document.createElement('a');
@@ -159,7 +167,10 @@
 				
 				var shortestDeltaTBetweenNotes = Number.MAX_SAFE_INTEGER;
 				
-				var notesByPitch = [];
+				notesAgainstTime.sort(function(a,b) {
+					return a.time > b.time;
+				});
+
 				for (var i=0; i<musicBox.length; i++) {
 					var notesInThisPitch = [];
 					for (var j=0; j<notesAgainstTime.length; j++) {
