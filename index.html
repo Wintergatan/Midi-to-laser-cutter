@@ -163,6 +163,13 @@
 
         <div class="row">
             <div class="col-md-4">
+                                <div class="form-group">
+                    <label for="strip-height">Strip height</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="strip-height" value="4" min="0" step="1" max="10000">
+                        <span class="input-group-addon unit-suffix">mm</span>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="scale">Scale</label>
                     <select id="scale" class="selectpicker form-control">
@@ -178,14 +185,6 @@
                     <select id="scale-type" class="selectpicker form-control">
                         <option>Minor</option>
                         <option>Major</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="scale-mode">Scale mode</label>
-                    <select id="scale-mode" class="selectpicker form-control">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
                     </select>
                 </div>
             </div>
