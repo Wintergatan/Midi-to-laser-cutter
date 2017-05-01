@@ -38,11 +38,22 @@ $(document).ready(function () {
             exportFormat: $("#export-format option:selected").text(),
             lineColor: $("#line-color").val()
         }
+        
         json_export = JSON.stringify(settings);
         console.log(settings);
         console.log(json_export);
-        uriContent = "data:application/octet-stream," + encodeURIComponent(json_export);
-        newWindow = window.open(uriContent, 'neuesDokument');
+
+        var element = document.createElement('a');
+        element.setAttribute('href', "data:application/json;charset=utf-8," + encodeURIComponent(json_export));
+        element.setAttribute('download', 'settings.json');
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+
     });
 
     //MIDIParser.addListener(document.getElementById('file-picker-midi'), function (data) { prepareFiles(data) });
