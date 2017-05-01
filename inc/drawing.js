@@ -39,7 +39,7 @@ function generateModel(midiData, holeWidth, holeHeight, horizontalMargin, vertic
 			rectangle.units = units;
 			rectangle.origin = [(note.x-(holeWidth-(holeHeight/2)))+(horizontalMargin + holeWidth/2), (note.y-(holeHeight/2))+(verticalMargin + holeHeight/2)];
 			punchHoles.push(rectangle);
-			origins = origins + rectangle.origin[0] + "," + rectangle.origin[1] + "\n";
+			origins = origins + rectangle.origin[0].toFixed(3) + "," + rectangle.origin[1].toFixed(3) + "\n";
 			
 			if (rectangle.origin[0] > biggestX) {
 				biggestX = rectangle.origin[0];
@@ -56,7 +56,7 @@ function generateModel(midiData, holeWidth, holeHeight, horizontalMargin, vertic
 			oval.units = units;
 			oval.origin = [(note.x-(holeWidth-(holeHeight/2)))+(horizontalMargin + holeWidth/2), (note.y-(holeHeight/2))+(verticalMargin + holeHeight/2)];
 			punchHoles.push(oval);
-			origins = origins + oval.origin[0] + "," + oval.origin[1] + "\n";
+			origins = origins + oval.origin[0].toFixed(3) + "," + oval.origin[1].toFixed(3) + "\n";
 			
 			if (oval.origin[0] > biggestX) {
 				biggestX = oval.origin[0];
