@@ -1,0 +1,78 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: lightgray;
+}
+
+#controls {
+    padding: 10px;
+    border-bottom: 1px solid darkgray;
+    height: 40px;
+}
+
+#piano-roll {
+    position: relative;
+    width: 100%;
+}
+
+.channel {
+    position: relative;;
+    height: 10px;
+    border: 1px solid darkgray;
+    background-color:  #ededed;
+    width: 100%;
+    background-image: url("images/channel_background.gif");;
+}
+
+.valid-channel {
+    background-color:#ededed;
+}
+
+.invalid-channel {
+    background-color: lightgrey;
+}
+
+.channel-key {
+    position:absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    border-right: 1px solid black;
+    height: 10px;
+}
+
+.black-note {
+    background-color: black;
+    color: white;
+}
+
+.white-note {
+    background-color: white;
+    color: black;
+}
+
+.key-name {
+    font-size: 8px;
+    padding: 0;
+    padding-left: 2px;
+    margin: 0;
+}
+#file-input {
+    display: inline;
+}
+.event-dot {
+    position: absolute;
+    top: 0;
+    background-color: darkorange;
+    border: 1px solid orangered;
+    width: 10px;
+    height: 10px;
+}
+.label {
+    display:inline;
+    padding:0;
+    margin:0;
+}
+
