@@ -1,7 +1,6 @@
 function processData(midiData) {
 	console.log(midiData);
 
-	stringifyScale(generateScale("c", "major", "aeolian"));
 	var musicBox = generateMusicBox({letter: "c", octave: 5}, generateScale("c", "major", "ionian"), 20);
 
 	var events = [];
