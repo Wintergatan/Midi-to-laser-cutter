@@ -6,7 +6,7 @@
 
 You will need [Node js](https://nodejs.org/en/) or node package manager.
 
-And a IDE that supports [Typescript](https://www.typescriptlang.org/). I recommend [Visual studio code](https://code.visualstudio.com/)
+IDE that supports [Typescript](https://www.typescriptlang.org/). I recommend [Visual studio code](https://code.visualstudio.com/)
 
 # Getting started
 
