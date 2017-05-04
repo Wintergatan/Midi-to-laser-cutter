@@ -93,7 +93,7 @@ function prepareFiles(midiData) {
 	var model = returnArray[0];
 	var origins = returnArray[1];
 	
-	fileTexts["svg"] = makerjs.exporter.toSVG(model, {units: units, useSvgPathOnly: false});
+	fileTexts["svg"] = makerjs.exporter.toSVG(model, {units: units, useSvgPathOnly: false, svgAttrs: {xmlns: "http://www.w3.org/2000/svg"}});
 	fileTexts["dxf"] = makerjs.exporter.toDXF(model, {units : units});
 	fileTexts["txt"] = origins;
 	document.getElementById("preview-box").innerHTML = fileTexts["svg"];
