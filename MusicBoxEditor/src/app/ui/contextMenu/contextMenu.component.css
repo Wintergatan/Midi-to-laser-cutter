@@ -1,0 +1,42 @@
+:host{
+    position: fixed;
+    padding: 0.5em 0;
+    color: #444444;
+    background-color: white;
+    border: 1px solid #444444;
+    box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 0 0;
+    overflow-y: auto;
+}
+
+:host:focus{
+    outline: none;
+}
+
+.element{
+    padding: 0.25em 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.element:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.icon{
+    display: block;
+    width: 1em;
+}
+
+.text{
+    margin-left: 0.5em;
+}
+
+.space{
+    flex: 100 100 50%;
+    min-width: 0;
+}
+
+.sub-menu-icon{
+    display: block;
+    width: 1em;
+}

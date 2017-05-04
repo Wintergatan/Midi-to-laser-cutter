@@ -1,0 +1,30 @@
+.tab-menu {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button {
+    display: flex;
+    padding: 0.2em 0.5em;
+    color: #888888;
+}
+
+.button:hover{
+    border-bottom: 3px solid ;
+}
+
+.button+.button{
+    margin-left: 0.5em;
+}
+
+.isSelected {
+    color: #028478;
+    border-bottom: 3px solid #028478;
+}
+
+button {
+    box-sizing: content-box;
+    background-color: transparent;
+    border-bottom: 3px solid transparent;
+}
+

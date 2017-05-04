@@ -1,0 +1,20 @@
+<div class="dialog-renderer" *ngIf="showDialog()" (blur)="onBlurDialog($event)">
+  <div class="background"></div>
+  <div class="dialog-wrapper" [ngClass]="getDialogClass()">
+    <div class="dialog">
+      <div class="heading" *ngIf="showHeading()">{{dialog.heading}}</div>
+      <div class="content" *ngIf="showContent()">{{dialog.content}}</div>
+      <div class="select" *ngIf="showSelect()">
+        <label *ngFor="let s of dialog.select">
+          {{s.text}}
+          <select [(ngModel)]="s.selected">
+            <option *ngFor="let o of s.options" [ngValue]="o.key">{{o.value}}</option>
+          </select>
+        </label>
+      </div>
+      <div #buttons class="buttons" *ngIf="showButtons()">
+        <button *ngFor="let b of dialog.buttons" (click)="onClickButton(b)">{{b.text}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+@font-face {
+  font-family: 'interactor-icons';
+  src:
+    url('fonts/interactor-icons.ttf?vaawr2') format('truetype'),
+    url('fonts/interactor-icons.woff?vaawr2') format('woff'),
+    url('fonts/interactor-icons.svg?vaawr2#interactor-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="int-icon-"], [class*=" int-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'interactor-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.int-icon-account:before {
+  content: "\e900";
+}
+.int-icon-alert-circle:before {
+  content: "\e901";
+}
+.int-icon-approve:before {
+  content: "\e902";
+}
+.int-icon-asterisk:before {
+  content: "\e903";
+}
+.int-icon-checkbox:before {
+  content: "\e904";
+}
+.int-icon-checkbox-inc:before {
+  content: "\e905";
+}
+.int-icon-checkbox-inc-old:before {
+  content: "\e906";
+}
+.int-icon-checkbox-minus:before {
+  content: "\e907";
+}
+.int-icon-checkbox-o:before {
+  content: "\e908";
+}
+.int-icon-checkbox-old:before {
+  content: "\e909";
+}
+.int-icon-checkbox-plus:before {
+  content: "\e90a";
+}
+.int-icon-chevron-down:before {
+  content: "\e90b";
+}
+.int-icon-chevron-left:before {
+  content: "\e90c";
+}
+.int-icon-chevron-right:before {
+  content: "\e90d";
+}
+.int-icon-chevron-up:before {
+  content: "\e90e";
+}
+.int-icon-circle:before {
+  content: "\e90f";
+}
+.int-icon-cross:before {
+  content: "\e910";
+}
+.int-icon-delete:before {
+  content: "\e911";
+}
+.int-icon-exit:before {
+  content: "\e912";
+}
+.int-icon-file:before {
+  content: "\e913";
+}
+.int-icon-folder:before {
+  content: "\e914";
+}
+.int-icon-folder-open:before {
+  content: "\e915";
+}
+.int-icon-gender-female:before {
+  content: "\e916";
+}
+.int-icon-gender-male:before {
+  content: "\e917";
+}
+.int-icon-gender-male-female:before {
+  content: "\e918";
+}
+.int-icon-gender-transgender:before {
+  content: "\e919";
+}
+.int-icon-info-circle:before {
+  content: "\e91a";
+}
+.int-icon-medical-bag:before {
+  content: "\e91b";
+}
+.int-icon-menu:before {
+  content: "\e91c";
+}
+.int-icon-message:before {
+  content: "\e91d";
+}
+.int-icon-package:before {
+  content: "\e91e";
+}
+.int-icon-package-open:before {
+  content: "\e91f";
+}
+.int-icon-persons:before {
+  content: "\e920";
+}
+.int-icon-radiobox:before {
+  content: "\e921";
+}
+.int-icon-radiobox-marked:before {
+  content: "\e922";
+}
+.int-icon-refresh:before {
+  content: "\e923";
+}
+.int-icon-save:before {
+  content: "\e924";
+}
+.int-icon-search:before {
+  content: "\e925";
+}
+.int-icon-square:before {
+  content: "\e926";
+}
+

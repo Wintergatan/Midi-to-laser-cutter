@@ -1,0 +1,5 @@
+<div class="tab-menu" *ngIf="showTabMenu()">
+    <button class="button" [ngClass]="getButtonClass(button)" *ngFor="let button of options.buttons" (click)="onClickButton(button)">
+        <h2 [innerText]="button.text"></h2>
+   </button>
+</div>

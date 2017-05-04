@@ -5,3 +5,4 @@
 *.css.shim.ts
 *.ngfactory.ts
 *.mid
+*.log

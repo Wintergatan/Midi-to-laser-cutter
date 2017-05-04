@@ -1,0 +1,113 @@
+.dialog-renderer {
+  font-family: sans-serif;
+  
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.background{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.dialog-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    /*
+    left: 0;
+    right: 0;
+    bottom: 30%;
+    transform: translate(0, 30%);
+    */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #696969;
+    background: #F8F8F8;
+    box-shadow: rgba(0, 0, 0, 0.2) 4px 4px 0 0;
+}
+
+.content{
+  white-space: pre;
+}
+
+.dialog{
+  position: relative;
+  padding: 1em;
+  /*flex: 100 100 50%;*/
+}
+
+.heading{
+  font-size: 1.2em;
+}
+
+*+.content{
+  margin-top: 0.5em;
+}
+
+*+.select{
+  margin-top: 0.5em;
+}
+
+*+.buttons{
+  margin-top: 0.5em;
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons button+button{
+  margin-left: 0.5em;
+}
+
+.buttons button{
+  border: none;
+  padding: 0.2em 0.5em;
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.buttons button:hover{
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.buttons button:active{
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.success{
+  color: white;
+  background: #346A3B;
+}
+
+.info{
+  /*
+  color: white;
+  background: #35496A;
+  */
+  background: white;
+}
+
+.warning{
+  color: white;
+  background: #D69600;
+}
+
+.error{
+  color: white;
+  background: #980707;
+}

@@ -1,0 +1,92 @@
+.app {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0.5em;
+    color: #444444;
+    background-color: #f8f8f8;
+}
+
+.app>*+*{
+    margin-top: 0.5em;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    background-color: #444;
+}
+
+.header>h1{
+    padding: 0.25em;
+}
+
+sub-menu{
+    color: white;
+}
+
+.main-view {
+    display: flex;
+    flex-direction: column;
+    flex: 100 100 auto;
+    min-height: 0;
+    border: 1px solid #444444;
+    background-color: white;
+}
+
+.menu-view{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items:stretch;
+}
+
+.menu-view>label{
+    position: relative;
+    flex: 100 100 30%;
+    padding-bottom: 1em;
+}
+
+.menu-view>label>input,
+.menu-view>label>select{
+    width: 200px;
+}
+
+
+.track-view{
+    display: flex;
+    border: 1px #666 solid;
+    background-color: #fff;
+}
+
+.notes{
+    border-right: 1px #666 solid;
+}
+
+.note {
+    /*font-size: 2mm;*/
+}
+
+.track{
+    flex: 100 100 50%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+/*
+.main-view-column {
+    position: relative;
+    flex: 100 100 50%;
+    min-width: 0;
+    padding: 0.5em;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.main-view-column+.main-view-column {
+    border-left: 1px solid #444444;
+}
+*/

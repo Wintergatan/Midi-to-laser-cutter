@@ -1,0 +1,7 @@
+<div class="element" *ngFor="let m of options.menu" (mouseenter)="onMouseEnterElement(m)" (click)="onClickMenu(m)">
+    <i class="icon" [ngClass]="getIconClass(m)"></i>
+    <div class="text" [innerText]="m.text"></div>
+    <div class="space"></div>
+    <i class="sub-menu-icon int-icon-chevron-right" *ngIf="showSubMenuIcon(m)"></i>
+    <context-menu [options]="m" *ngIf="showSubMenu(m)"></context-menu>
+</div> 

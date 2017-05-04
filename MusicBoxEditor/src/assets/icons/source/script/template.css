@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'interactor-icons';
+    src: url(data:application/octet-stream;charset=utf-8;base64,FILE) format('truetype');
+}
+
+[class^="int-icon-"], [class*=" int-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'interactor-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-click {
+    padding: 0.2em;
+}
+
+.icon-click:hover {
+    background-color: rgba(0, 0, 0, 0.10);
+}
+
+.icon-click:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+input[type=radio], input[type=checkbox] {
+    font-family: 'interactor-icons' !important;
+    font-size: 1em;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    -webkit-appearance: none;
+}
+
+input[type=radio]::before {
+    content: RADIO_CONTENT;
+}
+
+input[type=radio]:checked::before {
+    content: RADIO_CHECKED_CONTENT;
+}
+
+input[type=checkbox]::before {
+    content: CHECKBOX_CONTENT;
+}
+
+input[type=checkbox]:checked::before {
+    content: CHECKBOX_CHECKED_CONTENT;
+}
+
+STYLES

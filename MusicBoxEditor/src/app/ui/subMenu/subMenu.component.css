@@ -1,0 +1,48 @@
+.sub-menu {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #e0e0e0;
+}
+
+.disableBackground {
+    background-color: transparent; 
+}
+
+.button {
+    padding: 0.2em 0.75em;
+    color: white;
+    /*color: #444444;*/
+    user-select: none;
+    cursor: default;
+}
+
+.button+.button{
+    margin-left: 0.5em;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.10);
+}
+
+.button:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+button {
+    display: flex;
+    align-items: center;
+    height: 2.25em;
+    background-color: transparent;
+}
+
+button *+*{
+    margin-left: 0.25em;
+}
+
+i {
+    font-size: 1.25em;
+}
+
+i.big {
+    font-size: 1.5em;
+}

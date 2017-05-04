@@ -1,0 +1,6 @@
+<div class="sub-menu" [ngClass]="getBackgroundClass()" *ngIf="showSubMenu()">
+    <button class="button" *ngFor="let button of options.buttons" (click)="onClickButton(button)" [hint]="getHint(button)">
+        <i *ngIf="showIcon(button)" [ngClass]="getIconClass(button)"></i>
+        <h4 *ngIf="showText(button)" [innerText]="button.text"></h4>
+   </button>
+</div>
