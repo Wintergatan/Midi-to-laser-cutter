@@ -17,30 +17,31 @@ export class AppComponent implements OnInit {
     logger: Logger;
 
     //track: ITrack = { notes: [] };
-    header: IHeader;
-
-    notes: INote[] = [];
 
     projectName: string = 'New Project';
 
+    header: IHeader;
+    notes: INote[] = [];
+
     scaleTypeOptions = ['Custom']; //['Full', 'Minor', 'Custom'];
-    scaleType: string = this.scaleTypeOptions[0];
+    scaleType: string = this.scaleTypeOptions[0]; //rename
     noteScale: number[] = [];
-    startNote: number = 36;
-    numNotes: number = 20;
+    startNote: number = 36; //rename
+
     noteTypes = ['Circle', 'Rectangle']
     selectedNoteType: any = this.noteTypes[0];
+    numNotes: number = 20;
     noteDistance: number = 3;
     noteHeight: number = 3;
     noteWidth: number = 3;
 
     trackStart: number = 50;
     trackShift: number = 50;
-    paperHeight: number = 69.7;
-    trackHeight: number = 57;
+    paperHeight: number = 69.7; //remove? (calculate)
+    trackHeight: number = 57;   //remove? (calculate)
     trackPadding: number = 6.35;
 
-    numTrackParts: number = 1;
+    numTrackParts: number = 1; //remove? (calculate)
     trackParts: number[];
     trackPartLength: number = 200;
     trackLength: number = 200;
@@ -54,6 +55,8 @@ export class AppComponent implements OnInit {
 
     constructor(private contextMenuService: ContextMenuService, private dialogService: DialogService) {
 
+        window['state'] = this; //Debug only;
+
         this.mainMenuOptions = {
             onInit: () => { },
             disableBackground: true,
@@ -64,7 +67,7 @@ export class AppComponent implements OnInit {
                 iconClass: 'int-icon-info-circle',
                 callback: () => {
                     this.dialogService.openMessage('Help',
-`This application is under development. 
+                        `This application is under development. 
 Expect bugs and incomplete features.
 
 Missing features:
@@ -86,6 +89,7 @@ Or right click on note to delete it.
 
         this.initNoteTable();
         this.setDefault();
+
 
 
     }
@@ -114,7 +118,11 @@ Or right click on note to delete it.
         reader.onload = (event: any) => {
 
             var data = <any>MidiConvert.parse(event.target.result);
-            if (data && data.tracks && data.tracks.length > 1) {
+            if (!data || !data.tracks || data.tracks.length === 0) {
+                return;
+            }
+
+            if (data.tracks.length > 1) {
 
                 var options = [];
                 for (let i = 0; i < data.tracks.length; i++) {
@@ -132,16 +140,16 @@ Or right click on note to delete it.
                 }
 
                 this.dialogService.openSelect('Multiple tracks in midi file', null, select, () => {
-                    //this.track = data.tracks[select.selected];
                     this.importNotes(data.tracks[select.selected].notes);
-
                     this.updateNotes();
                 });
+
             } else {
-                //this.track = data.tracks[0];
-                this.importNotes(data.data.tracks[0].notes);
+                this.importNotes(data.tracks[0].notes);
                 this.updateNotes();
             }
+
+
         };
         reader.readAsBinaryString(file);
     }
@@ -173,6 +181,60 @@ Or right click on note to delete it.
 
     }
 
+    getState() {
+        var state = {
+            projectName: this.projectName,
+            header: this.header,
+            notes: this.notes,
+            scaleType: this.scaleType,
+            noteScale: this.noteScale,
+            startNote: this.startNote,
+            selectedNoteType: this.selectedNoteType,
+            numNotes: this.numNotes,
+            noteDistance: this.noteDistance,
+            noteHeight: this.noteHeight,
+            noteWidth: this.noteWidth,
+            trackStart: this.trackStart,
+            trackShift: this.trackShift,
+            paperHeight: this.paperHeight,
+            trackHeight: this.trackHeight,
+            trackPadding: this.trackPadding,
+            numTrackParts: this.numTrackParts,
+            trackPartLength: this.trackPartLength,
+            trackLength: this.trackLength
+        }
+        return state;
+    }
+
+    setState(state) {
+        //TODO: if undefined -> set default
+        this.projectName = state.projectName;
+        this.header = state.header;
+        this.notes = state.notes;
+        this.scaleType = state.scaleType;
+        this.noteScale = state.noteScale;
+        this.startNote = state.startNote;
+        this.selectedNoteType = state.selectedNoteType;
+        this.numNotes = state.numNotes;
+        this.noteDistance = state.noteDistance;
+        this.noteHeight = state.noteHeight;
+        this.noteWidth = state.noteWidth;
+        this.trackStart = state.trackStart;
+        this.trackShift = state.trackShift;
+        this.paperHeight = state.paperHeight;
+        this.trackHeight = state.trackHeight;
+        this.trackPadding = state.trackPadding;
+        this.numTrackParts = state.numTrackParts;
+        this.trackPartLength = state.trackPartLength;
+        this.trackLength = state.trackLength
+
+        this.updateNotes();
+    }
+
+
+    onClickSaveProject() {
+        console.log(this.getState());
+    }
 
     onChangeNumNotes(newValue) {
         this.numNotes = newValue;
@@ -361,23 +423,12 @@ Or right click on note to delete it.
         this.paperHeight = this.trackHeight + (this.trackPadding * 2);
 
         this.numTrackParts = Math.ceil(this.trackLength / this.trackPartLength);
-
-        /*
-        if (!this.track || !this.track.notes || this.track.notes.length <= 0) {
-            this.numTrackParts = 1;
-        } else {
-            this.numTrackParts = (this.track.duration * 16) / this.trackPartLength;
-        }
-
-        this.trackLength = this.trackPartLength * this.numTrackParts;
-        */
-
         this.trackParts = []; //Angular 2 ng-for trick.
         for (let i = 0; i < this.numTrackParts; i++) {
             this.trackParts.push(i);
         }
 
-        this.verticalLines = [];
+        this.verticalLines = []; //Angular 2 ng-for trick.
         this.numVerticalLines = Math.floor(this.trackLength / 4) + 1;
         for (let i = 0; i < this.numVerticalLines; i++) {
             this.verticalLines.push(i);
