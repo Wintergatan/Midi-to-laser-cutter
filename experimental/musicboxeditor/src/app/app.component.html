@@ -25,13 +25,13 @@
       
       <label>
         <h4>Scale Type:</h4> 
-        <select [ngModel]="scaleType"  (ngModelChange)="onChangeScaleType($event)">
+        <select [ngModel]="selectedScaleType"  (ngModelChange)="onChangeScaleType($event)">
           <option *ngFor="let st of scaleTypeOptions" [ngValue]="st">{{st}}</option>
         </select>
       </label>
       <label>
         <h4>Scale start: (MIDI-id)</h4> 
-        <input type="number" [ngModel]="scaleStart"  (ngModelChange)="onChangeStartNote($event)">
+        <input type="number" [ngModel]="scaleStart"  (ngModelChange)="onChangeScaleStart($event)">
       </label>
       <label>
         <h4>Note distance:</h4> 
@@ -87,7 +87,7 @@
         <text class="note" *ngFor="let ns of noteScale" (click)="onClickScale($event, ns)" style="font-size: 1mm; vertical-align: middle;" text-anchor="start" x="2" [attr.y]="getTextY(ns)" [textContent]="midiToNote(ns)"></text>
       </svg>  
       <div class="track">
-        <svg id="musicbox-svg" *ngIf="showTrack()" [attr.width]="getTrackWidth()" [attr.height]="getTrackHeight()" [attr.viewBox]="getTrackViewBox()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+        <svg id="musicbox-svg" *ngIf="showTrack()" [attr.width]="getViewBoxWidth()" [attr.height]="getViewBoxHeight()" [attr.viewBox]="getTrackViewBox()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
           <!--Guide Lines-->
           <g id="note-lines-group">
             <line *ngFor="let n of noteScale" [attr.stroke]="getNoteLineColor(n)" stroke-width="0.5" x1="0" [attr.y1]="getNoteLineY(n)" [attr.x2]="getNoteLineLength()" [attr.y2]="getNoteLineY(n)"/>

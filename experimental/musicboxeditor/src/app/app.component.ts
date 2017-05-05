@@ -24,7 +24,7 @@ export class AppComponent {
     notes: INote[];
 
     scaleTypeOptions = ['Custom']; //['Full', 'Minor', 'Custom'];
-    scaleType: string = this.scaleTypeOptions[0]; //rename
+    selectedScaleType: string = this.scaleTypeOptions[0];
     noteScale: number[] = [];
     scaleStart: number;
 
@@ -37,11 +37,8 @@ export class AppComponent {
 
     trackStart: number = 50;
     trackShift: number = 50;
-    paperHeight: number = 69.7; //remove? (calculate)
-    trackHeight: number = 57;   //remove? (calculate)
     trackPadding: number = 6.35;
 
-    numTrackParts: number = 1; //remove? (calculate)
     trackParts: number[];
     trackPartLength: number = 200;
     trackLength: number = 200;
@@ -179,7 +176,7 @@ Or right click on note to delete it.
             projectName: this.projectName,
             header: this.header,
             notes: this.notes,
-            scaleType: this.scaleType,
+            selectedScaleType: this.selectedScaleType,
             scaleStart: this.noteScale,
             startNote: this.scaleStart,
             selectedNoteType: this.selectedNoteType,
@@ -189,10 +186,7 @@ Or right click on note to delete it.
             noteWidth: this.noteWidth,
             trackStart: this.trackStart,
             trackShift: this.trackShift,
-            paperHeight: this.paperHeight,
-            trackHeight: this.trackHeight,
             trackPadding: this.trackPadding,
-            numTrackParts: this.numTrackParts,
             trackPartLength: this.trackPartLength,
             trackLength: this.trackLength
         }
@@ -209,7 +203,7 @@ Or right click on note to delete it.
         this.header = state.header || {};
         this.notes = state.notes || [];
         this.numNotes = state.numNotes || 20;
-        this.scaleType = state.scaleType || 'Custom';
+        this.selectedScaleType = state.selectedScaleType || 'Custom';
         this.scaleStart = state.scaleStart || 36;
         this.noteScale = state.noteScale || this.generateNoteScale();
         this.selectedNoteType = state.selectedNoteType || 'Circle';
@@ -218,10 +212,7 @@ Or right click on note to delete it.
         this.noteWidth = state.noteWidth || 3;
         this.trackStart = state.trackStart || 50;
         this.trackShift = state.trackShift || 50;
-        this.paperHeight = state.paperHeight || 69.7;
-        this.trackHeight = state.trackHeight || 57;
         this.trackPadding = state.trackPadding || 6.35;
-        this.numTrackParts = state.numTrackParts || 1;
         this.trackPartLength = state.trackPartLength || 200;
         this.trackLength = state.trackLength || 200;
 
@@ -248,14 +239,14 @@ Or right click on note to delete it.
     }
 
     onChangeScaleType(newValue) {
-        this.scaleType = newValue;
+        this.selectedScaleType = newValue;
 
         this.updateNotes();
     }
 
-    onChangeStartNote(newValue) {
+    onChangeScaleStart(newValue) {
         this.scaleStart = newValue;
-
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
@@ -397,12 +388,9 @@ Or right click on note to delete it.
 
     updateNotes() {
 
-        this.trackHeight = (this.numNotes - 1) * this.noteDistance;
-        this.paperHeight = this.trackHeight + (this.trackPadding * 2);
-
-        this.numTrackParts = Math.ceil(this.trackLength / this.trackPartLength);
+        var numTrackParts = this.getNumTrackParts();
         this.trackParts = []; //Angular 2 ng-for trick.
-        for (let i = 0; i < this.numTrackParts; i++) {
+        for (let i = 0; i < numTrackParts; i++) {
             this.trackParts.push(i);
         }
 
@@ -411,6 +399,21 @@ Or right click on note to delete it.
         for (let i = 0; i < this.numVerticalLines; i++) {
             this.verticalLines.push(i);
         }
+    }
+
+    getPaperHeight(): number{
+        return this.trackPadding * 2 + (this.noteScale.length - 1) * this.noteDistance;
+    }
+
+    getTrackHeight(): number{
+        return (this.numNotes - 1) * this.noteDistance;
+    }
+
+    getNumTrackParts(): number{
+        if(this.trackLength <= 0){
+            return 1;
+        }
+        return Math.ceil(this.trackLength / this.trackPartLength);
     }
 
     showTrack(): boolean {
@@ -426,11 +429,11 @@ Or right click on note to delete it.
     }
 
     getScaleHeight() {
-        return this.paperHeight + 20 + 'mm';
+        return this.getPaperHeight() + 20 + 'mm';
     }
 
     getScaleViewBox() {
-        return '0 -10 ' + 10 + ' ' + (this.paperHeight + 20);
+        return '0 -10 ' + 10 + ' ' + (this.getPaperHeight() + 20);
     }
 
     onClickScale(event: MouseEvent, index: number) {
@@ -472,30 +475,30 @@ Or right click on note to delete it.
         this.contextMenuService.closeContextMenu();
     }
 
-    //Track
-    getTrackWidth() {
-        var trackLength = this.numTrackParts * this.trackPartLength;
+    //ViewBox
+    getViewBoxWidth() {
+        var trackLength = this.getNumTrackParts() * this.trackPartLength;
         return trackLength + this.trackStart + this.trackShift + 20 + 'mm';
     }
 
-    getTrackHeight() {
-        return this.paperHeight + 20 + 'mm';
+    getViewBoxHeight() {
+        return this.getPaperHeight() + 20 + 'mm';
     }
 
     getTrackViewBox() {
-        var trackLength = this.numTrackParts * this.trackPartLength;
+        var trackLength = this.getNumTrackParts() * this.trackPartLength;
 
-        return (-this.trackStart - 10) + ' -10 ' + (trackLength + this.trackStart + this.trackShift + 20) + ' ' + (this.paperHeight + 20);
+        return (-this.trackStart - 10) + ' -10 ' + (trackLength + this.trackStart + this.trackShift + 20) + ' ' + (this.getPaperHeight() + 20);
     }
 
     //Text
     getTextY(midi: number): number {
-        return this.paperHeight - this.trackPadding - (this.getNoteYOffset(midi) * this.noteDistance) + 1;
+        return this.getPaperHeight() - this.trackPadding - (this.getNoteYOffset(midi) * this.noteDistance) + 1;
     }
 
     //Note Lines
     getNoteLineY(midi: number): number {
-        return this.paperHeight - this.trackPadding - (this.getNoteYOffset(midi) * this.noteDistance);
+        return this.getPaperHeight() - this.trackPadding - (this.getNoteYOffset(midi) * this.noteDistance);
     }
 
     getNoteLineLength(): number {
@@ -523,7 +526,7 @@ Or right click on note to delete it.
     }
 
     getVerticalLineY2(): number {
-        return this.trackHeight + this.trackPadding;
+        return this.getTrackHeight() + this.trackPadding;
     }
 
     //Notes
@@ -537,9 +540,9 @@ Or right click on note to delete it.
 
     getNoteY(note: INote): number {
         if (this.isCircleNoteType()) {
-            return this.paperHeight - this.trackPadding - (this.getNoteYOffset(note.midi) * this.noteDistance);
+            return this.getPaperHeight() - this.trackPadding - (this.getNoteYOffset(note.midi) * this.noteDistance);
         }
-        return this.paperHeight - this.trackPadding - (this.getNoteYOffset(note.midi) * this.noteDistance) - (this.noteHeight / 2);
+        return this.getPaperHeight() - this.trackPadding - (this.getNoteYOffset(note.midi) * this.noteDistance) - (this.noteHeight / 2);
     }
 
     getNoteYOffset(midi: number) {
@@ -596,7 +599,7 @@ Or right click on note to delete it.
     }
 
     getLineBY(n: number): number {
-        return this.paperHeight;
+        return this.getPaperHeight();
     }
 
     getTrackPartPath(n: number): string {
@@ -606,8 +609,8 @@ Or right click on note to delete it.
         }
 
 
-        var s = 'M' + (extra + this.trackPartLength * n) + ',' + this.paperHeight;
-        s += 'L' + (this.trackPartLength * (n + 1)) + ',' + this.paperHeight;
+        var s = 'M' + (extra + this.trackPartLength * n) + ',' + this.getPaperHeight();
+        s += 'L' + (this.trackPartLength * (n + 1)) + ',' + this.getPaperHeight();
         s += ' ' + (this.trackPartLength * (n + 1) + this.trackShift) + ',' + 0;
         s += ' ' + (extra + this.trackPartLength * n + this.trackShift) + ',' + 0;
         s += 'z';
@@ -618,7 +621,7 @@ Or right click on note to delete it.
     getTrackPartPathDivider(n: number): string {
         var delta = 40;
 
-        var s = 'M' + this.trackPartLength * (n + 1) + ',' + this.paperHeight;
+        var s = 'M' + this.trackPartLength * (n + 1) + ',' + this.getPaperHeight();
         s += 'L' + (this.trackPartLength * (n + 1) + this.trackShift) + ',' + 0;
 
         return s;
