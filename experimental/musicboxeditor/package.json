@@ -6,7 +6,7 @@
     "postinstall": "typings install",
     "build": "webpack --progress",
     "build:dev": "webpack --progress --watch",
-    "build:prod": "rimraf dist && cross-env APP_ENVIRONMENT=production webpack -p --progress",
+    "build:prod": "rimraf build && cross-env APP_ENVIRONMENT=production webpack -p --progress",
     "server": "lite-server -c lite-server.config.js",
     "server:gzip": "cross-env APP_ENVIRONMENT=gzip lite-server -c lite-server.config.js",
     "test:dev": "cross-env APP_ENVIRONMENT=test TEST_ENVIRONMENT=dev ./node_modules/karma/bin/karma start ./karma.config.js",
