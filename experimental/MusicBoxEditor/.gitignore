@@ -1,4 +1,5 @@
-/dist/
+/.vscode/
+/build/
 /node_modules/
 /typings/
 /.idea/

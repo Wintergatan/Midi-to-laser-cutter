@@ -23,7 +23,7 @@ var webpackConfig = {
         ]
     },
     output: {
-        path: __dirname + '/dist',
+        path: __dirname + '/build',
         filename: isProduction ? '[name].[hash].js' : '[name].js'
     },
     module: {
