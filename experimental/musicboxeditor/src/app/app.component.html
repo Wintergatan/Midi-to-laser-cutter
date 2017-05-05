@@ -15,8 +15,8 @@
       <label>
         <h4>Actions:</h4> 
         <!--button (click)="onClickSaveProject()">Save Project</button-->
-        <Button (click)="onClickImportMidi()">Import Midi</Button>
-        <Button (click)="onClickDownload()">Download as SVG</Button>
+        <button (click)="onClickImportMidi()">Import Midi</button>
+        <button (click)="onClickDownload()">Download as SVG</button>
       </label>
       <label>
         <h4>Note amount:</h4> 
@@ -31,7 +31,7 @@
       </label>
       <label>
         <h4>Scale start: (MIDI-id)</h4> 
-        <input type="number" [ngModel]="startNote"  (ngModelChange)="onChangeStartNote($event)">
+        <input type="number" [ngModel]="scaleStart"  (ngModelChange)="onChangeStartNote($event)">
       </label>
       <label>
         <h4>Note distance:</h4> 

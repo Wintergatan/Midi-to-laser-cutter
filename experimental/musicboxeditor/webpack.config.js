@@ -66,9 +66,9 @@ var webpackConfig = {
                 ignore: ['*/source/**']
             }, {
                 from: './src/styles.css'
-            }, {
+            }/*, {
                 from: './src/include'
-            }
+            }*/
 
         ]),
         new webpack.DefinePlugin({

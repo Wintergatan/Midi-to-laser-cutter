@@ -4,9 +4,9 @@ const useGzip = process.env.APP_ENVIRONMENT == 'gzip';
 
 var config = {
     "port": 9100,
-    "files": ["./dist/**/*.{html,htm,css,js}"],
+    "files": ["./build/**/*.{html,htm,css,js}"],
     "server": {
-        "baseDir": "./dist",
+        "baseDir": "./build",
         middleware: {
             1: proxyMiddleware('/interactor', {
                 target: 'http://localhost:8080/',

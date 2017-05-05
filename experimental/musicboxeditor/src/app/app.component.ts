@@ -13,20 +13,20 @@ import { ISubMenuComponentOptions } from "./ui/subMenu/subMenu.module";
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
     logger: Logger;
 
     //track: ITrack = { notes: [] };
 
-    projectName: string = 'New Project';
+    projectName: string;
 
     header: IHeader;
-    notes: INote[] = [];
+    notes: INote[];
 
     scaleTypeOptions = ['Custom']; //['Full', 'Minor', 'Custom'];
     scaleType: string = this.scaleTypeOptions[0]; //rename
     noteScale: number[] = [];
-    startNote: number = 36; //rename
+    scaleStart: number;
 
     noteTypes = ['Circle', 'Rectangle']
     selectedNoteType: any = this.noteTypes[0];
@@ -88,28 +88,23 @@ Or right click on note to delete it.
         };
 
         this.initNoteTable();
-        this.setDefault();
-
+        this.init();
 
 
     }
 
-    //TODO: add note
-    //TODO: move note
-    //TODO: add custom Scale (WIP)
-    //TODO: From midi to note(c, d, e, ....)
-    //TODO: multiplart download
-    //TODO: save project
-
-    ngOnInit(): void {
-
+    init() {
+        this.setState(null);
+        console.log(this);
     }
 
-    onChangeImportMidi(event: any) {
-        var files = event.target.files;
-        if (files.length > 0) {
-            var file = files[0];
-            this.parseFile(file);
+    initNoteTable() {
+        var noteLetter = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+        for (let i = 0; i < 128; i++) {
+            var octave = Math.floor(i / 12) - 2;
+            var note = noteLetter[i % 12];
+            this.noteTable[i] = octave + note;
         }
     }
 
@@ -177,8 +172,6 @@ Or right click on note to delete it.
             }
             return 0;
         });
-
-
     }
 
     getState() {
@@ -187,8 +180,8 @@ Or right click on note to delete it.
             header: this.header,
             notes: this.notes,
             scaleType: this.scaleType,
-            noteScale: this.noteScale,
-            startNote: this.startNote,
+            scaleStart: this.noteScale,
+            startNote: this.scaleStart,
             selectedNoteType: this.selectedNoteType,
             numNotes: this.numNotes,
             noteDistance: this.noteDistance,
@@ -207,30 +200,42 @@ Or right click on note to delete it.
     }
 
     setState(state) {
-        //TODO: if undefined -> set default
-        this.projectName = state.projectName;
-        this.header = state.header;
-        this.notes = state.notes;
-        this.scaleType = state.scaleType;
-        this.noteScale = state.noteScale;
-        this.startNote = state.startNote;
-        this.selectedNoteType = state.selectedNoteType;
-        this.numNotes = state.numNotes;
-        this.noteDistance = state.noteDistance;
-        this.noteHeight = state.noteHeight;
-        this.noteWidth = state.noteWidth;
-        this.trackStart = state.trackStart;
-        this.trackShift = state.trackShift;
-        this.paperHeight = state.paperHeight;
-        this.trackHeight = state.trackHeight;
-        this.trackPadding = state.trackPadding;
-        this.numTrackParts = state.numTrackParts;
-        this.trackPartLength = state.trackPartLength;
-        this.trackLength = state.trackLength
+
+        if (!state) {//if no state -> setDefaults
+            state = {};
+        }
+
+        this.projectName = state.projectName || 'New Project';
+        this.header = state.header || {};
+        this.notes = state.notes || [];
+        this.numNotes = state.numNotes || 20;
+        this.scaleType = state.scaleType || 'Custom';
+        this.scaleStart = state.scaleStart || 36;
+        this.noteScale = state.noteScale || this.generateNoteScale();
+        this.selectedNoteType = state.selectedNoteType || 'Circle';
+        this.noteDistance = state.noteDistance || 3;
+        this.noteHeight = state.noteHeight || 3;
+        this.noteWidth = state.noteWidth || 3;
+        this.trackStart = state.trackStart || 50;
+        this.trackShift = state.trackShift || 50;
+        this.paperHeight = state.paperHeight || 69.7;
+        this.trackHeight = state.trackHeight || 57;
+        this.trackPadding = state.trackPadding || 6.35;
+        this.numTrackParts = state.numTrackParts || 1;
+        this.trackPartLength = state.trackPartLength || 200;
+        this.trackLength = state.trackLength || 200;
 
         this.updateNotes();
     }
 
+
+    onChangeImportMidi(event: any) {
+        var files = event.target.files;
+        if (files.length > 0) {
+            var file = files[0];
+            this.parseFile(file);
+        }
+    }
 
     onClickSaveProject() {
         console.log(this.getState());
@@ -249,7 +254,7 @@ Or right click on note to delete it.
     }
 
     onChangeStartNote(newValue) {
-        this.startNote = newValue;
+        this.scaleStart = newValue;
 
         this.updateNotes();
     }
@@ -305,10 +310,7 @@ Or right click on note to delete it.
     }
 
     onClickDownload() {
-        console.log('download clicked');
-
         var svgString = this.generateSvg();
-        //console.log(svgString);
 
         var filename = this.projectName + '.svg';
         var blob = new Blob([svgString], { type: 'image/svg+xml' });
@@ -371,13 +373,6 @@ Or right click on note to delete it.
         return this.noteTable[n];
     }
 
-    showTrack(): boolean {
-        if (!this.notes) {
-            return false;
-        }
-        return true;
-    }
-
     isCircleNoteType(): boolean {
         if (this.selectedNoteType === this.noteTypes[0]) {
             return true;
@@ -385,39 +380,22 @@ Or right click on note to delete it.
         return false;
     }
 
-    setDefault() {
-        this.projectName = 'New Project';
+    generateNoteScale(): number[] {
+        var result: number[] = [];
 
-        this.notes = [];
-
-        this.startNote = 36;
-        this.numNotes = 20;
-        this.noteDistance = 3;
-        this.noteWidth = 3;
-        this.noteHeight = 3;
-
-        this.trackPadding = 6.35;
-        this.trackStart = 50;
-        this.trackShift = 50;
-
-        this.trackPartLength = 200;
-
-        this.updateNotes();
-    }
-
-
-    updateNotes() {
-
-        this.noteScale = [];
-
-        for (let i = 0; this.noteScale.length < this.numNotes; i++) {
-            var midi = this.startNote + i;
+        for (let i = 0; result.length < this.numNotes; i++) {
+            var midi = this.scaleStart + i;
             if (this.noteTable[midi].indexOf('#') != -1) {
                 continue;
             }
 
-            this.noteScale.push(midi);
+            result.push(midi);
         }
+
+        return result;
+    }
+
+    updateNotes() {
 
         this.trackHeight = (this.numNotes - 1) * this.noteDistance;
         this.paperHeight = this.trackHeight + (this.trackPadding * 2);
@@ -435,9 +413,11 @@ Or right click on note to delete it.
         }
     }
 
-    getNoteYOffset(midi: number) {
-        var index = this.noteScale.indexOf(midi);
-        return index;
+    showTrack(): boolean {
+        if (!this.notes) {
+            return false;
+        }
+        return true;
     }
 
     //Scale
@@ -562,6 +542,11 @@ Or right click on note to delete it.
         return this.paperHeight - this.trackPadding - (this.getNoteYOffset(note.midi) * this.noteDistance) - (this.noteHeight / 2);
     }
 
+    getNoteYOffset(midi: number) {
+        var index = this.noteScale.indexOf(midi);
+        return index;
+    }
+
     getNoteWidth(): number {
         if (this.isCircleNoteType()) {
             return this.noteWidth / 2;
@@ -653,18 +638,6 @@ Or right click on note to delete it.
 
     getTrackId(index: number): string {
         return '' + (index + 1);
-    }
-
-
-    //init
-    initNoteTable() {
-        var noteLetter = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-        for (let i = 0; i < 128; i++) {
-            var octave = Math.floor(i / 12) - 2;
-            var note = noteLetter[i % 12];
-            this.noteTable[i] = octave + note;
-        }
     }
 }
 
