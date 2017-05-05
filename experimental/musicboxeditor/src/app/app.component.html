@@ -8,77 +8,82 @@
 
   </div>
     <div class="menu-view">
-      <label>
+      <div class="cell">
         <h4>Project name:</h4> 
-        <input type="text" [(ngModel)]="projectName">
-      </label>
-      <label>
+        <div class="sub-cell">
+          <input type="text" [(ngModel)]="projectName">
+          <button (click)="onClickLoadProject()">Load</button>
+          <button (click)="onClickSaveProject()">Save</button>
+        </div>
+      </div>
+      <div class="cell">
         <h4>Actions:</h4> 
-        <!--button (click)="onClickSaveProject()">Save Project</button-->
-        <button (click)="onClickImportMidi()">Import Midi</button>
-        <button (click)="onClickDownload()">Download as SVG</button>
-      </label>
-      <label>
+        <div class="sub-cell">
+          <button (click)="onClickImportMidi()">Import Midi</button>
+          <button (click)="onClickDownload()">Download as SVG</button>
+        </div>
+      </div>
+      <label class="cell">
         <h4>Note amount:</h4> 
         <input type="number" [ngModel]="numNotes" (ngModelChange)="onChangeNumNotes($event)">
       </label>
       
-      <label>
+      <label class="cell">
         <h4>Scale Type:</h4> 
         <select [ngModel]="selectedScaleType"  (ngModelChange)="onChangeScaleType($event)">
           <option *ngFor="let st of scaleTypeOptions" [ngValue]="st">{{st}}</option>
         </select>
       </label>
-      <label>
+      <label class="cell">
         <h4>Scale start: (MIDI-id)</h4> 
         <input type="number" [ngModel]="scaleStart"  (ngModelChange)="onChangeScaleStart($event)">
       </label>
-      <label>
+      <label class="cell">
         <h4>Note distance:</h4> 
         <input type="number" [ngModel]="noteDistance"  (ngModelChange)="onChangeNoteDistance($event)">
       </label>
       
-      <label>
+      <label class="cell">
         <h4>Note type:</h4> 
         <select [(ngModel)]="selectedNoteType">
           <option *ngFor="let nt of noteTypes" [ngValue]="nt">{{nt}}</option>
         </select>
       </label>
-      <label>
+      <label class="cell">
         <h4>Note width:</h4> 
         <input type="number" [ngModel]="noteWidth"  (ngModelChange)="onChangeNoteWidth($event)">
       </label>
-      <label>
+      <label class="cell">
         <h4>Note height:</h4> 
         <input type="number" [ngModel]="noteHeight"  (ngModelChange)="onChangeNoteHeight($event)">
       </label>
 
 
-      <label>
+      <label class="cell">
         <h4>Track length:</h4> 
         <input type="number" [ngModel]="trackLength"  (ngModelChange)="onChangeTrackLength($event)">
       </label>
-      <label>
+      <label class="cell">
         <h4>Track part length:</h4> 
         <input type="number" [ngModel]="trackPartLength"  (ngModelChange)="onChangeTrackPartLength($event)">
       </label>
-      <label>
+      <label class="cell">
         <h4>Track padding:</h4> 
         <input type="number" [ngModel]="trackPadding"  (ngModelChange)="onChangeTrackPadding($event)">
       </label>
 
-      <label>
+      <label class="cell">
         <h4>Track start:</h4> 
         <input type="number" [(ngModel)]="trackStart" >
       </label>
 
-      <label>
+      <label class="cell">
         <h4>Track shift:</h4> 
         <input type="number" [(ngModel)]="trackShift" >
       </label>
-      <label>
+      <label class="cell">
       </label>
-      <label>
+      <label class="cell">
       </label>
     </div>
 

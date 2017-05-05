@@ -44,10 +44,19 @@ sub-menu{
     align-items:stretch;
 }
 
-.menu-view>label{
+.cell{
     position: relative;
-    flex: 100 100 30%;
+    flex: 100 100 33.3%;
     padding-bottom: 1em;
+}
+
+.sub-cell{
+    overflow: auto;
+    white-space:nowrap
+}
+
+.sub-cell>*{
+    display: inline-block;
 }
 
 .menu-view>label>input,

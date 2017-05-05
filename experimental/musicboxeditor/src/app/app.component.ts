@@ -92,7 +92,6 @@ Or right click on note to delete it.
 
     init() {
         this.setState(null);
-        console.log(this);
     }
 
     initNoteTable() {
@@ -177,8 +176,8 @@ Or right click on note to delete it.
             header: this.header,
             notes: this.notes,
             selectedScaleType: this.selectedScaleType,
-            scaleStart: this.noteScale,
-            startNote: this.scaleStart,
+            noteScale: this.noteScale,
+            scaleStart: this.scaleStart,
             selectedNoteType: this.selectedNoteType,
             numNotes: this.numNotes,
             noteDistance: this.noteDistance,
@@ -195,9 +194,9 @@ Or right click on note to delete it.
 
     setState(state) {
 
-        if (!state) {//if no state -> setDefaults
+        if (state === null || state === undefined) {//if no state -> setDefaults
             state = {};
-        }
+        }     
 
         this.projectName = state.projectName || 'New Project';
         this.header = state.header || {};
@@ -228,19 +227,51 @@ Or right click on note to delete it.
         }
     }
 
+    onClickLoadProject() {
+        var element = document.createElement('input');
+        element.setAttribute('type', 'file');
+        element.setAttribute('accept', 'application/json');
+        element.onchange = (event: any) => {
+            var reader = new FileReader();
+            reader.readAsText(event.path[0].files[0]);
+            reader.onload = (event: any) => {
+                this.setState(JSON.parse(event.target.result));
+            };
+        };
+
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
     onClickSaveProject() {
-        console.log(this.getState());
+        var state = this.getState();
+        var stateAsJson = JSON.stringify(state);
+
+        var filename = this.projectName + '.json';
+        var blob = new Blob([stateAsJson], { type: 'application/json' });
+
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveBlob(blob, filename);
+        } else {
+            var elem = window.document.createElement('a');
+            elem.href = window.URL.createObjectURL(blob);
+            elem.download = filename;
+            document.body.appendChild(elem);
+            elem.click();
+            document.body.removeChild(elem);
+        }
     }
 
     onChangeNumNotes(newValue) {
         this.numNotes = newValue;
-
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
     onChangeScaleType(newValue) {
         this.selectedScaleType = newValue;
-
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
