@@ -102,19 +102,25 @@
           </g>
           
           <!--Notes-->
-          <template [ngIf]="isCircleNoteType()">
-            <ellipse *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.cx]="getNoteX(n)" [attr.cy]="getNoteY(n)" [attr.rx]="getNoteWidth()" [attr.ry]="getNoteHeight()" />
-          </template>
-          <template [ngIf]="!isCircleNoteType()">
-            <rect *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.x]="getNoteX(n)" [attr.y]="getNoteY(n)" [attr.width]="getNoteWidth()" [attr.height]="getNoteHeight()" />
-          </template>
+          <g id="notes">
+            <template [ngIf]="isCircleNoteType()">
+              <ellipse *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.cx]="getNoteX(n)" [attr.cy]="getNoteY(n)" [attr.rx]="getNoteWidth()" [attr.ry]="getNoteHeight()" />
+            </template>
+            <template [ngIf]="!isCircleNoteType()">
+              <rect *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.x]="getNoteX(n)" [attr.y]="getNoteY(n)" [attr.width]="getNoteWidth()" [attr.height]="getNoteHeight()" />
+            </template>
+          </g>
 
           <!--Paper-->
-          <path *ngFor="let tp of trackParts" stroke="#666" fill="none" stroke-width="0.5" [attr.d]="getTrackPartPath(tp)"/>
+          <g id="parts">
+            <path *ngFor="let tp of trackParts" stroke="#666" fill="none" stroke-width="0.5" [attr.d]="getTrackPartPath(tp)"/>
+          </g>
           <g id="track-part-divider">
             <path *ngFor="let tp of trackParts" stroke="red" fill="none" stroke-width="0.5" [attr.d]="getTrackPartPathDivider(tp)"/>
           </g>
-          <text style="font-size: 1mm" *ngFor="let i of trackParts" text-anchor="middle" [attr.x]="getTrackIdX(i)" [attr.y]="getTrackIdY(i)" [textContent]="getTrackId(i)"></text>
+          <g id="track-part-id">
+            <text style="font-size: 1mm" *ngFor="let i of trackParts" text-anchor="middle" [attr.x]="getTrackIdX(i)" [attr.y]="getTrackIdY(i)" [textContent]="getTrackId(i)"></text>
+          </g>
         </svg>
       </div>
     </div>

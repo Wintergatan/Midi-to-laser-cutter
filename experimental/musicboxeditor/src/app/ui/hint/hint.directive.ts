@@ -29,7 +29,7 @@ export class Hint {
     onMouseEnter(event:MouseEvent) {
         if(this.hint && this.hint.trim() !== ''){
             this.timeout = setTimeout(()=>{
-                this.openHint(event.srcElement.getBoundingClientRect());
+                this.openHint((<HTMLElement>event.target).getBoundingClientRect());
             }, 200);
         }
     }

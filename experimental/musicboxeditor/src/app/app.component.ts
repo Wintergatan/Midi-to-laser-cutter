@@ -104,6 +104,109 @@ Or right click on note to delete it.
         }
     }
 
+    getState() {
+        var state = {
+            projectName: this.projectName,
+            header: this.header,
+            notes: this.notes,
+            selectedScaleType: this.selectedScaleType,
+            noteScale: this.noteScale,
+            scaleStart: this.scaleStart,
+            selectedNoteType: this.selectedNoteType,
+            numNotes: this.numNotes,
+            noteDistance: this.noteDistance,
+            noteHeight: this.noteHeight,
+            noteWidth: this.noteWidth,
+            trackStart: this.trackStart,
+            trackShift: this.trackShift,
+            trackPadding: this.trackPadding,
+            trackPartLength: this.trackPartLength,
+            trackLength: this.trackLength
+        }
+        return state;
+    }
+
+    setState(state) {
+
+        if (state === null || state === undefined) {//if no state -> setDefaults
+            state = {};
+        }
+
+        this.projectName = state.projectName || 'New Project';
+        this.header = state.header || {};
+        this.notes = state.notes || [];
+        this.numNotes = state.numNotes || 20;
+        this.selectedScaleType = state.selectedScaleType || 'Custom';
+        this.scaleStart = state.scaleStart || 36;
+        this.noteScale = state.noteScale || this.generateNoteScale();
+        this.selectedNoteType = state.selectedNoteType || 'Circle';
+        this.noteDistance = state.noteDistance || 3;
+        this.noteHeight = state.noteHeight || 3;
+        this.noteWidth = state.noteWidth || 3;
+        this.trackStart = state.trackStart || 50;
+        this.trackShift = state.trackShift || 50;
+        this.trackPadding = state.trackPadding || 6.35;
+        this.trackPartLength = state.trackPartLength || 200;
+        this.trackLength = state.trackLength || 200;
+
+        this.updateNotes();
+    }
+
+    generateNoteScale(): number[] {
+        var result: number[] = [];
+
+        for (let i = 0; result.length < this.numNotes; i++) {
+            var midi = this.scaleStart + i;
+            if (this.noteTable[midi].indexOf('#') != -1) {
+                continue;
+            }
+
+            result.push(midi);
+        }
+
+        return result;
+    }
+
+    importNotes(newNotes: INote[]) {
+
+        for (let i = 0; i < newNotes.length; i++) {
+            this.notes.push(newNotes[i]);
+        }
+
+        this.sortNotes();
+
+        this.trackLength = this.notes[this.notes.length - 1].time * 16;
+    }
+
+    sortNotes() {
+        this.notes.sort(function (a, b) {
+            var aValue = a.time;
+            var bValue = b.time;
+            if (aValue < bValue) {
+                return -1;
+            }
+            if (aValue > bValue) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+
+    updateNotes() {
+
+        var numTrackParts = this.getNumTrackParts();
+        this.trackParts = []; //Angular 2 ng-for trick.
+        for (let i = 0; i < numTrackParts; i++) {
+            this.trackParts.push(i);
+        }
+
+        this.verticalLines = []; //Angular 2 ng-for trick.
+        this.numVerticalLines = Math.floor(this.trackLength / 4) + 1;
+        for (let i = 0; i < this.numVerticalLines; i++) {
+            this.verticalLines.push(i);
+        }
+    }
+
     parseFile(file) {
         var reader = new FileReader();
         reader.onload = (event: any) => {
@@ -145,79 +248,6 @@ Or right click on note to delete it.
         reader.readAsBinaryString(file);
     }
 
-    importNotes(newNotes: INote[]) {
-
-        for (let i = 0; i < newNotes.length; i++) {
-            this.notes.push(newNotes[i]);
-        }
-
-        this.sortNotes();
-
-        this.trackLength = this.notes[this.notes.length - 1].time * 16;
-    }
-
-    sortNotes() {
-        this.notes.sort(function (a, b) {
-            var aValue = a.time;
-            var bValue = b.time;
-            if (aValue < bValue) {
-                return -1;
-            }
-            if (aValue > bValue) {
-                return 1;
-            }
-            return 0;
-        });
-    }
-
-    getState() {
-        var state = {
-            projectName: this.projectName,
-            header: this.header,
-            notes: this.notes,
-            selectedScaleType: this.selectedScaleType,
-            noteScale: this.noteScale,
-            scaleStart: this.scaleStart,
-            selectedNoteType: this.selectedNoteType,
-            numNotes: this.numNotes,
-            noteDistance: this.noteDistance,
-            noteHeight: this.noteHeight,
-            noteWidth: this.noteWidth,
-            trackStart: this.trackStart,
-            trackShift: this.trackShift,
-            trackPadding: this.trackPadding,
-            trackPartLength: this.trackPartLength,
-            trackLength: this.trackLength
-        }
-        return state;
-    }
-
-    setState(state) {
-
-        if (state === null || state === undefined) {//if no state -> setDefaults
-            state = {};
-        }     
-
-        this.projectName = state.projectName || 'New Project';
-        this.header = state.header || {};
-        this.notes = state.notes || [];
-        this.numNotes = state.numNotes || 20;
-        this.selectedScaleType = state.selectedScaleType || 'Custom';
-        this.scaleStart = state.scaleStart || 36;
-        this.noteScale = state.noteScale || this.generateNoteScale();
-        this.selectedNoteType = state.selectedNoteType || 'Circle';
-        this.noteDistance = state.noteDistance || 3;
-        this.noteHeight = state.noteHeight || 3;
-        this.noteWidth = state.noteWidth || 3;
-        this.trackStart = state.trackStart || 50;
-        this.trackShift = state.trackShift || 50;
-        this.trackPadding = state.trackPadding || 6.35;
-        this.trackPartLength = state.trackPartLength || 200;
-        this.trackLength = state.trackLength || 200;
-
-        this.updateNotes();
-    }
-
 
     onChangeImportMidi(event: any) {
         var files = event.target.files;
@@ -237,7 +267,7 @@ Or right click on note to delete it.
             };
             reader.readAsText(event.path[0].files[0]);
         };
-        
+
         element.click();
     }
 
@@ -326,6 +356,8 @@ Or right click on note to delete it.
     onClickDownload() {
         var svgString = this.generateSvg();
 
+        //var test = this.splitSvg(svgString);
+
         var filename = this.projectName + '.svg';
         var blob = new Blob([svgString], { type: 'image/svg+xml' });
 
@@ -363,6 +395,24 @@ Or right click on note to delete it.
         return s;
     }
 
+    splitSvg(svgAsString: string): string[]{
+        var element = this.stringToElement(svgAsString);
+        
+        var partGroup = this.getChildById('parts', element);
+
+        for(let i = 0; i < partGroup.children.length; i++){
+            var part = <SVGPathElement>partGroup.children[i];
+            console.log(part, part.getBBox());
+        }
+        return [];
+    }
+
+    stringToElement(htmlAsString: string): HTMLElement {
+        var div = document.createElement('div');
+        div.innerHTML = htmlAsString;
+        return <HTMLElement>div.firstChild;
+    }
+
     getChildById(id: string, element: Element): Element {
         if (!element || !element.children) {
             return null;
@@ -392,46 +442,16 @@ Or right click on note to delete it.
         return false;
     }
 
-    generateNoteScale(): number[] {
-        var result: number[] = [];
-
-        for (let i = 0; result.length < this.numNotes; i++) {
-            var midi = this.scaleStart + i;
-            if (this.noteTable[midi].indexOf('#') != -1) {
-                continue;
-            }
-
-            result.push(midi);
-        }
-
-        return result;
-    }
-
-    updateNotes() {
-
-        var numTrackParts = this.getNumTrackParts();
-        this.trackParts = []; //Angular 2 ng-for trick.
-        for (let i = 0; i < numTrackParts; i++) {
-            this.trackParts.push(i);
-        }
-
-        this.verticalLines = []; //Angular 2 ng-for trick.
-        this.numVerticalLines = Math.floor(this.trackLength / 4) + 1;
-        for (let i = 0; i < this.numVerticalLines; i++) {
-            this.verticalLines.push(i);
-        }
-    }
-
-    getPaperHeight(): number{
+    getPaperHeight(): number {
         return this.trackPadding * 2 + (this.noteScale.length - 1) * this.noteDistance;
     }
 
-    getTrackHeight(): number{
+    getTrackHeight(): number {
         return (this.numNotes - 1) * this.noteDistance;
     }
 
-    getNumTrackParts(): number{
-        if(this.trackLength <= 0){
+    getNumTrackParts(): number {
+        if (this.trackLength <= 0) {
             return 1;
         }
         return Math.ceil(this.trackLength / this.trackPartLength);

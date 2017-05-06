@@ -75,8 +75,12 @@ sub-menu{
     border-right: 1px #666 solid;
 }
 
-.note {
-    /*font-size: 2mm;*/
+text.note {
+    cursor: pointer;
+}
+
+text.note:hover {
+    fill: cornflowerblue;
 }
 
 .track{
