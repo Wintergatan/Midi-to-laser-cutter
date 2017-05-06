@@ -1,22 +1,5 @@
 # TODO
 
-## Save and Load Project
-
-### GUI
-* Add button for saveing a project.
-* Add button for loading a project file.
-
-### Save
-* Add every property of app.component to an object.(except logger, noteTable and mainMenuOptions).
-* Serialize object to JSON.
-* Promt user with download json-file.
-
-
-### Load
-* Promt user with file dialog and upload file (.json).
-* Parse json and check if object is valid.
-* Set variables in app component and update notes.
-
 ## Multipart download
 * Option for multipart download in gui (checkbox or select).
 * Clone svg in number of track parts.

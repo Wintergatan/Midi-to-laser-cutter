@@ -228,20 +228,17 @@ Or right click on note to delete it.
     }
 
     onClickLoadProject() {
-        var element = document.createElement('input');
-        element.setAttribute('type', 'file');
-        element.setAttribute('accept', 'application/json');
+        var element = <HTMLInputElement>document.getElementById('file-input');
+        element.accept = 'application/json';
         element.onchange = (event: any) => {
             var reader = new FileReader();
-            reader.readAsText(event.path[0].files[0]);
             reader.onload = (event: any) => {
                 this.setState(JSON.parse(event.target.result));
             };
+            reader.readAsText(event.path[0].files[0]);
         };
-
-        document.body.appendChild(element);
+        
         element.click();
-        document.body.removeChild(element);
     }
 
     onClickSaveProject() {
@@ -254,12 +251,10 @@ Or right click on note to delete it.
         if (window.navigator.msSaveOrOpenBlob) {
             window.navigator.msSaveBlob(blob, filename);
         } else {
-            var elem = window.document.createElement('a');
+            var elem = <HTMLAnchorElement>document.getElementById('file-output');
             elem.href = window.URL.createObjectURL(blob);
             elem.download = filename;
-            document.body.appendChild(elem);
             elem.click();
-            document.body.removeChild(elem);
         }
     }
 
@@ -319,16 +314,13 @@ Or right click on note to delete it.
     }
 
     onClickImportMidi() {
-        var element = document.createElement('input');
-        element.setAttribute('type', 'file');
-        element.setAttribute('accept', 'audio/midi');
+        var element = <HTMLInputElement>document.getElementById('file-input');
+        element.accept = 'audio/midi';
         element.onchange = (event) => {
             this.onChangeImportMidi(event);
         }
 
-        document.body.appendChild(element);
         element.click();
-        document.body.removeChild(element);
     }
 
     onClickDownload() {
@@ -341,12 +333,10 @@ Or right click on note to delete it.
             window.navigator.msSaveBlob(blob, filename);
         }
         else {
-            var elem = window.document.createElement('a');
+            var elem = <HTMLAnchorElement>document.getElementById('file-output');
             elem.href = window.URL.createObjectURL(blob);
             elem.download = filename;
-            document.body.appendChild(elem);
             elem.click();
-            document.body.removeChild(elem);
         }
 
     }
