@@ -19,7 +19,8 @@ var webpackConfig = {
             'reflect-metadata',
             'core-js/es6',
             'core-js/es7/reflect',
-            'zone.js/dist/zone'
+            'zone.js/dist/zone',
+            'jszip'
         ]
     },
     output: {

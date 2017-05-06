@@ -8,6 +8,8 @@ import { ContextMenuService } from "./ui/contextMenu/contextMenu.module";
 import { DialogService, IDialogSelect } from "./ui/dialog/dialog.module";
 import { ISubMenuComponentOptions } from "./ui/subMenu/subMenu.module";
 
+import * as JSZip from "jszip";
+
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
@@ -51,6 +53,8 @@ export class AppComponent {
     mainMenuOptions: ISubMenuComponentOptions;
 
     constructor(private contextMenuService: ContextMenuService, private dialogService: DialogService) {
+
+        console.log(JSZip);
 
         window['state'] = this; //Debug only;
 
@@ -355,12 +359,32 @@ Or right click on note to delete it.
 
     onClickDownload() {
         var svgString = this.generateSvg();
+        var filename = this.projectName + '.zip';
+        
+        //var blob = new Blob([test[0]], { type: 'image/svg+xml' });
 
-        //var test = this.splitSvg(svgString);
+        var test = this.splitSvg(svgString);
+        console.log(test);
 
-        var filename = this.projectName + '.svg';
-        var blob = new Blob([svgString], { type: 'image/svg+xml' });
+        var zip = new JSZip();
+        for (let i = 0; i < test.length; i++) {
+            zip.file(this.projectName + i + '.svg', test[i]);
+        }
 
+        zip.generateAsync({ type: "blob" })
+            .then(function (content) {
+                if (window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveBlob(content, filename);
+                }
+                else {
+                    var element = <HTMLAnchorElement>document.getElementById('file-output');
+                    element.href = window.URL.createObjectURL(content);
+                    element.download = filename;
+                    element.click();
+                }
+            });
+
+        /*
         if (window.navigator.msSaveOrOpenBlob) {
             window.navigator.msSaveBlob(blob, filename);
         }
@@ -370,6 +394,7 @@ Or right click on note to delete it.
             elem.download = filename;
             elem.click();
         }
+        */
 
     }
 
@@ -395,16 +420,75 @@ Or right click on note to delete it.
         return s;
     }
 
-    splitSvg(svgAsString: string): string[]{
+    splitSvg(svgAsString: string): string[] {
         var element = this.stringToElement(svgAsString);
-        
-        var partGroup = this.getChildById('parts', element);
+        var numParts = this.getChildById('parts', element).children.length;
 
-        for(let i = 0; i < partGroup.children.length; i++){
+        var partsAsStringArray = [];
+
+        for (let i = 0; i < numParts; i++) {
+
+            var clone = <HTMLElement>element.cloneNode(true);
+
+            var partGroup = this.getChildById('parts', clone);
+            var idGroup = this.getChildById('track-part-id', clone);
+            var noteGroup = this.getChildById('notes', clone);
+
             var part = <SVGPathElement>partGroup.children[i];
-            console.log(part, part.getBBox());
+            var id = <SVGTextElement>idGroup.children[i];
+            var partBBox = part.getBBox();
+
+            //width="2320mm" height="89.7mm" viewBox="-60 -10 2320 89.7"
+            clone.setAttribute('width', (partBBox.width + 5) + 'mm');
+            clone.setAttribute('height', (partBBox.height + 5) + 'mm');
+            clone.setAttribute('viewBox', (partBBox.x - 5) + ' ' + (partBBox.y - 5) + ' ' + (partBBox.width + 10) + ' ' + (partBBox.height + 10));
+
+            for (let j = 0; j < noteGroup.children.length; j++) {
+                var note = <SVGEllipseElement>noteGroup.children[j];
+                if (!this.isIntersecting(partBBox, this.getEllipseBBox(note))) { //TODO: for circle and rectangle
+                    noteGroup.removeChild(note);
+                    j--;
+                }
+            }
+
+            while (partGroup.firstChild) {
+                partGroup.removeChild(partGroup.firstChild);
+            }
+            partGroup.appendChild(part);
+
+            while (idGroup.firstChild) {
+                idGroup.removeChild(idGroup.firstChild);
+            }
+            idGroup.appendChild(id);
+
+
+            partsAsStringArray.push(clone.outerHTML.toString());
         }
-        return [];
+
+        return partsAsStringArray;
+    }
+
+    getEllipseBBox(a: SVGEllipseElement): SVGRect {
+        var cx = parseFloat(a.getAttribute('cx'));
+        var cy = parseFloat(a.getAttribute('cy'));
+        var rx = parseFloat(a.getAttribute('rx'));
+        var ry = parseFloat(a.getAttribute('ry'));
+
+        return <SVGRect>{
+            x: cx - rx,
+            y: cy - ry,
+            width: rx + rx,
+            height: ry + ry
+        };
+    }
+
+    isIntersecting(a: SVGRect, b: SVGRect): boolean {
+        //console.log(a, b);
+        if (b.x > a.x + a.width || b.x + b.width < a.x ||
+            b.y > a.y + a.height || b.y + b.height < a.y) {
+            return false;
+        }
+        return true;
     }
 
     stringToElement(htmlAsString: string): HTMLElement {
