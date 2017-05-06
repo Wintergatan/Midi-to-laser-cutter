@@ -1,4 +1,28 @@
 $(document).ready(function () {
+
+    var fields = [
+        { name: 'units', type: 'select', id: 'units' },
+        { name: 'workpieceWidth', type: 'text', id: 'workpiece-width' },
+        { name: 'workpieceHeight', type: 'text', id: 'workpiece-height' },
+        { name: 'stripHeight', type: 'text', id: 'strip-height' },
+        { name: 'scale', type: 'select', id: 'scale' },
+        { name: 'scaleType', type: 'select', id: 'scale-type' },
+
+        { name: 'startingEdge', type: 'select', id: 'starting-edge' },
+        { name: 'jointEdge', type: 'select', id: 'joint-edge' },
+        { name: 'endingEdge', type: 'select', id: 'ending-edge' },
+        { name: 'amountOfPins', type: 'text', id: 'amount-of-pins' },
+
+        { name: 'holeShape', type: 'select', id: 'hole-shape' },
+        { name: 'holeWidth', type: 'text', id: 'hole-width' },
+        { name: 'holeHeight', type: 'text', id: 'hole-height' },
+        { name: 'horizontalMargins', type: 'text', id: 'horizontal-margins' },
+        { name: 'verticalMargins', type: 'text', id: 'vertical-margins' },
+
+        { name: 'exportFormat', type: 'select', id: 'export-format' },
+        { name: 'lineColor', type: 'text', id: 'line-color' }
+    ];
+
     $("#units").change(function () {
         if ($("#units option:selected").text() == "Inches") {
             $('.unit-suffix').text('in');
@@ -8,7 +32,7 @@ $(document).ready(function () {
 
     });
 
-    $("input:file").change(function () {
+    $("#file-picker-midi").change(function () {
         var fileName = $(this).val();
         $("#midi-file").val(fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length));
     });
@@ -18,27 +42,25 @@ $(document).ready(function () {
         $("#color-suffix").text(lineColor);
     });
 
-    $("#export-settings").click(function () {
-        var settings = {
-            units: $("#units option:selected").text(),
-            workpieceWidth: $("#workpiece-width").val(),
-            workpieceHeight: $("#workpiece-height").val(),
-            startingEdge: $("#starting-edge option:selected").text(),
-            jointEdge: $("#joint-edge option:selected").text(),
-            endingEdge: $("#ending-edge option:selected").text(),
-            holeShape: $("#hole-shape option:selected").text(),
-            holeWidth: $("#hole-width").val(),
-            holeHeight: $("#hole-height").val(),
-            scale: $("#scale option:selected").text(),
-            scaleType: $("#scale-type option:selected").text(),
-            scaleMode: $("#scale-mode option:selected").text(),
-            amountOfPins: $("#amount-of-pins").val(),
-            horizontalMargins: $("#horizontal-margins").val(),
-            verticalMargins: $("#vertical-margins").val(),
-            exportFormat: $("#export-format option:selected").text(),
-            lineColor: $("#line-color").val()
+    $("#import-settings").click(function () {
+        if (confirm('Are you sure you want to overwrite your current configuration?')) {
+            $("#file-picker-import-settings").trigger('click');
         }
-        
+    });
+
+    $("#file-picker-import-settings").change(function () {
+        var file = $('#file-picker-import-settings')[0].files[0];
+        importSettings(file);
+    });
+
+    $("#export-settings").click(function () {
+        var settings = { };
+        fields.forEach(function (field) {
+            settings[field.name] = $('#' + field.id).val();
+        });
+
+        console.log(settings);
+
         json_export = JSON.stringify(settings);
         console.log(settings);
         console.log(json_export);
@@ -60,7 +82,8 @@ $(document).ready(function () {
     //console.log("listener added");
 
     $("#show-preview").click(function () {
-        if (loadFile()) {
+        var file = $('#file-picker-midi')[0].files[0];
+        if (loadMidiFile(file)) {
             $("#download-btn").prop('disabled', false)
         }
     });
@@ -70,10 +93,37 @@ $(document).ready(function () {
         downloadFile('data.' + value, fileTexts[value]);
     });
 
-    function loadFile() {
-        file = $('#file-picker-midi')[0].files[0];
+    function importSettings (file) {
         if (!file) {
-            console.log("No file selected")
+            console.log("No settings file selected")
+            return false;
+        }
+        console.log('Attempting to load settings from ' + file.name);
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function (e) {
+            var settings = JSON.parse(e.target.result);
+            console.log(settings);
+
+            fields.forEach(function (field) {
+                if (settings[field.name]) {
+                    if (field.type === 'text') {
+                        $('#' + field.id).val(settings[field.name]);
+                    }
+                    else if (field.type === 'select') {
+                        $('#' + field.id).val(settings[field.name]).change();
+                    }
+                    else {
+                        console.log('Invalid field type: ' + field.type);
+                    }
+                }
+            });
+        };
+    }
+
+    function loadMidiFile(file) {
+        if (!file) {
+            console.log("No Midi file selected")
             return false;
         }
         console.log('Uploading file detected in INPUT ELEMENT, processing data..');
