@@ -2,6 +2,23 @@ declare var app: {
   environment: string;
 };
 
+declare module 'jszip' {
+  interface JSZipInterface {
+    (): void
+    file ( name: string, data: string, opts?: any ): void
+    folder ( name: string ): JSZipInterface
+    generateAsync ( options?: any): Promise<any>
+  }
+
+  interface JSZipConstructor {
+    new (): JSZipInterface
+  }
+
+
+  const module: JSZipConstructor
+  export = module
+}
+
 //jasmine subset
 
 //declare var require: any;

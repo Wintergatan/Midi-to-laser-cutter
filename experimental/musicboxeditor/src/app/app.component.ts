@@ -54,8 +54,6 @@ export class AppComponent {
 
     constructor(private contextMenuService: ContextMenuService, private dialogService: DialogService) {
 
-        console.log(JSZip);
-
         window['state'] = this; //Debug only;
 
         this.mainMenuOptions = {
@@ -360,41 +358,43 @@ Or right click on note to delete it.
     onClickDownload() {
         var svgString = this.generateSvg();
         var filename = this.projectName + '.zip';
-        
-        //var blob = new Blob([test[0]], { type: 'image/svg+xml' });
 
-        var test = this.splitSvg(svgString);
-        console.log(test);
+        var useDownloadAsZip = true;
+        if (useDownloadAsZip) {
 
-        var zip = new JSZip();
-        for (let i = 0; i < test.length; i++) {
-            zip.file(this.projectName + i + '.svg', test[i]);
+            var svgStringArray = this.splitSvg(svgString);
+            var zip = new JSZip();
+            for (let i = 0; i < svgStringArray.length; i++) {
+                zip.file(this.projectName + i + '.svg', svgStringArray[i]);
+            }
+
+            zip.generateAsync({ type: "blob" })
+                .then(function (content) {
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveBlob(content, filename);
+                    }
+                    else {
+                        var element = <HTMLAnchorElement>document.getElementById('file-output');
+                        element.href = window.URL.createObjectURL(content);
+                        element.download = filename;
+                        element.click();
+                    }
+                });
+
+        } else {
+
+            var blob = new Blob([svgString], { type: 'image/svg+xml' });
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, filename);
+            }
+            else {
+                var elem = <HTMLAnchorElement>document.getElementById('file-output');
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = filename;
+                elem.click();
+            }
+
         }
-
-        zip.generateAsync({ type: "blob" })
-            .then(function (content) {
-                if (window.navigator.msSaveOrOpenBlob) {
-                    window.navigator.msSaveBlob(content, filename);
-                }
-                else {
-                    var element = <HTMLAnchorElement>document.getElementById('file-output');
-                    element.href = window.URL.createObjectURL(content);
-                    element.download = filename;
-                    element.click();
-                }
-            });
-
-        /*
-        if (window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveBlob(blob, filename);
-        }
-        else {
-            var elem = <HTMLAnchorElement>document.getElementById('file-output');
-            elem.href = window.URL.createObjectURL(blob);
-            elem.download = filename;
-            elem.click();
-        }
-        */
 
     }
 
