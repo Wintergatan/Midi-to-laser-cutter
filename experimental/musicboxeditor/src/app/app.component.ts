@@ -366,9 +366,9 @@ Or right click on note to delete it.
             var zip = new JSZip();
             for (let i = 0; i < svgStringArray.length; i++) {
                 zip.file(this.projectName + i + '.svg', svgStringArray[i]);
-            }
+            } 
 
-            zip.generateAsync({ type: "blob" })
+            zip.generateAsync({ type: "blob", compression: 'DEFLATE'})
                 .then(function (content) {
                     if (window.navigator.msSaveOrOpenBlob) {
                         window.navigator.msSaveBlob(content, filename);
@@ -436,7 +436,7 @@ Or right click on note to delete it.
 
             var part = <SVGPathElement>partGroup.children[i];
             var id = <SVGTextElement>idGroup.children[i];
-            var partBBox = part.getBBox();
+            var partBBox = this.getPathBBox(part);
 
             //width="2320mm" height="89.7mm" viewBox="-60 -10 2320 89.7"
             clone.setAttribute('width', (partBBox.width + 5) + 'mm');
@@ -480,6 +480,43 @@ Or right click on note to delete it.
             width: rx + rx,
             height: ry + ry
         };
+    }
+
+    getPathBBox(a: SVGPathElement): SVGRect {
+        const regex = /([+-]?(?:[0-9]*\.)?[0-9]+),([+-]?(?:[0-9]*\.)?[0-9]+)/g;
+        var d = a.getAttribute('d');
+        var match;
+
+        var minX, maxX, minY, maxY;
+
+
+        while ((match = regex.exec(d)) !== null) {
+            var x = parseFloat(match[1]);
+            var y = parseFloat(match[2]);
+            if(minX === undefined){
+                minX = x;
+                maxX = x;
+                minY = y;
+                maxY = y;
+                continue;
+            }
+
+            if(x < minX){
+                minX = x;
+            }
+            if(x > maxX){
+                maxX = x;
+            }
+
+            if(y < minY){
+                minY = y;
+            }
+            if(y > maxY){
+                maxY = y;
+            }
+        }
+
+        return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
     }
 
     isIntersecting(a: SVGRect, b: SVGRect): boolean {
