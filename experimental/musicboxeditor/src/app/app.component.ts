@@ -444,8 +444,15 @@ Or right click on note to delete it.
             clone.setAttribute('viewBox', (partBBox.x - 5) + ' ' + (partBBox.y - 5) + ' ' + (partBBox.width + 10) + ' ' + (partBBox.height + 10));
 
             for (let j = 0; j < noteGroup.children.length; j++) {
-                var note = <SVGEllipseElement>noteGroup.children[j];
-                if (!this.isIntersecting(partBBox, this.getEllipseBBox(note))) { //TODO: for circle and rectangle
+                var note = <SVGEllipseElement | SVGRectElement>noteGroup.children[j];
+                var noteBBox;
+                if(note.tagName === 'ellipse'){
+                    noteBBox = this.getEllipseBBox(<SVGEllipseElement>note);
+                }else{
+                    noteBBox = this.getRectBBox(<SVGRectElement>note);
+                }
+
+                if (!this.isIntersecting(partBBox, noteBBox)) {
                     noteGroup.removeChild(note);
                     j--;
                 }
@@ -479,6 +486,20 @@ Or right click on note to delete it.
             y: cy - ry,
             width: rx + rx,
             height: ry + ry
+        };
+    }
+
+    getRectBBox(a: SVGRectElement): SVGRect {
+        var x = parseFloat(a.getAttribute('x'));
+        var y = parseFloat(a.getAttribute('y'));
+        var width = parseFloat(a.getAttribute('width'));
+        var height = parseFloat(a.getAttribute('height'));
+
+        return <SVGRect>{
+            x: x,
+            y: y,
+            width: width,
+            height: height
         };
     }
 
@@ -516,7 +537,12 @@ Or right click on note to delete it.
             }
         }
 
-        return {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+        return {
+            x: minX, 
+            y: minY, 
+            width: maxX - minX, 
+            height: maxY - minY
+        };
     }
 
     isIntersecting(a: SVGRect, b: SVGRect): boolean {
