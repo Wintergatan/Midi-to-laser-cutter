@@ -82,6 +82,9 @@ $(document).ready(function () {
     //console.log("listener added");
 
     $("#show-preview").click(function () {
+        if (! validateForm()) {
+            return;
+        }
         var file = $('#file-picker-midi')[0].files[0];
         if (loadMidiFile(file)) {
             $("#download-btn").prop('disabled', false)
@@ -133,6 +136,19 @@ $(document).ready(function () {
             console.log(e.target.result);
             prepareFiles(MIDIParser.Uint8(new Uint8Array(e.target.result)));
         };
+        return true;
+    }
+
+    function validateForm() {
+        // For now, simply verify the user has selected a MIDI file
+        // Will add min/max, defaults, required/optional once those attributes are identified by the team
+
+        var file = $('#file-picker-midi')[0].files[0];
+        if (!file) {
+            alert('Please select a valid MIDI file.')
+            return;
+        }
+
         return true;
     }
 });
