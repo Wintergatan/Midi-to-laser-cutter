@@ -1,0 +1,12 @@
+body {
+    padding-top: 70px;
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+#export-row {
+    padding-top: 20px;
+}
+
+#download-btn {
+    margin: 20px 0;
+}
