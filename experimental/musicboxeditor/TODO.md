@@ -2,11 +2,6 @@
 
 ## Multipart download
 * Option for multipart download in gui (checkbox or select).
-* Clone svg in number of track parts.
-* For every part, remove notes outside part (edge case: note is on the split).
-* update viewbox for every part.
-* Load files in zip.js
-* Trigger download.
 
 
 ## Selected scale
