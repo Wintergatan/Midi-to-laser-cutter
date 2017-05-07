@@ -15,22 +15,8 @@
 
     <!-- Select element CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-
-    <!-- Custom CSS -->
-    <style>
-        body {
-            padding-top: 70px;
-            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-        }
-        
-        #export-row {
-            padding-top: 20px;
-        }
-        
-        #download-btn {
-            margin: 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="inc/custom.css">
+   
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,10 +46,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#">How to use</a>
+                        <a href="#" data-toggle="modal" data-target="#helpModal">How to use</a>
                     </li>
                     <li>
-                        <a href="#">About</a>
+                        <a href="#" data-toggle="modal" data-target="#aboutModal">About</a>
                     </li>
                 </ul>
             </div>
@@ -71,6 +57,7 @@
         </div>
         <!-- /.container -->
     </nav>
+
 
     <!-- Page Content -->
     <div class="container">
@@ -269,6 +256,137 @@
 
     </div>
     <!-- /.container -->
+
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="aboutModalLabel">About</h4>
+          </div>
+          <div class="modal-body">
+            This tool automates the process of turning MIDI files into printable or cuttable music box paper tape.
+            It was inspired by this <a href="https://www.youtube.com/watch?v=HjBhO9iqEc0" target="_blank">Music Box Hole Punch Tutorial</a> made by Martin Molin of Swedish band Wintergatan. In the video, he describes the tedious process of creating the paper tape for music boxes by hand and reaches out to the coding world for a more automated solution.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="helpModalLabel">How To Use</h4>
+
+            <p>The application accepts a MIDI file and user settings as input. It then generates an output file in either SVG, DXF or plain text format. The generated output file can be printed or used in a laser-cutter.</p>
+
+            <table class="table">
+                <tr>
+                    <th>Units</th>
+                    <td>Select inches or millimeters for all numerical measurement settings</td>
+                </tr>
+                <tr>
+                    <th>Workpiece width</th>
+                    <td>Width of workpiece (not currently used)</td>
+                </tr>
+                <tr>
+                    <th>Workpiece height</th>
+                    <td>Height of workpiece (not currently used)</td>
+                </tr>
+                <tr>
+                    <th>Strip height</th>
+                    <td>Height of the paper strip</td>
+                </tr>
+                <tr>
+                    <th>Scale</th>
+                    <td>Currently limited to Key of C</td>
+                </tr>
+                <tr>
+                    <th>Scale type</th>
+                    <td>Currently limited to Major Scale</td>
+                </tr>
+                <tr>
+                    <th>Starting edge</th>
+                    <td>The starting edge shape: straight, diagonal or jagged</td>
+                </tr>
+                <tr>
+                    <th>Joint edge</th>
+                    <td>Edge shape to be used between sections: straight, diagonal or jagged</td>
+                </tr>
+                <tr>
+                    <th>Ending edge</th>
+                    <td>Ending edge shape: straight, diagonal or jagged</td>
+                </tr>
+                <tr>
+                    <th>Amount of pins</th>
+                    <td>Number of pins on music box or device</td>
+                </tr>
+                <tr>
+                    <th>Midi file</th>
+                    <td>A valid MIDI file is required</td>
+                </tr>
+                <tr>
+                    <th>Current scale</th>
+                    <td>Current scale used in the generation (Read-only)</td>
+                </tr>
+                <tr>
+                    <th>Hole shape</th>
+                    <td>Corner type for punch holes: Rounded or Square</td>
+                </tr>
+                <tr>
+                    <th>Hole width</th>
+                    <td>Width of punch holes</td>
+                </tr>
+                <tr>
+                    <th>Hole height</th>
+                    <td>Height of punch holes</td>
+                </tr>
+                <tr>
+                    <th>Horizontal margins</th>
+                    <td>Left and right margins</td>
+                </tr>
+                <tr>
+                    <th>Vertical margins</th>
+                    <td>Top and bottom margins</td>
+                </tr>
+                <tr>
+                    <th>Import settings</th>
+                    <td>Import previously saved settings in JSON format. This will overwrite the current configuration.
+                        Current MIDI file will not be affected.</td>
+                </tr>
+                <tr>
+                    <th>Export settings</th>
+                    <td>Export current settings in JSON format. Does not include MIDI file.</td>
+                </tr>
+                <tr>
+                    <th>Export format</th>
+                    <td>Format for your output: SVG, DXF or Plain Text</td>
+                </tr>
+                <tr>
+                    <th>Line color</th>
+                    <td>Color of track lines in output file</td>
+                </tr>
+                <tr>
+                    <th>Show Preview</th>
+                    <td>Generate and display an on-screen, scrollable preview using the current settings</td>
+                </tr>
+                <tr>
+                    <th>Download Laser Cutter Plans</th>
+                    <td>Generate and save an output file in the specified format</td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- jQuery Version 3.2.1 -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
