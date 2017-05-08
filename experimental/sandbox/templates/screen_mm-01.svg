@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="svg-piano-roll" xmlns:mididata="xmlns=http://yuleblinker.com/midimusicbox"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="3000px" height="2000px"
+	 viewBox="0 0 3000 2000" style="enable-background:new 0 0 3000 2000;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#231F20;stroke-miterlimit:10;}
+</style>
+<g transform="translate(0,15)" mididata:channel="0">
+	<rect id="channel_back_0" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,30)" mididata:channel="1">
+	<rect id="channel_back_1" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,45)" mididata:channel="2">
+	<rect id="channel_back_2" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,60)" mididata:channel="3">
+	<rect id="channel_back_3" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,75)" mididata:channel="4">
+	<rect id="channel_back_4" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,90)" mididata:channel="5">
+	<rect id="channel_back_5" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,105)" mididata:channel="6">
+	<rect id="channel_back_6" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,120)" mididata:channel="7">
+	<rect id="channel_back_7" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,135)" mididata:channel="8">
+	<rect id="channel_back_8" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,150)" mididata:channel="9">
+	<rect id="channel_back_9" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,165)" mididata:channel="10">
+	<rect id="channel_back_10" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,180)" mididata:channel="11">
+	<rect id="channel_back_11" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,195)" mididata:channel="12">
+	<rect id="channel_back_12" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,210)" mididata:channel="13">
+	<rect id="channel_back_13" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,225)" mididata:channel="14">
+	<rect id="channel_back_14" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,240)" mididata:channel="15">
+	<rect id="channel_back_15" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,255)" mididata:channel="16">
+	<rect id="channel_back_16" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,270)" mididata:channel="17">
+	<rect id="channel_back_17" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,285)" mididata:channel="18">
+	<rect id="channel_back_18" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,300)" mididata:channel="19">
+	<rect id="channel_back_19" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,315)" mididata:channel="20">
+	<rect id="channel_back_20" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,330)" mididata:channel="21">
+	<rect id="channel_back_21" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,345)" mididata:channel="22">
+	<rect id="channel_back_22" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,360)" mididata:channel="23">
+	<rect id="channel_back_23" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,375)" mididata:channel="24">
+	<rect id="channel_back_24" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,390)" mididata:channel="25">
+	<rect id="channel_back_25" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,405)" mididata:channel="26">
+	<rect id="channel_back_26" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,420)" mididata:channel="27">
+	<rect id="channel_back_27" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,435)" mididata:channel="28">
+	<rect id="channel_back_28" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,450)" mididata:channel="29">
+	<rect id="channel_back_29" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,465)" mididata:channel="30">
+	<rect id="channel_back_30" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,480)" mididata:channel="31">
+	<rect id="channel_back_31" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,495)" mididata:channel="32">
+	<rect id="channel_back_32" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,510)" mididata:channel="33">
+	<rect id="channel_back_33" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,525)" mididata:channel="34">
+	<rect id="channel_back_34" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,540)" mididata:channel="35">
+	<rect id="channel_back_35" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,555)" mididata:channel="36">
+	<rect id="channel_back_36" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,570)" mididata:channel="37">
+	<rect id="channel_back_37" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,585)" mididata:channel="38">
+	<rect id="channel_back_38" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,600)" mididata:channel="39">
+	<rect id="channel_back_39" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,615)" mididata:channel="40">
+	<rect id="channel_back_40" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,630)" mididata:channel="41">
+	<rect id="channel_back_41" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,645)" mididata:channel="42">
+	<rect id="channel_back_42" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,660)" mididata:channel="43">
+	<rect id="channel_back_43" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,675)" mididata:channel="44">
+	<rect id="channel_back_44" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,690)" mididata:channel="45">
+	<rect id="channel_back_45" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,705)" mididata:channel="46">
+	<rect id="channel_back_46" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,720)" mididata:channel="47">
+	<rect id="channel_back_47" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,735)" mididata:channel="48">
+	<rect id="channel_back_48" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,750)" mididata:channel="49">
+	<rect id="channel_back_49" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,765)" mididata:channel="50">
+	<rect id="channel_back_50" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,780)" mididata:channel="51">
+	<rect id="channel_back_51" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,795)" mididata:channel="52">
+	<rect id="channel_back_52" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,810)" mididata:channel="53">
+	<rect id="channel_back_53" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,825)" mididata:channel="54">
+	<rect id="channel_back_54" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,840)" mididata:channel="55">
+	<rect id="channel_back_55" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,855)" mididata:channel="56">
+	<rect id="channel_back_56" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,870)" mididata:channel="57">
+	<rect id="channel_back_57" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,885)" mididata:channel="58">
+	<rect id="channel_back_58" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,900)" mididata:channel="59">
+	<rect id="channel_back_59" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,915)" mididata:channel="60">
+	<rect id="channel_back_60" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,930)" mididata:channel="61">
+	<rect id="channel_back_61" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,945)" mididata:channel="62">
+	<rect id="channel_back_62" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,960)" mididata:channel="63">
+	<rect id="channel_back_63" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,975)" mididata:channel="64">
+	<rect id="channel_back_64" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,990)" mididata:channel="65">
+	<rect id="channel_back_65" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1005)" mididata:channel="66">
+	<rect id="channel_back_66" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1020)" mididata:channel="67">
+	<rect id="channel_back_67" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1035)" mididata:channel="68">
+	<rect id="channel_back_68" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1050)" mididata:channel="69">
+	<rect id="channel_back_69" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1065)" mididata:channel="70">
+	<rect id="channel_back_70" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1080)" mididata:channel="71">
+	<rect id="channel_back_71" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1095)" mididata:channel="72">
+	<rect id="channel_back_72" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1110)" mididata:channel="73">
+	<rect id="channel_back_73" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1125)" mididata:channel="74">
+	<rect id="channel_back_74" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1140)" mididata:channel="75">
+	<rect id="channel_back_75" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1155)" mididata:channel="76">
+	<rect id="channel_back_76" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1170)" mididata:channel="77">
+	<rect id="channel_back_77" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1185)" mididata:channel="78">
+	<rect id="channel_back_78" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1200)" mididata:channel="79">
+	<rect id="channel_back_79" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1215)" mididata:channel="80">
+	<rect id="channel_back_80" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1230)" mididata:channel="81">
+	<rect id="channel_back_81" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1245)" mididata:channel="82">
+	<rect id="channel_back_82" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1260)" mididata:channel="83">
+	<rect id="channel_back_83" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1275)" mididata:channel="84">
+	<rect id="channel_back_84" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1290)" mididata:channel="85">
+	<rect id="channel_back_85" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1305)" mididata:channel="86">
+	<rect id="channel_back_86" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1320)" mididata:channel="87">
+	<rect id="channel_back_87" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1335)" mididata:channel="88">
+	<rect id="channel_back_88" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1350)" mididata:channel="89">
+	<rect id="channel_back_89" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1365)" mididata:channel="90">
+	<rect id="channel_back_90" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1380)" mididata:channel="91">
+	<rect id="channel_back_91" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1395)" mididata:channel="92">
+	<rect id="channel_back_92" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1410)" mididata:channel="93">
+	<rect id="channel_back_93" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1425)" mididata:channel="94">
+	<rect id="channel_back_94" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1440)" mididata:channel="95">
+	<rect id="channel_back_95" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1455)" mididata:channel="96">
+	<rect id="channel_back_96" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1470)" mididata:channel="97">
+	<rect id="channel_back_97" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1485)" mididata:channel="98">
+	<rect id="channel_back_98" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1500)" mididata:channel="99">
+	<rect id="channel_back_99" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1515)" mididata:channel="100">
+	<rect id="channel_back_100" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1530)" mididata:channel="101">
+	<rect id="channel_back_101" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1545)" mididata:channel="102">
+	<rect id="channel_back_102" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1560)" mididata:channel="103">
+	<rect id="channel_back_103" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1575)" mididata:channel="104">
+	<rect id="channel_back_104" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1590)" mididata:channel="105">
+	<rect id="channel_back_105" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1605)" mididata:channel="106">
+	<rect id="channel_back_106" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1620)" mididata:channel="107">
+	<rect id="channel_back_107" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1635)" mididata:channel="108">
+	<rect id="channel_back_108" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1650)" mididata:channel="109">
+	<rect id="channel_back_109" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1665)" mididata:channel="110">
+	<rect id="channel_back_110" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1680)" mididata:channel="111">
+	<rect id="channel_back_111" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1695)" mididata:channel="112">
+	<rect id="channel_back_112" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1710)" mididata:channel="113">
+	<rect id="channel_back_113" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1725)" mididata:channel="114">
+	<rect id="channel_back_114" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1740)" mididata:channel="115">
+	<rect id="channel_back_115" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1755)" mididata:channel="116">
+	<rect id="channel_back_116" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1770)" mididata:channel="117">
+	<rect id="channel_back_117" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1785)" mididata:channel="118">
+	<rect id="channel_back_118" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1800)" mididata:channel="119">
+	<rect id="channel_back_119" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1815)" mididata:channel="120">
+	<rect id="channel_back_120" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1830)" mididata:channel="121">
+	<rect id="channel_back_121" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1845)" mididata:channel="122">
+	<rect id="channel_back_122" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1860)" mididata:channel="123">
+	<rect id="channel_back_123" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1875)" mididata:channel="124">
+	<rect id="channel_back_124" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1890)" mididata:channel="125">
+	<rect id="channel_back_125" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1905)" mididata:channel="126">
+	<rect id="channel_back_126" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+<g transform="translate(0,1920)" mididata:channel="127">
+	<rect id="channel_back_127" x="224.41" y="0" class="st0" width="2551.18" height="15"/>
+</g>
+</svg>

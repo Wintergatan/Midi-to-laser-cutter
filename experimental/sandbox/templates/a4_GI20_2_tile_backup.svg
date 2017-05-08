@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with MIDI to Music Box (https://github.com/Wintergatan/Midi-to-laser-cutter) -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+        viewbox="0 0 297mm 210mm"
+        width="297mm"
+        height="210mm"
+        xmlns:mididata="xmlns=https://github.com/Wintergatan/Midi-to-laser-cutter">
+    <style>
+        .strip-rect{fill:none;stroke:#000000;stroke-width:0.5mm;stoke-opacity:1.0}
+        .event-shape{fill:none;stroke:#000000;stroke-width:0.5mm;stroke-opacity:1.0}
+    </style>
+    <g id="strip_0">
+        <rect id="strip_0_rect" width="277mm" height="69.70mm" x="10mm" y="20mm" class="strip-rect">
+            <desc id="strip_0_desc">GI 20 Strip</desc>
+            <title id="strip_0_title">Strip 0</title>
+        </rect>
+        <g id="sheet-0-strip-0-channel-93" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="4.725mm">
+            <title id="sheet-0-title-0-channel-93">A7</>
+        </>
+        <g id="sheet-0-strip-0-channel-91" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="7.275mm">
+            <title id="sheet-0-title-0-channel-91">G7</>
+        </>
+        <g id="sheet-0-strip-0-channel-89" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="9.825mm">
+            <title id="sheet-0-title-0-channel-89">F7</>
+        </>
+        <g id="sheet-0-strip-0-channel-88" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="12.375mm">
+            <title id="sheet-0-title-0-channel-88">E7</>
+        </>
+        <g id="sheet-0-strip-0-channel-86" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="14.925mm">
+            <title id="sheet-0-title-0-channel-86">D7</>
+        </>
+        <g id="sheet-0-strip-0-channel-84" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="17.475mm">
+            <title id="sheet-0-title-0-channel-84">C7</>
+        </>
+        <g id="sheet-0-strip-0-channel-83" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="20.025mm">
+            <title id="sheet-0-title-0-channel-83">B6</>
+        </>
+        <g id="sheet-0-strip-0-channel-81" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="22.575mm">
+            <title id="sheet-0-title-0-channel-81">A6</>
+        </>
+        <g id="sheet-0-strip-0-channel-79" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="25.125mm">
+            <title id="sheet-0-title-0-channel-79">G6</>
+        </>
+        <g id="sheet-0-strip-0-channel-77" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="27.675mm">
+            <title id="sheet-0-title-0-channel-77">F6</>
+        </>
+        <g id="sheet-0-strip-0-channel-76" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="30.225mm">
+            <title id="sheet-0-title-0-channel-76">E6</>
+        </>
+        <g id="sheet-0-strip-0-channel-74" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="32.775mm">
+            <title id="sheet-0-title-0-channel-74">D6</>
+        </>
+        <g id="sheet-0-strip-0-channel-72" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="35.325mm">
+            <title id="sheet-0-title-0-channel-72">C6</>
+        </>
+        <g id="sheet-0-strip-0-channel-71" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="37.875mm">
+            <title id="sheet-0-title-0-channel-71">B5</>
+        </>
+        <g id="sheet-0-strip-0-channel-69" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="40.425mm">
+            <title id="sheet-0-title-0-channel-69">A5</>
+        </>
+        <g id="sheet-0-strip-0-channel-67" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="42.975mm">
+            <title id="sheet-0-title-0-channel-67">G5</>
+        </>
+        <g id="sheet-0-strip-0-channel-65" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="45.525mm">
+            <title id="sheet-0-title-0-channel-65">F5</>
+        </>
+        <g id="sheet-0-strip-0-channel-64" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="48.075mm">
+            <title id="sheet-0-title-0-channel-64">E5</>
+        </>
+        <g id="sheet-0-strip-0-channel-62" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="50.625mm">
+            <title id="sheet-0-title-0-channel-62">D5</>
+        </>
+        <g id="sheet-0-strip-0-channel-60" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="53.175mm">
+            <title id="sheet-0-title-0-channel-60">C5</>
+        </>
+    </g>
+    <g id="strip_1">
+        <rect id="strip_1_rect" width="277mm" height="69.70mm" x="10mm" y="115mm">
+            <desc id="strip_1_desc">GI 20 Strip</desc>
+            <title id="strip_1_title">Strip 1</title>
+        </rect>
+        <g id="sheet-0-strip-1-channel-93" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="4.725mm">
+            <title id="sheet-0-title-1-channel-93">A7</>
+        </>
+        <g id="sheet-0-strip-1-channel-91" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="7.275mm">
+            <title id="sheet-0-title-1-channel-91">G7</>
+        </>
+        <g id="sheet-0-strip-1-channel-89" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="9.825mm">
+            <title id="sheet-0-title-1-channel-89">F7</>
+        </>
+        <g id="sheet-0-strip-1-channel-88" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="12.375mm">
+            <title id="sheet-0-title-1-channel-88">E7</>
+        </>
+        <g id="sheet-0-strip-1-channel-86" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="14.925mm">
+            <title id="sheet-0-title-1-channel-86">D7</>
+        </>
+        <g id="sheet-0-strip-1-channel-84" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="17.475mm">
+            <title id="sheet-0-title-1-channel-84">C7</>
+        </>
+        <g id="sheet-0-strip-1-channel-83" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="20.025mm">
+            <title id="sheet-0-title-1-channel-83">B6</>
+        </>
+        <g id="sheet-0-strip-1-channel-81" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="22.575mm">
+            <title id="sheet-0-title-1-channel-81">A6</>
+        </>
+        <g id="sheet-0-strip-1-channel-79" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="25.125mm">
+            <title id="sheet-0-title-1-channel-79">G6</>
+        </>
+        <g id="sheet-0-strip-1-channel-77" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="27.675mm">
+            <title id="sheet-0-title-1-channel-77">F6</>
+        </>
+        <g id="sheet-0-strip-1-channel-76" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="30.225mm">
+            <title id="sheet-0-title-1-channel-76">E6</>
+        </>
+        <g id="sheet-0-strip-1-channel-74" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="32.775mm">
+            <title id="sheet-0-title-1-channel-74">D6</>
+        </>
+        <g id="sheet-0-strip-1-channel-72" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="35.325mm">
+            <title id="sheet-0-title-1-channel-72">C6</>
+        </>
+        <g id="sheet-0-strip-1-channel-71" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="37.875mm">
+            <title id="sheet-0-title-1-channel-71">B5</>
+        </>
+        <g id="sheet-0-strip-1-channel-69" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="40.425mm">
+            <title id="sheet-0-title-1-channel-69">A5</>
+        </>
+        <g id="sheet-0-strip-1-channel-67" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="42.975mm">
+            <title id="sheet-0-title-1-channel-67">G5</>
+        </>
+        <g id="sheet-0-strip-1-channel-65" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="45.525mm">
+            <title id="sheet-0-title-1-channel-65">F5</>
+        </>
+        <g id="sheet-0-strip-1-channel-64" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="48.075mm">
+            <title id="sheet-0-title-1-channel-64">E5</>
+        </>
+        <g id="sheet-0-strip-1-channel-62" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="50.625mm">
+            <title id="sheet-0-title-1-channel-62">D5</>
+        </>
+        <g id="sheet-0-strip-1-channel-60" class="strip-channel valid" width="217mm" height="2.55mm" x="30mm"
+           y="53.175mm">
+            <title id="sheet-0-title-1-channel-60">C5</>
+        </>
+    </g>
+</svg>

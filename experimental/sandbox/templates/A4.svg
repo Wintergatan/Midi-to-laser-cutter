@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="svg-piano-roll" xmlns:mididata="xmlns=http://yuleblinker.com/midimusicbox" viewbox="0 0 3000 2000"
+     width="3000px" height="2000px">
+    <g mididata:channel="0" x="0" y="0" width="3000px" height="15px" transform="translate(0,15)">
+        <rect id="channel_back_0" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="1" x="0" y="0" width="3000px" height="15px" transform="translate(0,30)">
+        <rect id="channel_back_1" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="2" x="0" y="0" width="3000px" height="15px" transform="translate(0,45)">
+        <rect id="channel_back_2" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="3" x="0" y="0" width="3000px" height="15px" transform="translate(0,60)">
+        <rect id="channel_back_3" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="4" x="0" y="0" width="3000px" height="15px" transform="translate(0,75)">
+        <rect id="channel_back_4" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="5" x="0" y="0" width="3000px" height="15px" transform="translate(0,90)">
+        <rect id="channel_back_5" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="6" x="0" y="0" width="3000px" height="15px" transform="translate(0,105)">
+        <rect id="channel_back_6" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="7" x="0" y="0" width="3000px" height="15px" transform="translate(0,120)">
+        <rect id="channel_back_7" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="8" x="0" y="0" width="3000px" height="15px" transform="translate(0,135)">
+        <rect id="channel_back_8" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="9" x="0" y="0" width="3000px" height="15px" transform="translate(0,150)">
+        <rect id="channel_back_9" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="10" x="0" y="0" width="3000px" height="15px" transform="translate(0,165)">
+        <rect id="channel_back_10" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="11" x="0" y="0" width="3000px" height="15px" transform="translate(0,180)">
+        <rect id="channel_back_11" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="12" x="0" y="0" width="3000px" height="15px" transform="translate(0,195)">
+        <rect id="channel_back_12" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="13" x="0" y="0" width="3000px" height="15px" transform="translate(0,210)">
+        <rect id="channel_back_13" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="14" x="0" y="0" width="3000px" height="15px" transform="translate(0,225)">
+        <rect id="channel_back_14" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="15" x="0" y="0" width="3000px" height="15px" transform="translate(0,240)">
+        <rect id="channel_back_15" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="16" x="0" y="0" width="3000px" height="15px" transform="translate(0,255)">
+        <rect id="channel_back_16" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="17" x="0" y="0" width="3000px" height="15px" transform="translate(0,270)">
+        <rect id="channel_back_17" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="18" x="0" y="0" width="3000px" height="15px" transform="translate(0,285)">
+        <rect id="channel_back_18" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="19" x="0" y="0" width="3000px" height="15px" transform="translate(0,300)">
+        <rect id="channel_back_19" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="20" x="0" y="0" width="3000px" height="15px" transform="translate(0,315)">
+        <rect id="channel_back_20" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="21" x="0" y="0" width="3000px" height="15px" transform="translate(0,330)">
+        <rect id="channel_back_21" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="22" x="0" y="0" width="3000px" height="15px" transform="translate(0,345)">
+        <rect id="channel_back_22" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="23" x="0" y="0" width="3000px" height="15px" transform="translate(0,360)">
+        <rect id="channel_back_23" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="24" x="0" y="0" width="3000px" height="15px" transform="translate(0,375)">
+        <rect id="channel_back_24" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="25" x="0" y="0" width="3000px" height="15px" transform="translate(0,390)">
+        <rect id="channel_back_25" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="26" x="0" y="0" width="3000px" height="15px" transform="translate(0,405)">
+        <rect id="channel_back_26" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="27" x="0" y="0" width="3000px" height="15px" transform="translate(0,420)">
+        <rect id="channel_back_27" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="28" x="0" y="0" width="3000px" height="15px" transform="translate(0,435)">
+        <rect id="channel_back_28" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="29" x="0" y="0" width="3000px" height="15px" transform="translate(0,450)">
+        <rect id="channel_back_29" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="30" x="0" y="0" width="3000px" height="15px" transform="translate(0,465)">
+        <rect id="channel_back_30" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="31" x="0" y="0" width="3000px" height="15px" transform="translate(0,480)">
+        <rect id="channel_back_31" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="32" x="0" y="0" width="3000px" height="15px" transform="translate(0,495)">
+        <rect id="channel_back_32" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="33" x="0" y="0" width="3000px" height="15px" transform="translate(0,510)">
+        <rect id="channel_back_33" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="34" x="0" y="0" width="3000px" height="15px" transform="translate(0,525)">
+        <rect id="channel_back_34" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="35" x="0" y="0" width="3000px" height="15px" transform="translate(0,540)">
+        <rect id="channel_back_35" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="36" x="0" y="0" width="3000px" height="15px" transform="translate(0,555)">
+        <rect id="channel_back_36" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="37" x="0" y="0" width="3000px" height="15px" transform="translate(0,570)">
+        <rect id="channel_back_37" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="38" x="0" y="0" width="3000px" height="15px" transform="translate(0,585)">
+        <rect id="channel_back_38" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="39" x="0" y="0" width="3000px" height="15px" transform="translate(0,600)">
+        <rect id="channel_back_39" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="40" x="0" y="0" width="3000px" height="15px" transform="translate(0,615)">
+        <rect id="channel_back_40" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="41" x="0" y="0" width="3000px" height="15px" transform="translate(0,630)">
+        <rect id="channel_back_41" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="42" x="0" y="0" width="3000px" height="15px" transform="translate(0,645)">
+        <rect id="channel_back_42" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="43" x="0" y="0" width="3000px" height="15px" transform="translate(0,660)">
+        <rect id="channel_back_43" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="44" x="0" y="0" width="3000px" height="15px" transform="translate(0,675)">
+        <rect id="channel_back_44" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="45" x="0" y="0" width="3000px" height="15px" transform="translate(0,690)">
+        <rect id="channel_back_45" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="46" x="0" y="0" width="3000px" height="15px" transform="translate(0,705)">
+        <rect id="channel_back_46" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="47" x="0" y="0" width="3000px" height="15px" transform="translate(0,720)">
+        <rect id="channel_back_47" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="48" x="0" y="0" width="3000px" height="15px" transform="translate(0,735)">
+        <rect id="channel_back_48" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="49" x="0" y="0" width="3000px" height="15px" transform="translate(0,750)">
+        <rect id="channel_back_49" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="50" x="0" y="0" width="3000px" height="15px" transform="translate(0,765)">
+        <rect id="channel_back_50" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="51" x="0" y="0" width="3000px" height="15px" transform="translate(0,780)">
+        <rect id="channel_back_51" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="52" x="0" y="0" width="3000px" height="15px" transform="translate(0,795)">
+        <rect id="channel_back_52" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="53" x="0" y="0" width="3000px" height="15px" transform="translate(0,810)">
+        <rect id="channel_back_53" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="54" x="0" y="0" width="3000px" height="15px" transform="translate(0,825)">
+        <rect id="channel_back_54" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="55" x="0" y="0" width="3000px" height="15px" transform="translate(0,840)">
+        <rect id="channel_back_55" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="56" x="0" y="0" width="3000px" height="15px" transform="translate(0,855)">
+        <rect id="channel_back_56" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="57" x="0" y="0" width="3000px" height="15px" transform="translate(0,870)">
+        <rect id="channel_back_57" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="58" x="0" y="0" width="3000px" height="15px" transform="translate(0,885)">
+        <rect id="channel_back_58" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="59" x="0" y="0" width="3000px" height="15px" transform="translate(0,900)">
+        <rect id="channel_back_59" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="60" x="0" y="0" width="3000px" height="15px" transform="translate(0,915)">
+        <rect id="channel_back_60" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="61" x="0" y="0" width="3000px" height="15px" transform="translate(0,930)">
+        <rect id="channel_back_61" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="62" x="0" y="0" width="3000px" height="15px" transform="translate(0,945)">
+        <rect id="channel_back_62" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="63" x="0" y="0" width="3000px" height="15px" transform="translate(0,960)">
+        <rect id="channel_back_63" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="64" x="0" y="0" width="3000px" height="15px" transform="translate(0,975)">
+        <rect id="channel_back_64" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="65" x="0" y="0" width="3000px" height="15px" transform="translate(0,990)">
+        <rect id="channel_back_65" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="66" x="0" y="0" width="3000px" height="15px" transform="translate(0,1005)">
+        <rect id="channel_back_66" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="67" x="0" y="0" width="3000px" height="15px" transform="translate(0,1020)">
+        <rect id="channel_back_67" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="68" x="0" y="0" width="3000px" height="15px" transform="translate(0,1035)">
+        <rect id="channel_back_68" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="69" x="0" y="0" width="3000px" height="15px" transform="translate(0,1050)">
+        <rect id="channel_back_69" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="70" x="0" y="0" width="3000px" height="15px" transform="translate(0,1065)">
+        <rect id="channel_back_70" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="71" x="0" y="0" width="3000px" height="15px" transform="translate(0,1080)">
+        <rect id="channel_back_71" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="72" x="0" y="0" width="3000px" height="15px" transform="translate(0,1095)">
+        <rect id="channel_back_72" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="73" x="0" y="0" width="3000px" height="15px" transform="translate(0,1110)">
+        <rect id="channel_back_73" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="74" x="0" y="0" width="3000px" height="15px" transform="translate(0,1125)">
+        <rect id="channel_back_74" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="75" x="0" y="0" width="3000px" height="15px" transform="translate(0,1140)">
+        <rect id="channel_back_75" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="76" x="0" y="0" width="3000px" height="15px" transform="translate(0,1155)">
+        <rect id="channel_back_76" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="77" x="0" y="0" width="3000px" height="15px" transform="translate(0,1170)">
+        <rect id="channel_back_77" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="78" x="0" y="0" width="3000px" height="15px" transform="translate(0,1185)">
+        <rect id="channel_back_78" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="79" x="0" y="0" width="3000px" height="15px" transform="translate(0,1200)">
+        <rect id="channel_back_79" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="80" x="0" y="0" width="3000px" height="15px" transform="translate(0,1215)">
+        <rect id="channel_back_80" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="81" x="0" y="0" width="3000px" height="15px" transform="translate(0,1230)">
+        <rect id="channel_back_81" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="82" x="0" y="0" width="3000px" height="15px" transform="translate(0,1245)">
+        <rect id="channel_back_82" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="83" x="0" y="0" width="3000px" height="15px" transform="translate(0,1260)">
+        <rect id="channel_back_83" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="84" x="0" y="0" width="3000px" height="15px" transform="translate(0,1275)">
+        <rect id="channel_back_84" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="85" x="0" y="0" width="3000px" height="15px" transform="translate(0,1290)">
+        <rect id="channel_back_85" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="86" x="0" y="0" width="3000px" height="15px" transform="translate(0,1305)">
+        <rect id="channel_back_86" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="87" x="0" y="0" width="3000px" height="15px" transform="translate(0,1320)">
+        <rect id="channel_back_87" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="88" x="0" y="0" width="3000px" height="15px" transform="translate(0,1335)">
+        <rect id="channel_back_88" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="89" x="0" y="0" width="3000px" height="15px" transform="translate(0,1350)">
+        <rect id="channel_back_89" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="90" x="0" y="0" width="3000px" height="15px" transform="translate(0,1365)">
+        <rect id="channel_back_90" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="91" x="0" y="0" width="3000px" height="15px" transform="translate(0,1380)">
+        <rect id="channel_back_91" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="92" x="0" y="0" width="3000px" height="15px" transform="translate(0,1395)">
+        <rect id="channel_back_92" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="93" x="0" y="0" width="3000px" height="15px" transform="translate(0,1410)">
+        <rect id="channel_back_93" class="svg-channel valid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="94" x="0" y="0" width="3000px" height="15px" transform="translate(0,1425)">
+        <rect id="channel_back_94" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="95" x="0" y="0" width="3000px" height="15px" transform="translate(0,1440)">
+        <rect id="channel_back_95" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="96" x="0" y="0" width="3000px" height="15px" transform="translate(0,1455)">
+        <rect id="channel_back_96" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="97" x="0" y="0" width="3000px" height="15px" transform="translate(0,1470)">
+        <rect id="channel_back_97" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="98" x="0" y="0" width="3000px" height="15px" transform="translate(0,1485)">
+        <rect id="channel_back_98" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="99" x="0" y="0" width="3000px" height="15px" transform="translate(0,1500)">
+        <rect id="channel_back_99" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="100" x="0" y="0" width="3000px" height="15px" transform="translate(0,1515)">
+        <rect id="channel_back_100" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="101" x="0" y="0" width="3000px" height="15px" transform="translate(0,1530)">
+        <rect id="channel_back_101" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="102" x="0" y="0" width="3000px" height="15px" transform="translate(0,1545)">
+        <rect id="channel_back_102" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="103" x="0" y="0" width="3000px" height="15px" transform="translate(0,1560)">
+        <rect id="channel_back_103" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="104" x="0" y="0" width="3000px" height="15px" transform="translate(0,1575)">
+        <rect id="channel_back_104" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="105" x="0" y="0" width="3000px" height="15px" transform="translate(0,1590)">
+        <rect id="channel_back_105" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="106" x="0" y="0" width="3000px" height="15px" transform="translate(0,1605)">
+        <rect id="channel_back_106" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="107" x="0" y="0" width="3000px" height="15px" transform="translate(0,1620)">
+        <rect id="channel_back_107" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="108" x="0" y="0" width="3000px" height="15px" transform="translate(0,1635)">
+        <rect id="channel_back_108" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="109" x="0" y="0" width="3000px" height="15px" transform="translate(0,1650)">
+        <rect id="channel_back_109" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="110" x="0" y="0" width="3000px" height="15px" transform="translate(0,1665)">
+        <rect id="channel_back_110" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="111" x="0" y="0" width="3000px" height="15px" transform="translate(0,1680)">
+        <rect id="channel_back_111" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="112" x="0" y="0" width="3000px" height="15px" transform="translate(0,1695)">
+        <rect id="channel_back_112" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="113" x="0" y="0" width="3000px" height="15px" transform="translate(0,1710)">
+        <rect id="channel_back_113" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="114" x="0" y="0" width="3000px" height="15px" transform="translate(0,1725)">
+        <rect id="channel_back_114" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="115" x="0" y="0" width="3000px" height="15px" transform="translate(0,1740)">
+        <rect id="channel_back_115" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="116" x="0" y="0" width="3000px" height="15px" transform="translate(0,1755)">
+        <rect id="channel_back_116" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="117" x="0" y="0" width="3000px" height="15px" transform="translate(0,1770)">
+        <rect id="channel_back_117" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="118" x="0" y="0" width="3000px" height="15px" transform="translate(0,1785)">
+        <rect id="channel_back_118" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="119" x="0" y="0" width="3000px" height="15px" transform="translate(0,1800)">
+        <rect id="channel_back_119" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="120" x="0" y="0" width="3000px" height="15px" transform="translate(0,1815)">
+        <rect id="channel_back_120" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="121" x="0" y="0" width="3000px" height="15px" transform="translate(0,1830)">
+        <rect id="channel_back_121" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="122" x="0" y="0" width="3000px" height="15px" transform="translate(0,1845)">
+        <rect id="channel_back_122" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="123" x="0" y="0" width="3000px" height="15px" transform="translate(0,1860)">
+        <rect id="channel_back_123" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="124" x="0" y="0" width="3000px" height="15px" transform="translate(0,1875)">
+        <rect id="channel_back_124" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="125" x="0" y="0" width="3000px" height="15px" transform="translate(0,1890)">
+        <rect id="channel_back_125" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="126" x="0" y="0" width="3000px" height="15px" transform="translate(0,1905)">
+        <rect id="channel_back_126" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+    <g mididata:channel="127" x="0" y="0" width="3000px" height="15px" transform="translate(0,1920)">
+        <rect id="channel_back_127" class="svg-channel invalid" x="0" y="0" width="3000px" height="15px"></rect>
+    </g>
+</svg>
+
