@@ -317,6 +317,15 @@ function clearRender(elem) {
     }
 }
 
+// Temporary helper function
+function getNode(n, v) {
+    n = document.createElementNS("http://www.w3.org/2000/svg", n);
+    for (var p in v)
+        n.setAttributeNS(null, p, v[p]);
+    return n
+}
+
+
 function renderTrack(elem, track, device) {
 
     clearRender(elem);
@@ -339,14 +348,6 @@ function renderTrack(elem, track, device) {
     var channels = track.channels;
     var maxX = 0;  // to set final width space for display
 
-
-    // Temporary helper function
-    function getNode(n, v) {
-        n = document.createElementNS("http://www.w3.org/2000/svg", n);
-        for (var p in v)
-            n.setAttributeNS(null, p, v[p]);
-        return n
-    }
 
     var minY = 2000;
     var maxY = 0;
