@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Device and Layout Maker</title>
+
+    <script src="inc/devices.js"></script>
+    <script src="inc/midi-parser.js"></script>
+    <script src="inc/render.js"></script>
+
+
+    <script type="application/javascript">
+
+        var defaultDevice = undefined;
+
+        function updatePreview() {
+
+            var previewArea = document.getElementById('strip-rect');
+            // Start with clear preview
+            previewArea.innerHTML = "";
+            var areaInfo = previewArea.getBoundingClientRect();
+            var areaWidth = areaInfo.width;
+            var areaHeight = areaInfo.height;
+
+            var topPadding = parseFloat(document.getElementById('device-strip-top-padding').value);
+            var rightPadding = parseFloat(document.getElementById('device-strip-right-padding').value);
+            var bottomPadding = parseFloat(document.getElementById('device-strip-bottom-padding').value);
+            var leftPadding = parseFloat(document.getElementById('device-strip-left-padding').value);
+            var channelHeight = parseFloat(document.getElementById('device-channel-height').value);
+            var holeHeight = parseFloat(document.getElementById('device-hole-height').value);
+            var holeWidth = parseFloat(document.getElementById('device-hole-width').value);
+            var holeMinDistance = parseFloat(document.getElementById('device-hole-min-distance').value);
+
+            var channelsDiv = document.getElementById('channels-list');
+            var channelCount = channelsDiv.childElementCount - 1;
+
+            var stripHeight = bottomPadding + (channelCount * channelHeight) + topPadding;
+            var scaleFactor = areaHeight / stripHeight;
+
+            var stripAttribs = {
+                'viewbox': '0 0 ' + areaWidth + ' ' + areaHeight,
+                'width': areaWidth + 'px',
+                'height': areaHeight + 'px'
+            };
+            var stripSVG = getNode('svg', stripAttribs);
+
+            // Draw channel lines
+            for (var i = 0; i < channelCount; i++) {
+
+                var lineY = (topPadding * scaleFactor) + ((i + 1) * channelHeight) * scaleFactor;
+                var lineAttribs = {
+                    "x1": (leftPadding * scaleFactor) + "px",
+                    "y1": lineY + "px",
+                    "x2": (areaWidth - (rightPadding * scaleFactor)) + "px",
+                    "y2": lineY + "px",
+                    "stroke": "lightgray",
+                    "stroke-width": "1px"
+                };
+                var chLine = getNode('line', lineAttribs);
+                stripSVG.appendChild(chLine);
+
+            }
+
+            // Draw left padding/offset line
+            var leftOffsetX = leftPadding * scaleFactor;
+            var leftOffsetY1 = topPadding * scaleFactor;
+            var leffOffsetY2 = ((stripHeight - bottomPadding) + (channelHeight / 2 )) * scaleFactor;
+            var leftOffsetAttribs = {
+                "x1": leftOffsetX + "px",
+                "y1": leftOffsetY1 + "px",
+                "x2": leftOffsetX + "px",
+                "y2": leffOffsetY2 + "px",
+                "stroke": "lightgray",
+                "stroke-width": "1px"
+            };
+            var leftOffsetLine = getNode('line', leftOffsetAttribs);
+            stripSVG.appendChild(leftOffsetLine);
+
+            // Draw right padding/offset line
+            var rightOffsetX = areaWidth - (rightPadding * scaleFactor);
+            var rightOffsetY1 = topPadding * scaleFactor;
+            var rightOffsetY2 = ((stripHeight - bottomPadding) + (channelHeight / 2 )) * scaleFactor;
+            var rightOffsetAttribs = {
+                "x1": rightOffsetX + "px",
+                "y1": rightOffsetY1 + "px",
+                "x2": rightOffsetX + "px",
+                "y2": rightOffsetY2 + "px",
+                "stroke": "lightgray",
+                "stroke-width": "1px"
+            };
+            var rightOffsetLine = getNode('line', rightOffsetAttribs);
+            stripSVG.appendChild(rightOffsetLine);
+
+            function makeAttribs(x, y, width, height, rx, ry) {
+
+                var showRounded = document.getElementById('show-rounded').checked;
+
+                var holeAttribs = {
+                    "x": x + "px",
+                    "y": y + "px",
+                    "width": (width * scaleFactor) + "px",
+                    "height": (height * scaleFactor) + "px",
+                    "stroke": "black",
+                    "stroke-width": "1px",
+                    "fill": "none"
+                };
+
+                if (showRounded) {
+                    holeAttribs["rx"] = rx + "px";
+                    holeAttribs["ry"] = ry + "px";
+                }
+                return holeAttribs;
+            }
+
+            // Draw some sample holes
+            for (var j = 0; j < 6; j++) {
+                var x = leftOffsetX + (j * (holeMinDistance * scaleFactor)) - ((holeWidth / 2) * scaleFactor);
+                var y = (topPadding * scaleFactor) + (((j + 1) * channelHeight) * scaleFactor) - ((holeHeight / 2) * scaleFactor);
+                var rx = ((holeWidth / 2) * scaleFactor);
+                var ry = ((holeHeight / 2) * scaleFactor);
+
+                var holeAttribs = makeAttribs(x, y, holeWidth, holeHeight, rx, ry);
+                var hole = getNode('rect', holeAttribs);
+                stripSVG.appendChild(hole);
+            }
+            // Draw some more to show potential channel-to-channel overlap
+            for (var k = 3; k < 8; k++) {
+                var x1 = leftOffsetX - ((holeWidth / 2) * scaleFactor);
+                var y1 = (topPadding * scaleFactor) + (((k + 1) * channelHeight) * scaleFactor) - ((holeHeight / 2) * scaleFactor);
+                var rx1 = ((holeWidth / 2) * scaleFactor);
+                var ry1 = ((holeHeight / 2) * scaleFactor);
+
+                var holeAttribs1 = makeAttribs(x1, y1, holeWidth, holeHeight, rx1, rx1);
+                var hole1 = getNode('rect', holeAttribs1);
+                stripSVG.appendChild(hole1);
+            }
+            // And some more to show potential event-to-event overlaps in single channel
+            for (var m = 3; m < 8; m++) {
+                var x2 = leftOffsetX + (m * (holeMinDistance * scaleFactor)) - ((holeWidth / 2) * scaleFactor);
+                var y2 = (topPadding * scaleFactor) + (((1) * channelHeight) * scaleFactor) - ((holeHeight / 2) * scaleFactor);
+                var rx2 = ((holeWidth / 2) * scaleFactor);
+                var ry2 = ((holeHeight / 2) * scaleFactor);
+
+                var holeAttribs2 = makeAttribs(x2, y2, holeWidth, holeHeight, rx2, ry2);
+                var hole2 = getNode('rect', holeAttribs2);
+                stripSVG.appendChild(hole2);
+            }
+
+
+            previewArea.appendChild(stripSVG);
+
+        }
+
+        function makeChannelDiv(id, noteNumber, noteName, description, offset, height) {
+
+            var deviceChannel = document.createElement('div');
+
+            var deviceChannelId = "device-channel-" + id;
+            deviceChannel.setAttribute('id', deviceChannelId);
+            deviceChannel.setAttribute('class', 'device-channel');
+
+            var noteNumberInput = document.createElement('input');
+            noteNumberInput.setAttribute('id', deviceChannelId + "-input-notenumber");
+            noteNumberInput.setAttribute('class', 'channel-notenumber');
+            noteNumberInput.setAttribute('type', 'text');
+            noteNumberInput.setAttribute('value', noteNumber);
+            deviceChannel.appendChild(noteNumberInput);
+
+            var noteNumberName = document.createElement('input');
+            noteNumberName.setAttribute('id', deviceChannelId + "-notename");
+            noteNumberName.setAttribute('class', 'channel-notename');
+            noteNumberName.setAttribute('type', 'text');
+            noteNumberName.setAttribute('value', noteName);
+            deviceChannel.appendChild(noteNumberName);
+
+            var channelDescriptionInput = document.createElement('input');
+            channelDescriptionInput.setAttribute('id', deviceChannelId + "-description");
+            channelDescriptionInput.setAttribute('class', 'channel-description');
+            channelDescriptionInput.setAttribute('type', 'text');
+            channelDescriptionInput.setAttribute('value', description);
+            deviceChannel.appendChild(channelDescriptionInput);
+
+            var channelOffsetInput = document.createElement('input');
+            channelOffsetInput.setAttribute('id', deviceChannelId + "-offset");
+            channelOffsetInput.setAttribute('class', 'channel-offset');
+            channelOffsetInput.setAttribute('type', 'number');
+            channelOffsetInput.setAttribute('min', '0');
+            channelOffsetInput.setAttribute('max', '1000');
+            channelOffsetInput.setAttribute('step', '0.01');
+            channelOffsetInput.setAttribute('value', offset);
+            deviceChannel.appendChild(channelOffsetInput);
+
+            var channelHeightInput = document.createElement('input');
+            channelHeightInput.setAttribute('id', deviceChannelId + "-height");
+            channelHeightInput.setAttribute('class', 'channel-height');
+            channelHeightInput.setAttribute('type', 'number');
+            channelHeightInput.setAttribute('min', '0');
+            channelHeightInput.setAttribute('max', '1000');
+            channelHeightInput.setAttribute('step', '0.01');
+            channelHeightInput.setAttribute('value', height);
+            deviceChannel.appendChild(channelHeightInput);
+
+            var deleteChannelInput = document.createElement('input');
+            deleteChannelInput.setAttribute('id', deviceChannelId + "-delete");
+            deleteChannelInput.setAttribute('class', 'channel-delete');
+            deleteChannelInput.setAttribute('type', 'button');
+            deleteChannelInput.setAttribute('value', "X");
+            deviceChannel.appendChild(deleteChannelInput);
+            deleteChannelInput.addEventListener('click', removeChannel);
+
+            return deviceChannel;
+
+        }
+
+        function setControlsWithDeviceSettings() {
+
+            document.getElementById('device-id').value = defaultDevice['deviceName'];
+            document.getElementById('device-name').value = defaultDevice['deviceName'];
+            document.getElementById('device-description').value = defaultDevice['description'];
+            document.getElementById('device-strip-top-padding').value = defaultDevice['topMargin'];
+
+            document.getElementById('device-strip-right-padding').value = defaultDevice['rightMargin'];
+            document.getElementById('device-strip-bottom-padding').value = defaultDevice['bottomMargin'];
+            document.getElementById('device-strip-left-padding').value = defaultDevice['leftMargin'];
+            document.getElementById('device-channel-height').value = defaultDevice['channelHeight'];
+            document.getElementById('device-hole-height').value = defaultDevice['eventHeight'];
+            document.getElementById('device-hole-width').value = defaultDevice['eventWidth'];
+            document.getElementById('device-hole-min-distance').value = defaultDevice['minDistBetweenNotes'];
+
+            var channelsList = document.getElementById('channels-list');
+            channelsList.innerHTML = "";
+
+            for (var i = 0; i < defaultDevice.validChannels.length; i++) {
+
+                var channelId = "device-channel-" + defaultDevice.validChannels[i];
+                var noteNumber = defaultDevice.validChannels[i];
+                var noteName = noteNumberToNoteName(defaultDevice.validChannels[i], true);
+                var channelDescription = "";
+                if (defaultDevice.channelDescriptions[i] != undefined) {
+                    channelDescription = defaultDevice.channelDescriptions[i];
+                }
+                var channelOffset = 0;
+                if (defaultDevice.channelOffsets[i] != undefined) {
+                    channelOffset = defaultDevice.channelOffsets[i];
+                }
+                var channelHeight = defaultDevice.channelHeight;
+                var deviceChannel = makeChannelDiv(channelId, noteNumber, noteName, channelDescription, channelOffset, channelOffset);
+
+                channelsList.appendChild(deviceChannel);
+
+            }
+
+            updatePreview();
+        }
+
+
+        function removeChannel(e) {
+
+            var channelsList = document.getElementById('channels-list');
+            var inputId = e.target.id;
+            // Get midi note number from input id - probably a better way of doing this!
+            inputId = inputId.substring("device-channel-".length);
+            inputId = inputId.split("-")[0];
+            var parentDiv = e.target.parentElement;
+
+            // Remove deleted channel from in-memory device
+            defaultDevice.setDeviceChannelValidity(inputId, false);
+
+            channelsList.removeChild(parentDiv);
+
+            updatePreview();
+        }
+
+        function addChannel() {
+
+            var channelsList = document.getElementById('channels-list');
+
+            //var deviceChannel = makeChannelDiv()
+            var lowestNoteNumberNotUsed = 0;
+            for (var i = 0; i < defaultDevice.validChannels.length; i++) {
+                var validChannel = defaultDevice.validChannels[i];
+                if (validChannel == lowestNoteNumberNotUsed) {
+                    lowestNoteNumberNotUsed++;
+                }
+            }
+
+            //function makeChannelDiv(id, noteNumber, noteName, description, offset, height){
+            var deviceChannel = makeChannelDiv(lowestNoteNumberNotUsed, lowestNoteNumberNotUsed, noteNumberToNoteName(lowestNoteNumberNotUsed), "", "0", "0");
+            defaultDevice.setDeviceChannelValidity(lowestNoteNumberNotUsed, true);
+            channelsList.appendChild(deviceChannel);
+
+
+            updatePreview();
+        }
+
+        function applyDevice() {
+
+            var knownDevicesSelect = document.getElementById('known-device-select');
+            var deviceName = knownDevicesSelect.options[knownDevicesSelect.selectedIndex].value;
+
+            defaultDevice = new Device(deviceName);
+            var deviceOptions = knownDevices[deviceName];
+
+            applySettingsToDevice(defaultDevice, deviceOptions);
+            setControlsWithDeviceSettings();
+
+        }
+
+        function setDevicesSelectOptions() {
+
+            var knownDevicesSelect = document.getElementById('known-device-select');
+
+            for (var dev in knownDevices) {
+                if (dev != "screen") {
+                    var option = document.createElement('option');
+                    option.value = dev;
+                    option.innerHTML = knownDevices[dev]['deviceName'];
+                    knownDevicesSelect.appendChild(option);
+                }
+            }
+
+            knownDevicesSelect.addEventListener('change', applyDevice);
+        }
+
+        window.onload = function () {
+
+            setDevicesSelectOptions();
+
+            // Inputs that trigger preview update when changed
+            var changeInputs = ['show-rounded',
+                'device-strip-top-padding',
+                'device-strip-right-padding',
+                'device-strip-bottom-padding',
+                'device-strip-left-padding',
+                'device-channel-height',
+                'device-hole-height',
+                'device-hole-width',
+                'device-hole-min-distance'];
+            // Add event listenters for change inputs
+            for (var i = 0; i < changeInputs.length; i++) {
+                document.getElementById(changeInputs[i]).addEventListener('change', updatePreview);
+            }
+
+            var addChannelInput = document.getElementById('device-channels-add');
+            addChannelInput.addEventListener('click', addChannel);
+
+            var defaultDeviceName = 'GI20';
+            defaultDevice = new Device(defaultDeviceName);
+
+            var deviceOptions = knownDevices[defaultDeviceName];
+            applySettingsToDevice(defaultDevice, deviceOptions);
+
+            setControlsWithDeviceSettings();
+
+        };
+
+
+    </script>
+
+    <link rel="stylesheet" href="styles/device_concept.css">
+
+</head>
+<body>
+<div id="container">
+
+    <div id="device">
+        <div id="device-controls">
+            <div id="device-header">
+
+                <label id="device-id-label" for="device-id">ID
+                    <input id="device-id" type="text"/>
+                </label>
+                <label id="device-name-label" for="device-name">Name
+                    <input id="device-name" type="text"/>
+                </label>
+                <label id="device-description-label" for="device-description">Description
+                    <input id="device-description" type="text"/>
+                </label>
+                <label id="device-select-label" for="known-device-select">Template
+                    <select id="known-device-select">
+                        <!-- dynamically generated from knownDevices objects -->
+                    </select>
+                </label>
+            </div>
+            <div id="device-channels">
+                <div id="device-channels-header">
+                    <p>Channels</p>
+                </div>
+                <div id="channel-columns">
+                    <p class="channel-column channel-notenumber">Note Number</p>
+                    <p class="channel-column channel-notename">Name</p>
+                    <p class="channel-column channel-description">Description</p>
+                    <p class="channel-column channel-offset">Offset</p>
+                    <p class="channel-column channel-height">Height</p>
+                </div>
+                <div id="channels-list">
+                    <!-- dynamically generated from device valid channels -->
+                </div>
+                <div id="channels-footer">
+                    <input id="device-channels-add" class="channel-add" type="button" value="+"/>
+                </div>
+            </div>
+            <div id="device-dimensions">
+
+                <div id="strip-preview">
+                    <label id="show-rounded-label" for="show-rounded">Show rounded
+                        <input id="show-rounded" name="show-rounded" type="checkbox" value="rounded" checked/>
+                    </label>
+                    <label id="device-strip-top-padding-label" for="device-strip-top-padding" class="margin-label">Top
+                        Padding
+                        <input id="device-strip-top-padding" type="number" min="0" max="1000" value="6" step="0.01"/>
+                    </label>
+                    <label id="device-strip-right-padding-label" for="device-strip-right-padding" class="margin-label">Right
+                        Padding
+                        <input id="device-strip-right-padding" type="number" min="0" max="1000" value="20" step="0.01"/>
+                    </label>
+                    <label id="device-strip-bottom-padding-label" for="device-strip-bottom-padding"
+                           class="margin-label">Bottom
+                        Padding
+                        <input id="device-strip-bottom-padding" type="number" min="0" max="1000" value="6" step="0.01"/>
+                    </label>
+                    <label id="device-strip-left-padding-label" for="device-strip-left-padding" class="margin-label">Left
+                        Padding
+                        <input id="device-strip-left-padding" type="number" min="0" max="1000" value="20" step="0.01"/>
+                    </label>
+                    <div id="strip-rect">
+                        <!-- SVG of strip dynamically generated -->
+                    </div>
+                </div>
+
+                <div id="hole-settings">
+                    <label id="device-channel-height-label" for="device-channel-height" class="dimension-label">Channel
+                        Height
+                        <input id="device-channel-height" type="number" min="0" max="1000" value="3" step="0.01"/>
+                    </label>
+                    <label id="device-hole-height-label" for="device-hole-height" class="dimension-label">Hole
+                        Height
+                        <input id="device-hole-height" type="number" min="0" max="1000" value="2.5" step="0.01"/>
+                    </label>
+                    <label id="device-hole-width-label" for="device-hole-width" class="dimension-label">Hole Width
+                        <input id="device-hole-width" type="number" min="0" max="1000" value="3.5" step="0.01"/>
+                    </label>
+                    <label id="device-hole-min-distance-label" for="device-hole-min-distance" class="dimension-label">Hole
+                        Min. Spacing
+                        <input id="device-hole-min-distance" type="number" min="0" max="1000" value="8" step="0.01"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
