@@ -221,6 +221,7 @@ MidiChannel.prototype.recalculateDeltaTs = function () {
 function Device(deviceName) {
 
     this.deviceName = deviceName;
+    this.description = "";
     this.paperSpeed = 1;
 
     this.minDistBetweenNotes = 11;
@@ -238,6 +239,9 @@ function Device(deviceName) {
 
     // Array to store channel numbers for valid channels ie note numbers
     this.validChannels = [];
+
+    // Array to hold description for each channel
+    this.channelDescriptions = [];
 
 }
 
