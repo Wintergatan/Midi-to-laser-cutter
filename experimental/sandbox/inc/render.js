@@ -869,29 +869,4 @@ function changeRenderType(e) {
 
 }
 
-window.onload = function () {
 
-    var fileBtn = document.getElementById('file-picker-midi');
-    fileBtn.addEventListener('change', function () {
-        loadMidiFile(this.files[0]);
-    });
-
-    var deviceSelect = document.getElementById('device-select');
-    deviceSelect.addEventListener('change', setDevice);
-
-    //var displaySelect = document.getElementById('display-select');
-    //displaySelect.addEventListener('change', changeRenderType);
-
-    var viewControls = document.getElementById('view-controls');
-    viewControls.addEventListener('click', changeRenderType);
-
-    var pianoRoll = document.getElementById("piano-roll");
-
-    workingTrack = new MidiTrack();
-    screenDevice = new Device("screen");
-
-    initializeScreenDevice(screenDevice);
-    renderTrack(pianoRoll, workingTrack, screenDevice);
-
-
-};
