@@ -228,10 +228,10 @@ function Device(deviceName) {
     this.eventHeight = 10;
     this.eventWidth = 10;
 
-    this.topMargin = 6;
-    this.rightMargin = 50;
-    this.bottomMargin = 6;
-    this.leftMargin = 50;
+    this.topPadding = 6;
+    this.rightPadding = 50;
+    this.bottomPadding = 6;
+    this.leftPadding = 50;
 
     // Array to store ordered list of channel offsets from bottom margin
     this.channelOffsets = [];
@@ -412,7 +412,7 @@ function renderTrack(elem, track, device) {
 
                     // Add a bit of space after - maybe get from device
                     if (evtXPos > maxX) {
-                        maxX = evtXPos + screenDevice.rightMargin;
+                        maxX = evtXPos + screenDevice.rightPadding;
                     }
 
                     var svgEvent = getNode('rect');
@@ -527,7 +527,7 @@ function renderTrack(elem, track, device) {
 
                         // Add a bit of space after - maybe get from device
                         if (evtXPos > maxX) {
-                            maxX = evtXPos + screenDevice.rightMargin;
+                            maxX = evtXPos + screenDevice.rightPadding;
                         }
 
                         var svgEvent = getNode('rect');
@@ -577,7 +577,7 @@ function renderTrack(elem, track, device) {
         var numValidChannels = workingDevice.validChannels.length;
 
         // TODO account for individually set channel offsets
-        var pianoRollHeight = workingDevice.bottomMargin + (numValidChannels * workingDevice.channelHeight) + workingDevice.topMargin;
+        var pianoRollHeight = workingDevice.bottomPadding + (numValidChannels * workingDevice.channelHeight) + workingDevice.topPadding;
 
         var svgPianoRoll = getNode('svg');
         svgPianoRoll.setAttribute('id', 'svg-piano-roll');
@@ -607,7 +607,7 @@ function renderTrack(elem, track, device) {
 
                 var channelClass = 'svg-channel strip';
 
-                var channelY = ((channelsProcessed + 1) * workingDevice.channelHeight) + workingDevice.bottomMargin;
+                var channelY = ((channelsProcessed + 1) * workingDevice.channelHeight) + workingDevice.bottomPadding;
                 if (units == "mm"){
                     channelY *= 3.543307; // convert user units to mm
                 }
@@ -634,11 +634,11 @@ function renderTrack(elem, track, device) {
 
                         var noteData = evt.noteNumber + "_" + channelName + "_" + evt.noteAction + "_" + evt.tick;
 
-                        var evtXPos = (evt.tick * paperSpeed) + workingDevice.leftMargin;  // scale this to units we want e.g pixels or mm
+                        var evtXPos = (evt.tick * paperSpeed) + workingDevice.leftPadding;  // scale this to units we want e.g pixels or mm
 
                         // Add a bit of space after - maybe get from device
                         if (evtXPos > maxX) {
-                            maxX = evtXPos + workingDevice.rightMargin;
+                            maxX = evtXPos + workingDevice.rightPadding;
                         }
 
                         var svgEvent = getNode('circle');
@@ -678,7 +678,7 @@ function renderTrack(elem, track, device) {
         stripRect.setAttribute('class', 'strip-border');
         stripRect.setAttribute('x', '0');
         stripRect.setAttribute('y', '0');
-        var stripRightEdge = maxX + workingDevice.rightMargin;
+        var stripRightEdge = maxX + workingDevice.rightPadding;
         stripRect.setAttribute('width', stripRightEdge + units);
         stripRect.setAttribute('height', pianoRollHeight + units);
 
@@ -731,7 +731,7 @@ function renderTrack(elem, track, device) {
 
                     // Add a bit of space after - maybe get from device
                     if (evtXPos > maxX) {
-                        maxX = evtXPos + device.rightMargin;
+                        maxX = evtXPos + device.rightPadding;
                     }
 
                     var positionStyle = "left:" + evtXPos + "px;";
@@ -833,8 +833,8 @@ function initializeScreenDevice(device) {
     device.channelHeight = 15;
     device.eventHeight = device.channelHeight;
     device.eventWidth = 15;
-    device.bottomMargin = 20;
-    device.topMargin = 20;
+    device.bottomPadding = 20;
+    device.topPadding = 20;
 
     // Set all offsets ???? is this necessary for screen device??
     for (var j = 0; j < 128; j++) {
