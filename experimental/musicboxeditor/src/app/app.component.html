@@ -31,12 +31,14 @@
       <label class="cell">
         <h4>Scale Type:</h4> 
         <select [ngModel]="selectedScaleType"  (ngModelChange)="onChangeScaleType($event)">
-          <option *ngFor="let st of scaleTypeOptions" [ngValue]="st">{{st}}</option>
+          <option *ngFor="let st of scaleTypeOptions" [ngValue]="st">{{st.name}}</option>
         </select>
       </label>
       <label class="cell">
-        <h4>Scale start: (MIDI-id)</h4> 
-        <input type="number" [ngModel]="scaleStart"  (ngModelChange)="onChangeScaleStart($event)">
+        <h4>Scale octave:</h4>
+        <select [ngModel]="octave"  (ngModelChange)="onChangeScaleOctave($event)">
+          <option *ngFor="let o of octaveOptions" [ngValue]="o">{{o}}</option>
+        </select>
       </label>
       <label class="cell">
         <h4>Note distance:</h4> 

@@ -3,19 +3,8 @@
 ## Multipart download
 * Option for multipart download in gui (checkbox or select).
 
-
-## Selected scale
-Ask someone what is needed?
-
-* Full, minor and custom.
-* Full -> C, C#, D, D#, E....., set channels.
-* Minor -> C, D, E, F, G ...., set channels.
-* If any channels is changes, set to custom.
-
-
-## Selecting start note
-* Go from midi id to letter.
-
+## Scale options
+* more options?
 
 ## Add note
 * In track view.
