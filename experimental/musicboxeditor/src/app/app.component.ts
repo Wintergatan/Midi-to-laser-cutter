@@ -10,7 +10,7 @@ import { ISubMenuComponentOptions } from "./ui/subMenu/subMenu.module";
 
 import * as JSZip from "jszip";
 
-interface IScaleType{
+export interface IScaleType{
     name: string,
     start: number,
     offsets: number[]
