@@ -781,6 +781,16 @@ function loadMidiFile(file) {
     return true;
 }
 
+function applySettingsToDevice(device, deviceSetting){
+
+    for (var property in deviceSetting) {
+        if (deviceSetting.hasOwnProperty(property)) {
+            //console.log(property);
+            device[property] = deviceSetting[property];
+        }
+    }
+}
+
 function setDevice(){
 
     var deviceSelect = document.getElementById('device-select');
@@ -796,13 +806,8 @@ function setDevice(){
         }
 
         // Copy properties of known device to working device
+        applySettingsToDevice(workingDevice, userDevice);
 
-        for (var property in userDevice) {
-            if (userDevice.hasOwnProperty(property)) {
-                //console.log(property);
-                workingDevice[property] = userDevice[property];
-            }
-        }
 
         // Set screen device valid channels to match user device to enable view of valid channels
         screenDevice.clearValidChannels();
