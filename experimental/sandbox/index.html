@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Render Test</title>
+
+    <script src="inc/midi-parser.js"></script>
+
+    <script src="inc/devices.js"></script>
+    <script src="inc/render.js"></script>
+    <script type="application/javascript">
+
+        window.onload = function () {
+
+            var fileBtn = document.getElementById('file-picker-midi');
+            fileBtn.addEventListener('change', function () {
+                loadMidiFile(this.files[0]);
+            });
+
+            var deviceSelect = document.getElementById('device-select');
+            deviceSelect.addEventListener('change', setDevice);
+
+            //var displaySelect = document.getElementById('display-select');
+            //displaySelect.addEventListener('change', changeRenderType);
+
+            var viewControls = document.getElementById('view-controls');
+            viewControls.addEventListener('click', changeRenderType);
+
+            var pianoRoll = document.getElementById("piano-roll");
+
+            workingTrack = new MidiTrack();
+            screenDevice = new Device("screen");
+
+            initializeScreenDevice(screenDevice);
+            renderTrack(pianoRoll, workingTrack, screenDevice);
+
+
+        };
+
+    </script>
+
+    <link rel="stylesheet" href="styles/styles.css">
+
+
+
+</head>
+<body>
+<svg id="svg-defs" viewBox="0 0 0 0"  xmlns:mididata="xmlns='http://yuleblinker.com/midimusicbox'"
+     width="0px"
+     height="0px">
+    <defs>
+        <pattern id="chBckImgValid" patternUnits="userSpaceOnUse" width="30" height="15">
+            <image xlink:href="images/chBck_valid.gif" x="0" y="0" width="30" height="15"/>
+        </pattern>
+        <pattern id="chBckImgInvalid" patternUnits="userSpaceOnUse" width="30" height="15">
+            <image xlink:href="images/chBck_invalid.gif" x="0" y="0" width="30" height="15"/>
+        </pattern>
+    </defs>
+</svg>
+<div id="container">
+    <div id="controls">
+
+        <div id="file-controls">
+            <p class="label">1: Load Track</p>
+            <input id="file-picker-midi" type="file">
+        </div>
+        <div id="device-controls">
+            <p class="label">2: Specify Device </p>
+            <select id="device-select">
+                <option value="none">Select Device...</option>
+                <option value="GI20">GI 20</option>
+                <option value="GI30">GI 30</option>
+                <option value="GI15">GI 15</option>
+                <option value="W20AMinor">20 Channel A Minor</option>
+            </select>
+        </div>
+        <div id="view-controls">
+            <p class="label">3: Render View (click buttons) </p>
+            <button id="screen-btn" title="Screen Un-collapsed" class="view-btn"><img src="images/screen.png"/></button>
+            <button id="screen-collapsed-btn" title="Screen Collapsed" class="view-btn"><img
+                    src="images/screen_collapsed.png"/></button>
+            <button id="strip-btn" title="Strip" class="view-btn"><img src="images/strip.png"/></button>
+            <button id="page-btn" title="Page" class="view-btn"><img src="images/page.png"/></button>
+        </div>
+
+        <p id="output">Click on events</p>
+
+    </div>
+
+    <div id="track-output">
+        <div id="piano-roll">
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
