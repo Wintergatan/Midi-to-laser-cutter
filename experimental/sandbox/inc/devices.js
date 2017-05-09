@@ -1,6 +1,7 @@
 var knownDevices = {
     "screen": {
             "deviceName": "GI20",
+        "description": "Screen display device. 128 channels",
             "paperSpeed": 1,
             "minDistBetweenNotes": 11.0,
             "channelHeight": 10.0,
@@ -15,6 +16,7 @@ var knownDevices = {
         },
         "GI20": {
             "deviceName": "GI20",
+            "description": "Grand Illusions 20 Note mechanism. Unmodified.",
             "paperSpeed": 1,
             "minDistBetweenNotes": 8.0,
             "channelHeight": 3.0,
@@ -50,6 +52,7 @@ var knownDevices = {
         },
         "GI30": {
             "deviceName": "GI30",
+            "description": "Grand Illusions 30 Note mechanism. Unmodified.",
             "paperSpeed": 1,
             "minDistBetweenNotes": 8.0,
             "channelHeight": 1.93,
@@ -95,6 +98,7 @@ var knownDevices = {
         },
         "GI15": {
             "deviceName": "GI15",
+            "description": "Grand Illusions/Kikkerland 15 Note mechanism. Unmodified.",
             "paperSpeed": 1,
             "minDistBetweenNotes": 8.0,
             "channelHeight": 3.0,
@@ -125,6 +129,7 @@ var knownDevices = {
         },
         "W20AMinor": {
             "deviceName": "20 Channel A minor",
+            "descriptions": "Modified 20 note mechanism. A minor",
             "paperSpeed": 1,
             "minDistBetweenNotes": 8.0,
             "channelHeight": 3.0,
