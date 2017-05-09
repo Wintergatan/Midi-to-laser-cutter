@@ -192,6 +192,7 @@ function MidiChannel(noteNumber, channelName, isValid) {
     this.noteNumber = noteNumber;
     this.channelName = channelName;
     this.isValid = isValid;
+    this.channelDescription = "";
     this.events = [];
 
 }
