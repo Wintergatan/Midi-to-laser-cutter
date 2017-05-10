@@ -114,9 +114,6 @@ export class AppComponent {
     trackPartLength: number = 200;
     trackLength: number = 200;
 
-    numVerticalLines: number = 200 / 4;
-    verticalLines: number[] = [];
-
     noteTable = {};
 
     mainMenuOptions: ISubMenuComponentOptions;
@@ -300,12 +297,6 @@ Or right click on note to delete it.
         this.trackParts = []; //Angular 2 ng-for trick.
         for (let i = 0; i < numTrackParts; i++) {
             this.trackParts.push(i);
-        }
-
-        this.verticalLines = []; //Angular 2 ng-for trick.
-        this.numVerticalLines = Math.floor(this.trackLength / 4) + 1;
-        for (let i = 0; i < this.numVerticalLines; i++) {
-            this.verticalLines.push(i);
         }
     }
 
@@ -503,9 +494,11 @@ Or right click on note to delete it.
         var clone = svg.cloneNode(true);
 
         //remove guidelines
-        var element = this.getChildById('note-lines-group', <Element>clone);
+        var element = this.getChildById('defs', <Element>clone);
         clone.removeChild(element);
-        element = this.getChildById('note-vertical-lines', <Element>clone);
+        element = this.getChildById('note-lines-group', <Element>clone);
+        clone.removeChild(element);
+        element = this.getChildById('note-guide-group', <Element>clone);
         clone.removeChild(element);
         element = this.getChildById('track-part-divider', <Element>clone);
         clone.removeChild(element);
@@ -799,22 +792,22 @@ Or right click on note to delete it.
         }
         return '#93CCEA';
     }
-
-    //Vertical Lines
-    getVerticalLineBorder(i: number): string {
-        return i % 2 == 0 ? '' : '1.5, 1.5';
+    
+    //NoteGuide
+    getNoteGuideX():number{
+        return 0;
     }
 
-    getVerticalLineX(index: number): number {
-        return index * 4;
-    }
-
-    getVerticalLineY1(): number {
+    getNoteGuideY():number{
         return this.trackPadding;
     }
+    
+    getNoteGuideWidth():number{
+        return this.trackLength;
+    }
 
-    getVerticalLineY2(): number {
-        return this.getTrackHeight() + this.trackPadding;
+    getNoteGuideHeight():number{
+        return this.getTrackHeight();
     }
 
     //Notes

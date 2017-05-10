@@ -95,13 +95,21 @@
       </svg>  
       <div class="track">
         <svg id="musicbox-svg" *ngIf="showTrack()" [attr.width]="getViewBoxWidth()" [attr.height]="getViewBoxHeight()" [attr.viewBox]="getTrackViewBox()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+          <!--Pattern-->
+          <defs id="defs">
+            <pattern id="map" width="8" height="3" patternUnits="userSpaceOnUse">
+              <line stroke="#666" stroke-dashoffset="0.75" stroke-width="0.5" x1="0" y1="0" x2="0" y2="3"></line>
+              <line _ngcontent-mbj-6="" stroke="#666" stroke-dashoffset="0.5" stroke-width="0.5" stroke-dasharray="1.5, 1.5" x1="4" y1="0" x2="4" y2="4"></line>
+            </pattern>
+          </defs>
+          
           <!--Guide Lines-->
           <g id="note-lines-group">
             <line *ngFor="let n of noteScale" [attr.stroke]="getNoteLineColor(n)" stroke-width="0.5" x1="0" [attr.y1]="getNoteLineY(n)" [attr.x2]="getNoteLineLength()" [attr.y2]="getNoteLineY(n)"/>
           </g>
-          <g id="note-vertical-lines">
-            <line *ngFor="let i of verticalLines" stroke="#666" stroke-width="0.5" stroke-dashoffset="0.75" [attr.stroke-dasharray]="getVerticalLineBorder(i)" [attr.x1]="getVerticalLineX(i)" [attr.y1]="getVerticalLineY1()" [attr.x2]="getVerticalLineX(i)" [attr.y2]="getVerticalLineY2()"/>
-          </g>
+          <g id="note-guide-group">
+            <rect fill="url(#map)" [attr.x]="getNoteGuideX()" [attr.y]="getNoteGuideY()" [attr.width]="getNoteGuideWidth()" [attr.height]="getNoteGuideHeight()"/>
+          </g> 
           
           <!--Notes-->
           <g id="notes">
