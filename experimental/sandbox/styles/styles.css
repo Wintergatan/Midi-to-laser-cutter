@@ -101,6 +101,19 @@ button {
     min-width: 3000px;
     margin: 10px;
 }
+#other-view{
+    position: relative;
+    margin-top:20px;
+    width: 1000px;
+    height: 400px;
+    background-color: white;
+    overflow: scroll;
+}
+#secondary-view{
+    position: relative;
+    min-width: 3000px;
+    margin: 10px;
+}
 
 
 
