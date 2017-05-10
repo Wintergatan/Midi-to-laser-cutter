@@ -106,7 +106,7 @@ button {
     margin-top:20px;
     width: 1000px;
     height: 400px;
-    background-color: white;
+    background-color: lightgray;
     overflow: scroll;
 }
 #secondary-view{
