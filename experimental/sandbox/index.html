@@ -48,6 +48,9 @@
             // Intial render of screen with no track loaded
             renderTrack(pianoRoll, workingTrack, "screenRender");
 
+            var secondaryView = document.getElementById("secondary-view");
+            renderTrack(secondaryView, workingTrack, "stripRender");
+
         };
 
     </script>
