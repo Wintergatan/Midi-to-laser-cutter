@@ -8,7 +8,7 @@ var screenDevice = undefined;
 var workingDevice = undefined;
 
 // Interface settings
-var currentRenderType = "screen";
+var currentRenderType = "screenRender";
 var showLongNotes = true;
 
 
