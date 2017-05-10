@@ -1,15 +1,20 @@
-
 // Global variables and constants
 var noteNames = ["C", "Db/C#", "D", "Eb/D#", "F", "Gb/F#", "G", "Ab/G#", "A", "B"];
 
 // Testing variables
-var GI20ValidChannels = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84, 86, 88, 89, 91, 93];
+var GI20ValidChannels = [
+    60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84, 86, 88, 89, 91, 93
+];
+
+
 var templatesDirectory = "../templates/";
 
 
 var workingTrack = undefined;
 var screenDevice = undefined;
 var workingDevice = undefined;
+
+var showLongNotes = true;
 
 var renderType = "screen"; // temp way of keeping track what render type to use
 
@@ -38,7 +43,6 @@ function noteNumberToNoteName(noteNumber, showOctave) {
 
     return noteName;
 }
-
 
 
 // MidiTrack
@@ -217,6 +221,16 @@ MidiChannel.prototype.recalculateDeltaTs = function () {
 
 };
 
+// DeviceChannel
+function DeviceChannel(noteNumber, channelName, description) {
+    this.noteNumber = noteNumber;
+    this.name = channelName;
+    this.description = description;
+    this.offset = 0;
+    this.height = 0;
+}
+
+
 // Devices
 function Device(deviceName) {
 
@@ -234,62 +248,70 @@ function Device(deviceName) {
     this.bottomPadding = 6;
     this.leftPadding = 50;
 
-    // Array to store ordered list of channel offsets from bottom margin
-    this.channelOffsets = [];
-
-    // Array to store channel numbers for valid channels ie note numbers
+    // Array to store DeviceChannels
     this.validChannels = [];
-
-    // Array to hold description for each channel
-    this.channelDescriptions = [];
 
 }
 
-Device.prototype.setChannelOffset = function (channelNumber, offset) {
+Device.prototype.applySettings = function(deviceSettings){
 
-    for (var i = 0; i < this.validChannels.length; i++) {
-        if (this.validChannels[i] == channelNumber) {
-            this.channelOffsets[i] = offset;
+    for (var property in deviceSettings) {
+        if (deviceSettings.hasOwnProperty(property)) {
+
+            if(property == "validChannels"){
+
+                // Create DeviceChannel objects
+                for(var i = 0; i < deviceSettings['validChannels'].length; i++){
+                    //console.log(deviceSettings['validChannels'][i]['noteNumber']);
+                    var noteNumber = deviceSettings['validChannels'][i]['noteNumber'];
+                    var noteName = deviceSettings['validChannels'][i]['name'];
+                    var description = deviceSettings['validChannels'][i]['description'];
+
+                    var deviceChannel = new DeviceChannel(noteNumber, noteName, description);
+                    this.validChannels.push(deviceChannel);
+                }
+            } else {
+                this[property] = deviceSettings[property];
+            }
         }
     }
-    // Any other device stuff need to be recalculated????
+};
+
+Device.prototype.setChannelOffset = function (channelIndex, offset) {
+
+    var deviceChannel = this.validChannels[channelIndex];
+    deviceChannel["offset"] = offset;
 
 };
 
-Device.prototype.isValidDeviceChannel = function (channelNumber) {
+Device.prototype.isValidDeviceChannel = function (noteNumber) {
 
-    return this.validChannels.indexOf(channelNumber) > -1;
+    // Return true if the MIDI note number has been assigned to any
+    // channel in this.validChannels
 
-};
-
-Device.prototype.setDeviceChannelValidity = function (channelNumber, isValid) { // array of
-
-    var channelAlreadyValid = this.isValidDeviceChannel(channelNumber);
-
-    if (channelAlreadyValid) {
-
-        // ... and we want to set it to invalid
-        if (isValid == false) {
-            // Remove it from array
-            var index = this.validChannels.indexOf(channelNumber);
-            this.validChannels.splice(index, 1);
-
-        } else {
-            return;
-        }
-
-    } else {
-        // not already valid
-        if (isValid) {
-            // add it to array
-            this.validChannels.push(channelNumber);
+    var channelIsValid = false;
+    var validChannels = this.validChannels;
+    for (var i = 0; i < validChannels.length; i++) {
+        var channelToCheck = this.validChannels[i];
+        if (channelToCheck['noteNumber'] == noteNumber) {
+            channelIsValid = true;
         }
     }
 
+    return channelIsValid;
+
 };
 
-Device.prototype.clearValidChannels = function(){
-  this.validChannels = [];
+Device.prototype.addValidChannel = function (deviceChannel) {
+    this.validChannels.push(deviceChannel);
+};
+
+Device.prototype.removeValidChannel = function (channelIndex) {
+    this.validChannels.splice(channelIndex, 1);
+};
+
+Device.prototype.clearValidChannels = function () {
+    this.validChannels = [];
 };
 
 
@@ -411,6 +433,9 @@ function renderTrack(elem, track, device) {
 
                 if (evt.noteAction == "on") {
 
+                    var noteOffEvent = events[j + 1];
+                    var noteLength = ((noteOffEvent.tick - evt.tick) * paperSpeed);
+
                     var noteData = evt.noteNumber + "_" + channelName + "_" + evt.noteAction + "_" + evt.tick;
 
                     var evtXPos = (evt.tick * paperSpeed);  // scale this to units we want e.g pixels or mm
@@ -420,12 +445,20 @@ function renderTrack(elem, track, device) {
                         maxX = evtXPos + screenDevice.rightPadding;
                     }
 
+                    var noteHeight = screenDevice.eventHeight;
+
+                    var noteWidth = screenDevice.eventWidth;
+                    if (showLongNotes) {
+                        noteWidth = noteLength;
+                    }
+
+
                     var svgEvent = getNode('rect');
                     var eventId = "note_" + i + "_" + j;
                     svgEvent.setAttribute('id', eventId);
                     svgEvent.setAttribute('mididata:notedata', noteData);
-                    svgEvent.setAttribute('width', screenDevice.eventWidth + "px");
-                    svgEvent.setAttribute('height', screenDevice.eventHeight + "px");
+                    svgEvent.setAttribute('width', noteWidth + "px");
+                    svgEvent.setAttribute('height', noteHeight + "px");
                     svgEvent.setAttribute('x', evtXPos);
                     svgEvent.setAttribute('y', '0');
                     svgEvent.setAttribute('rx', '3');
@@ -435,10 +468,10 @@ function renderTrack(elem, track, device) {
                     svgEvent.addEventListener('click', svgNoteClick);
 
                     // Keep track of event Ys to enable scrolling to where events appear
-                    if(channelY < minY){
+                    if (channelY < minY) {
                         minY = channelY;
                     }
-                    if(channelY > maxY){
+                    if (channelY > maxY) {
                         maxY = channelY;
                     }
 
@@ -567,14 +600,14 @@ function renderTrack(elem, track, device) {
 
     if (renderType == "strip") {
 
-        if(workingDevice == undefined){
+        if (workingDevice == undefined) {
             workingDevice = new Device("screen");
             initializeScreenDevice(workingDevice);
         }
 
         var units = "mm";
 
-        if(workingDevice["deviceName"] == "screen"){
+        if (workingDevice["deviceName"] == "screen") {
             units = "px";
         }
 
@@ -613,7 +646,7 @@ function renderTrack(elem, track, device) {
                 var channelClass = 'svg-channel strip';
 
                 var channelY = ((channelsProcessed + 1) * workingDevice.channelHeight) + workingDevice.bottomPadding;
-                if (units == "mm"){
+                if (units == "mm") {
                     channelY *= 3.543307; // convert user units to mm
                 }
                 var transformValue = "translate(0," + channelY + ")";
@@ -672,7 +705,6 @@ function renderTrack(elem, track, device) {
                 svgPianoRoll.appendChild(svgChannel);
                 channelsProcessed++;
             }
-
 
 
             elem.appendChild(svgPianoRoll);
@@ -785,32 +817,25 @@ function loadMidiFile(file) {
     return true;
 }
 
-function applySettingsToDevice(device, deviceSetting){
 
-    for (var property in deviceSetting) {
-        if (deviceSetting.hasOwnProperty(property)) {
-            //console.log(property);
-            device[property] = deviceSetting[property];
-        }
-    }
-}
 
-function setDevice(){
+function setDevice() {
 
     var deviceSelect = document.getElementById('device-select');
     var deviceChoice = deviceSelect.options[deviceSelect.selectedIndex].value;
 
     // Use choice to select a known device
-    if (deviceChoice != "none"){
+    if (deviceChoice != "none") {
 
         var userDevice = knownDevices[deviceChoice];
 
-        if(workingDevice == undefined){
+        if (workingDevice == undefined) {
             workingDevice = new Device(userDevice["deviceName"]);
         }
 
         // Copy properties of known device to working device
-        applySettingsToDevice(workingDevice, userDevice);
+        //applySettingsToDevice(workingDevice, userDevice);
+        workingDevice.applySettings(userDevice);
 
 
         // Set screen device valid channels to match user device to enable view of valid channels
@@ -838,41 +863,49 @@ function initializeScreenDevice(device) {
 
     var shortestDeltaT = workingTrack.shortestDeltaT;
 
-    device.minDistBetweenNotes = 15;
-    device.paperSpeed = device.minDistBetweenNotes / shortestDeltaT;
-    device.channelHeight = 15;
-    device.eventHeight = device.channelHeight;
-    device.eventWidth = 15;
-    device.bottomPadding = 20;
-    device.topPadding = 20;
+    var screenDeviceSettings = knownDevices['screen'];
+    //applySettingsToDevice(device, screenDeviceSettings);
+    device.applySettings(screenDeviceSettings);
 
-    // Set all offsets ???? is this necessary for screen device??
-    for (var j = 0; j < 128; j++) {
-        device.channelOffsets.push(20 * j);
-    }
+    console.dir(device);
 
-    // All channels initially valid
-    for (var i = 0; i < 128; i++) {
-        device.setDeviceChannelValidity(i, true);
-    }
+
+    // device.minDistBetweenNotes = 15;
+    // device.paperSpeed = device.minDistBetweenNotes / shortestDeltaT;
+    // device.channelHeight = 15;
+    // device.eventHeight = device.channelHeight;
+    // device.eventWidth = 15;
+    // device.bottomPadding = 20;
+    // device.topPadding = 20;
+    //
+    // // All channels initially valid
+    // for (var i = 0; i < 128; i++) {
+    //     device.setDeviceChannelValidity(i, true);
+    // }
+    //
+    //
+    // // Set all offsets ???? is this necessary for screen device??
+    // for (var j = 0; j < 128; j++) {
+    //     device.channelOffsets.push(20 * j);
+    // }
+
 
 }
-
 
 
 function changeRenderType(e) {
 
     var viewBtnId = e.target.id;
-    if(viewBtnId == "screen-btn"){
+    if (viewBtnId == "screen-btn") {
         renderType = "screen";
     }
-    if(viewBtnId == "screen-collapsed-btn"){
+    if (viewBtnId == "screen-collapsed-btn") {
         renderType = "screenCollapsed";
     }
-    if (viewBtnId == "strip-btn"){
+    if (viewBtnId == "strip-btn") {
         renderType = "strip";
     }
-    if(viewBtnId == "page-btn"){
+    if (viewBtnId == "page-btn") {
         renderType = "page";
     }
 
