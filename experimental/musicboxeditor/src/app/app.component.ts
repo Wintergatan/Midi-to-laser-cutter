@@ -10,6 +10,13 @@ import { ISubMenuComponentOptions } from "./ui/subMenu/subMenu.module";
 
 import * as JSZip from "jszip";
 
+export interface IScaleType{
+    name: string,
+    start: number,
+    offsets: number[]
+};
+
+
 @Component({
     selector: 'app',
     templateUrl: './app.component.html',
@@ -25,10 +32,36 @@ export class AppComponent {
     header: IHeader;
     notes: INote[];
 
-    scaleTypeOptions = ['Custom']; //['Full', 'Minor', 'Custom'];
-    selectedScaleType: string = this.scaleTypeOptions[0];
+    scaleTypeOptionsA = ['Custom']; //['Full', 'Minor', 'Custom'];
+    scaleTypeOptions: IScaleType[] = [{
+        name: 'C Major',
+        start: 24,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'G Major',
+        start: 31,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'D Major',
+        start: 26,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'A Major',
+        start: 33,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'E Major',
+        start: 28,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'B Major',
+        start: 35,
+        offsets: [2, 2, 1, 2, 2, 2, 1]
+    }];
+    selectedScaleType: IScaleType = this.scaleTypeOptions[0];
     noteScale: number[] = [];
-    scaleStart: number;
+    octaveOptions: number[] = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7];
+    octave: number;
 
     noteTypes = ['Circle', 'Rectangle']
     selectedNoteType: any = this.noteTypes[0];
@@ -88,8 +121,6 @@ Or right click on note to delete it.
 
         this.initNoteTable();
         this.init();
-
-
     }
 
     init() {
@@ -111,11 +142,11 @@ Or right click on note to delete it.
             projectName: this.projectName,
             header: this.header,
             notes: this.notes,
-            selectedScaleType: this.selectedScaleType,
-            noteScale: this.noteScale,
-            scaleStart: this.scaleStart,
-            selectedNoteType: this.selectedNoteType,
             numNotes: this.numNotes,
+            octave: this.octave,
+            selectedScaleType: this.selectedScaleType.name,
+            noteScale: this.noteScale,
+            selectedNoteType: this.selectedNoteType,
             noteDistance: this.noteDistance,
             noteHeight: this.noteHeight,
             noteWidth: this.noteWidth,
@@ -132,15 +163,17 @@ Or right click on note to delete it.
 
         if (state === null || state === undefined) {//if no state -> setDefaults
             state = {};
+        }else{
+            console.log('Set state', state);
         }
 
         this.projectName = state.projectName || 'New Project';
         this.header = state.header || {};
         this.notes = state.notes || [];
         this.numNotes = state.numNotes || 20;
-        this.selectedScaleType = state.selectedScaleType || 'Custom';
-        this.scaleStart = state.scaleStart || 36;
-        this.noteScale = state.noteScale || this.generateNoteScale();
+        this.octave = state.octave || 0;
+        this.selectedScaleType =this.getScaleType(state.selectedScaleType) || this.getScaleType(null);
+        this.noteScale = state.noteScale || this.generateNoteScaleB();
         this.selectedNoteType = state.selectedNoteType || 'Circle';
         this.noteDistance = state.noteDistance || 3;
         this.noteHeight = state.noteHeight || 3;
@@ -154,19 +187,41 @@ Or right click on note to delete it.
         this.updateNotes();
     }
 
-    generateNoteScale(): number[] {
+    generateNoteScaleB(): number[] {
         var result: number[] = [];
+        var offsetIndex = -1;
 
         for (let i = 0; result.length < this.numNotes; i++) {
-            var midi = this.scaleStart + i;
-            if (this.noteTable[midi].indexOf('#') != -1) {
-                continue;
+            var midi;
+            if(offsetIndex == -1){
+                midi = this.selectedScaleType.start + this.octave * 12;
+            }else{
+                midi = result[i - 1] + this.selectedScaleType.offsets[offsetIndex];
             }
 
+            offsetIndex += 1;
+            if(offsetIndex >= this.selectedScaleType.offsets.length){
+                offsetIndex = 0;
+            }
             result.push(midi);
         }
 
         return result;
+    }
+
+    getScaleType(name: string): IScaleType{
+        if(name === null || name == undefined){
+            return this.scaleTypeOptions[0];
+        }
+
+        for(let i = 0; i < this.scaleTypeOptions.length; i++){
+            var st = this.scaleTypeOptions[i];
+            if(st.name == name){
+                return st;
+            }
+        }
+
+        return this.scaleTypeOptions[0];
     }
 
     importNotes(newNotes: INote[]) {
@@ -292,19 +347,19 @@ Or right click on note to delete it.
 
     onChangeNumNotes(newValue) {
         this.numNotes = newValue;
-        this.noteScale = this.generateNoteScale();
+        this.noteScale = this.generateNoteScaleB();
         this.updateNotes();
     }
 
     onChangeScaleType(newValue) {
         this.selectedScaleType = newValue;
-        this.noteScale = this.generateNoteScale();
+        this.noteScale = this.generateNoteScaleB();
         this.updateNotes();
     }
 
-    onChangeScaleStart(newValue) {
-        this.scaleStart = newValue;
-        this.noteScale = this.generateNoteScale();
+    onChangeScaleOctave(newValue){
+        this.octave = newValue;
+        this.noteScale = this.generateNoteScaleB();
         this.updateNotes();
     }
 
