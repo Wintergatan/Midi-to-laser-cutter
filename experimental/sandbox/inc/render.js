@@ -372,6 +372,7 @@ function renderTrack(elem, track, renderType) {
     var trackChannels = track.channels;
     var maxX = 0;  // to set final width space for display
 
+    // Some variables to allow auto-scrolling to bring events into view
     var minY = 2000;
     var maxY = 0;
     var midY = 1000;
@@ -489,6 +490,7 @@ function renderTrack(elem, track, renderType) {
         midY = (minY + maxY) / 2;
         // Scroll to where events are in Piano Roll
         document.getElementById('track-output').scrollTop = minY;
+        document.getElementById('secondary-view').scrollTop = minY;
 
         //console.log("Minimum Y: " + minY + " Maximum Y: " + maxY + " Middle Y: " + midY);
 
@@ -582,6 +584,14 @@ function renderTrack(elem, track, renderType) {
 
                         svgEvent.addEventListener('click', svgNoteClick);
 
+                        // Keep track of event Ys to enable scrolling to where events appear
+                        if (channelY < minY) {
+                            minY = channelY;
+                        }
+                        if (channelY > maxY) {
+                            maxY = channelY;
+                        }
+
                         svgChannel.appendChild(svgEvent);
 
                     }
@@ -593,6 +603,11 @@ function renderTrack(elem, track, renderType) {
             }
 
             elem.appendChild(svgPianoRoll);
+
+            midY = (minY + maxY) / 2;
+            // Scroll to where events are in Piano Roll
+            document.getElementById('track-output').scrollTop = minY;
+            document.getElementById('secondary-view').scrollTop = minY;
         }
 
     }
@@ -695,6 +710,14 @@ function renderTrack(elem, track, renderType) {
 
                         svgEvent.addEventListener('click', svgNoteClick);
 
+                        // Keep track of event Ys to enable scrolling to where events appear
+                        if (channelY < minY) {
+                            minY = channelY;
+                        }
+                        if (channelY > maxY) {
+                            maxY = channelY;
+                        }
+
                         svgChannel.appendChild(svgEvent);
 
                     }
@@ -705,7 +728,13 @@ function renderTrack(elem, track, renderType) {
             }
 
             elem.appendChild(svgPianoRoll);
+
+            midY = (minY + maxY) / 2;
+            // Scroll to where events are in Piano Roll
+            document.getElementById('track-output').scrollTop = minY;
+            document.getElementById('secondary-view').scrollTop = minY;
         }
+
         // Add strip border rect
         var stripRect = getNode('rect');
         stripRect.setAttribute('id', "strip-rect");
@@ -767,6 +796,9 @@ function loadMidiFile(file) {
         // Render with MIDI track loaded
         renderTrack(document.getElementById('piano-roll'), workingTrack, "screenRender");
 
+        var secondaryView = document.getElementById("secondary-view");
+        renderTrack(secondaryView, workingTrack, "stripRender");
+
     };
 
     return true;
@@ -792,6 +824,9 @@ function setDevice() {
         screenDevice.validChannels = workingDevice.validChannels;
 
         renderTrack(document.getElementById("piano-roll"), workingTrack, currentRenderType);
+
+        var secondaryView = document.getElementById("secondary-view");
+        renderTrack(secondaryView, workingTrack, "stripRender");
     }
 }
 
@@ -807,6 +842,11 @@ function changeRenderType(e) {
 function changeLongNoteValue(){
     showLongNotes = document.getElementById('show-long-notes').checked;
     console.log(showLongNotes);
+
+    renderTrack(document.getElementById("piano-roll"), workingTrack, currentRenderType);
+
+    var secondaryView = document.getElementById("secondary-view");
+    renderTrack(secondaryView, workingTrack, "stripRender");
 }
 
 // Testing and dev experiments
