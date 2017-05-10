@@ -57,6 +57,10 @@ export class AppComponent {
         name: 'B Major',
         start: 35,
         offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'Full',
+        start: 24,
+        offsets: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     }];
     selectedScaleType: IScaleType = this.scaleTypeOptions[0];
     noteScale: number[] = [];
@@ -105,11 +109,10 @@ Expect bugs and incomplete features.
 Missing features:
 - Add notes.
 - Move notes.
-- Download track parts in individual files.
-- Save and load project.
 
 Getting started:
 Import one or more midi files.
+Select scale and octave.
 Invalid notes are marked in red.
 Hover over them for more details.
 Click on the channel to change it (left side).
@@ -173,7 +176,7 @@ Or right click on note to delete it.
         this.numNotes = state.numNotes || 20;
         this.octave = state.octave || 0;
         this.selectedScaleType =this.getScaleType(state.selectedScaleType) || this.getScaleType(null);
-        this.noteScale = state.noteScale || this.generateNoteScaleB();
+        this.noteScale = state.noteScale || this.generateNoteScale();
         this.selectedNoteType = state.selectedNoteType || 'Circle';
         this.noteDistance = state.noteDistance || 3;
         this.noteHeight = state.noteHeight || 3;
@@ -187,7 +190,7 @@ Or right click on note to delete it.
         this.updateNotes();
     }
 
-    generateNoteScaleB(): number[] {
+    generateNoteScale(): number[] {
         var result: number[] = [];
         var offsetIndex = -1;
 
@@ -222,6 +225,16 @@ Or right click on note to delete it.
         }
 
         return this.scaleTypeOptions[0];
+    }
+
+    isFirstNoteOnScale(midi: number): boolean{
+        var scaleStart = this.selectedScaleType.start;
+        
+        if(midi % 12 === scaleStart % 12){
+            return true;
+        }
+
+        return false;
     }
 
     importNotes(newNotes: INote[]) {
@@ -347,19 +360,19 @@ Or right click on note to delete it.
 
     onChangeNumNotes(newValue) {
         this.numNotes = newValue;
-        this.noteScale = this.generateNoteScaleB();
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
     onChangeScaleType(newValue) {
         this.selectedScaleType = newValue;
-        this.noteScale = this.generateNoteScaleB();
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
     onChangeScaleOctave(newValue){
         this.octave = newValue;
-        this.noteScale = this.generateNoteScaleB();
+        this.noteScale = this.generateNoteScale();
         this.updateNotes();
     }
 
@@ -749,7 +762,7 @@ Or right click on note to delete it.
     }
 
     getNoteLineColor(midi: number) {
-        if (this.noteTable[midi].indexOf('C') != -1) {
+        if (this.isFirstNoteOnScale(midi)) {
             return '#2f61ba';
         }
         return '#93CCEA';
