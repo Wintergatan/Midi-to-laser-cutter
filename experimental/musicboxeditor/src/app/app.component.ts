@@ -32,6 +32,14 @@ export class AppComponent {
     header: IHeader;
     notes: INote[];
 
+    /*
+        C  |C# |D  |D# |E  |F  |F# |G  |G# |A  |A# |B 
+        24 |25 |26 |27 |28 |29 |30 |31 |32 |33 |34 |35
+
+        A Minor
+        33: [2,1,2,2,1,2,2]
+    */
+
     scaleTypeOptionsA = ['Custom']; //['Full', 'Minor', 'Custom'];
     scaleTypeOptions: IScaleType[] = [{
         name: 'C Major',
@@ -57,6 +65,30 @@ export class AppComponent {
         name: 'B Major',
         start: 35,
         offsets: [2, 2, 1, 2, 2, 2, 1]
+    },{
+        name: 'A Minor',
+        start: 33,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
+    },{
+        name: 'E Minor',
+        start: 28,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
+    },{
+        name: 'B Minor',
+        start: 35,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
+    },{
+        name: 'F# Minor',
+        start: 30,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
+    },{
+        name: 'C# Minor',
+        start: 25,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
+    },{
+        name: 'G# Minor',
+        start: 32,
+        offsets: [2, 1, 2, 2, 1, 2, 2]
     },{
         name: 'Full',
         start: 24,

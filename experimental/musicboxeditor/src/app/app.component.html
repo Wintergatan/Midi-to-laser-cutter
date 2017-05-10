@@ -41,8 +41,8 @@
         </select>
       </label>
       <label class="cell">
-        <h4>Note distance:</h4> 
-        <input type="number" [ngModel]="noteDistance"  (ngModelChange)="onChangeNoteDistance($event)">
+        <h4>Note offset:</h4> 
+        <input type="number" min="0" max="10" step="0.05" [ngModel]="noteDistance"  (ngModelChange)="onChangeNoteDistance($event)">
       </label>
       
       <label class="cell">
@@ -53,35 +53,35 @@
       </label>
       <label class="cell">
         <h4>Note width:</h4> 
-        <input type="number" [ngModel]="noteWidth"  (ngModelChange)="onChangeNoteWidth($event)">
+        <input type="number" min="0" max="10" step="0.05" [ngModel]="noteWidth"  (ngModelChange)="onChangeNoteWidth($event)">
       </label>
       <label class="cell">
         <h4>Note height:</h4> 
-        <input type="number" [ngModel]="noteHeight"  (ngModelChange)="onChangeNoteHeight($event)">
+        <input type="number" min="0" max="10" step="0.05" [ngModel]="noteHeight"  (ngModelChange)="onChangeNoteHeight($event)">
       </label>
 
 
       <label class="cell">
         <h4>Track length:</h4> 
-        <input type="number" [ngModel]="trackLength"  (ngModelChange)="onChangeTrackLength($event)">
+        <input type="number" min="0" step="1" [ngModel]="trackLength"  (ngModelChange)="onChangeTrackLength($event)">
       </label>
       <label class="cell">
         <h4>Track part length:</h4> 
-        <input type="number" [ngModel]="trackPartLength"  (ngModelChange)="onChangeTrackPartLength($event)">
+        <input type="number" min="0" step="1" [ngModel]="trackPartLength"  (ngModelChange)="onChangeTrackPartLength($event)">
       </label>
       <label class="cell">
         <h4>Track padding:</h4> 
-        <input type="number" [ngModel]="trackPadding"  (ngModelChange)="onChangeTrackPadding($event)">
+        <input type="number" min="0" max="100" step="0.05" [ngModel]="trackPadding"  (ngModelChange)="onChangeTrackPadding($event)">
       </label>
 
       <label class="cell">
         <h4>Track start:</h4> 
-        <input type="number" [(ngModel)]="trackStart" >
+        <input type="number" min="0" step="5" [(ngModel)]="trackStart" >
       </label>
 
       <label class="cell">
         <h4>Track shift:</h4> 
-        <input type="number" [(ngModel)]="trackShift" >
+        <input type="number" min="0" step="5" [(ngModel)]="trackShift" >
       </label>
       <label class="cell">
       </label>
