@@ -8,6 +8,7 @@ body {
 }
 #svg-defs {
 
+    float:left;
     width:0;
     height:0;
 
@@ -22,27 +23,59 @@ body {
 #controls {
     position: relative;
     width:1000px;
-    height: 80px;
+    height: 100px;
     border-bottom: 1px solid darkgray;
 }
 #file-controls {
-    display:inline-block;
-    width: 250px;
-    height: 70px;
+    position: absolute;
+    top:10px;
+    left:10px;
+    display:block;
+    width: 200px;
+    height: 100px;
 }
 #device-controls {
-    display:inline-block;
+    position: absolute;
+    top: 10px;
+    left: 230px;
+    display: block;
     width: 250px;
-    height: 70px;
+    height: 100px;
 }
 #view-controls {
-    display:inline-block;
+    position: absolute;
+    top:10px;
+    left:400px;
+    display:block;
     width: 340px;
-    height: 70px;
+    height: 100px;
 }
-button {
-    margin-top:0;
+#other-controls{
+    position: absolute;
+    top:10px;
+    left:750px;
+    display:block;
+    width: 340px;
+    height: 100px;
 }
+#show-long-notes-label{
+    position: absolute;
+    margin:0;
+    padding:0;
+    top:0;
+    left:0;
+
+}
+#output {
+    position: absolute;
+    top:30px;
+    left:0;
+    font-size: 14px;
+    display:block;
+    color: red;
+}
+
+
 .label {
     font-size: 14px;
     line-height: 16px;
@@ -50,14 +83,10 @@ button {
     padding:0;
     margin-bottom:10px;
 }
-#output {
-    margin-left:3px;
-    font-size: 14px;
-    position: relative;
-    display:inline-block;
-    color: red;
-}
 
+button {
+    margin-top:0;
+}
 
 
 #track-output {
@@ -130,6 +159,9 @@ button {
     fill: none;
     stroke: black;
     stroke-width: 1px;
+}
+#show-long-notes-label{
+    font-size:14px;
 }
 
 
