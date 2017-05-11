@@ -2,10 +2,30 @@ body {
     font-family: Arial, sans-serif;
 }
 
+#container {
+    position: relative;
+    width: 1200px;
+}
+
 #device {
     position: relative;
+    float: left;
     width: 610px;
-    min-height: 400px;
+    min-height: 600px;
+
+}
+
+#info {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    float: left;
+    margin-left: 20px;
+}
+
+#info-text {
+    width: 500px;
+    height: 800px;
 }
 
 #device-controls {
@@ -38,7 +58,7 @@ body {
     width: 50px;
 }
 
-#device-name-label {
+#device-deviceName-label {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -85,7 +105,7 @@ body {
     position: relative;
     border: 1px solid darkgray;
     border-radius: 10px;
-    width: 580px;
+    width: 590px;
     margin-top: 10px;
     margin-left: 10px;
     padding-top: 10px;
@@ -101,7 +121,7 @@ body {
 }
 
 .device-channel {
-    width: 580px;
+    width: 590px;
     height: 20px;
     padding-left: 5px;
     padding-bottom: 5px;
@@ -109,17 +129,29 @@ body {
 
 }
 
-.channel-notenumber, .channel-notename, .channel-description, .channel-offset, .channel-height, .channel-shape {
+#channels-footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    height: 60px;
+    padding-left: 5px;
+    border-top: 1px solid darkgray;
+}
+
+#channel-add {
+    margin-bottom: 5px;
+}
+
+.channel-noteNumber, .channel-name, .channel-description, .channel-offset, .channel-height, .channel-shape {
     margin-top: 0;
     margin-bottom: 0;
     display: inline-block;
 }
 
-.channel-notenumber {
+.channel-noteNumber {
     width: 80px;
 }
 
-.channel-notename {
+.channel-name {
     width: 100px;
 }
 
@@ -139,14 +171,51 @@ body {
     width: 50px;
 }
 
+.channel-delete {
+    font-size: 10px;
+    line-height: 10px;
+    padding: 0;
+    width: 22px;
+    height: 20px;
+
+}
+
 .channel-shape-select {
     width: 50px;
 }
 
-#channels-footer {
+.channel-move-btns {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    margin-left: 2px;
+    width: 22px;
     height: 20px;
-    margin-top: 5px;
-    padding-left: 5px;
+
+}
+
+.channel-up, .channel-down {
+    font-size: 10px;
+    line-height: 10px;
+    margin: 0;
+    padding: 0;
+    height: 12px;
+}
+
+.channel-up {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 22px;
+
+}
+
+.channel-down {
+    position: absolute;
+    top: 13px;
+    left: 0;
+    width: 22px;
+
 }
 
 #device-dimensions {
@@ -188,7 +257,7 @@ body {
     height: 200px;
 }
 
-#device-strip-top-padding-label {
+#device-topPadding-label {
     position: absolute;
     top: 5px;
     left: 140px;
@@ -196,7 +265,7 @@ body {
     height: 50px;
 }
 
-#device-strip-right-padding-label {
+#device-rightPadding-label {
     position: absolute;
     top: 100px;
     left: 480px;
@@ -204,7 +273,7 @@ body {
     height: 50px;
 }
 
-#device-strip-bottom-padding-label {
+#device-bottomPadding-label {
     position: absolute;
     top: 235px;
     left: 140px;
@@ -212,7 +281,7 @@ body {
     height: 50px;
 }
 
-#device-strip-left-padding-label {
+#device-leftPadding-label {
     position: absolute;
     top: 100px;
     left: 5px;
@@ -248,3 +317,106 @@ body {
 #hole-settings label input {
     width: 80px;
 }
+
+input[readonly] {
+    background-color: lightgray;
+    border: 1px solid darkgray;
+    padding: 2px;
+}
+
+#new-device {
+    position: relative;
+    float: left;
+    margin-left: 20px;
+    width: 500px;
+    height: 220px;
+}
+
+#new-device-controls {
+    position: relative;
+    border: 1px solid darkgray;
+    border-radius: 10px;
+    min-height: 220px;
+
+}
+
+#new-device-id-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 110px;
+    height: 20px;
+}
+
+#new-device-id {
+    width: 100px;
+}
+
+#new-device-channel-count-label {
+    position: absolute;
+    top: 10px;
+    left: 150px;
+    width: 150px;
+    height: 20px;
+}
+
+#new-device-channel-count {
+    width: 60px;
+}
+
+#new-device-start-note-label {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    width: 100px;
+    height: 20px;
+}
+
+#new-device-start-note {
+    width: 60px;
+}
+
+#new-device-key-label {
+    position: absolute;
+    top: 110px;
+    left: 10px;
+    width: 40px;
+    height: 20px;
+}
+
+#new-device-key {
+    width: 60px;
+}
+
+#new-device-scale-label {
+    position: absolute;
+    top: 110px;
+    left: 80px;
+    width: 40px;
+    height: 20px;
+}
+
+#new-device-scale {
+    width: 130px;
+}
+
+#new-device-mode-label {
+    position: absolute;
+    top: 110px;
+    left: 220px;
+    width: 40px;
+    height: 20px;
+}
+
+#new-device-mode {
+    width: 130px;
+}
+
+#new-device-add-btn-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 40px;
+    height: 20px;
+}
+
