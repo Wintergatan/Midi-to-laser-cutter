@@ -99,7 +99,7 @@ export class AppComponent {
     octaveOptions: number[] = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7];
     octave: number;
 
-    noteTypes = ['Circle', 'Rectangle']
+    noteTypes = ['Circle', 'Rectangle', 'Long Notes']
     selectedNoteType: any = this.noteTypes[0];
     numNotes: number = 20;
     noteDistance: number = 3;
@@ -274,7 +274,9 @@ Or right click on note to delete it.
 
         this.sortNotes();
 
-        this.trackLength = this.notes[this.notes.length - 1].time * 16;
+        var lastNote = this.notes[this.notes.length - 1];
+
+        this.trackLength = lastNote.time * 16 + lastNote.duration * 16;
     }
 
     sortNotes() {
@@ -353,7 +355,11 @@ Or right click on note to delete it.
     onClickLoadProject() {
         var element = <HTMLInputElement>document.getElementById('file-input');
         element.accept = 'application/json';
+        element.value = null;
         element.onchange = (event: any) => {
+            if(!event){
+                return;
+            }
             var reader = new FileReader();
             reader.onload = (event: any) => {
                 this.setState(JSON.parse(event.target.result));
@@ -418,6 +424,10 @@ Or right click on note to delete it.
         this.updateNotes();
     }
 
+    disableNoteWidth():boolean{
+        return this.isLongNoteType();
+    }
+
     onChangeTrackLength(newValue) {
         this.trackLength = newValue;
 
@@ -439,7 +449,11 @@ Or right click on note to delete it.
     onClickImportMidi() {
         var element = <HTMLInputElement>document.getElementById('file-input');
         element.accept = 'audio/midi';
+        element.value = null;
         element.onchange = (event) => {
+            if(!event){
+                return;
+            }
             this.onChangeImportMidi(event);
         }
 
@@ -639,7 +653,6 @@ Or right click on note to delete it.
     }
 
     isIntersecting(a: SVGRect, b: SVGRect): boolean {
-        //console.log(a, b);
         if (b.x > a.x + a.width || b.x + b.width < a.x ||
             b.y > a.y + a.height || b.y + b.height < a.y) {
             return false;
@@ -677,6 +690,13 @@ Or right click on note to delete it.
 
     isCircleNoteType(): boolean {
         if (this.selectedNoteType === this.noteTypes[0]) {
+            return true;
+        }
+        return false;
+    }
+
+    isLongNoteType(): boolean{
+        if (this.selectedNoteType === this.noteTypes[2]) {
             return true;
         }
         return false;
@@ -814,6 +834,8 @@ Or right click on note to delete it.
     getNoteX(note: INote): number {
         if (this.isCircleNoteType()) {
             return note.time * 16;
+        }else if(this.isLongNoteType()){
+            return note.time * 16;
         }
         return note.time * 16 - (this.noteWidth / 2);
 
@@ -831,9 +853,11 @@ Or right click on note to delete it.
         return index;
     }
 
-    getNoteWidth(): number {
+    getNoteWidth(note: INote): number {
         if (this.isCircleNoteType()) {
             return this.noteWidth / 2;
+        }else if(this.isLongNoteType()){
+            return note.duration * 16;
         }
         return this.noteWidth;
     }
