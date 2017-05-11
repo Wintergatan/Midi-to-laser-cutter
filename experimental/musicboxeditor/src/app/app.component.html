@@ -53,7 +53,7 @@
       </label>
       <label class="cell">
         <h4>Note width:</h4> 
-        <input type="number" min="0" max="10" step="0.05" [ngModel]="noteWidth"  (ngModelChange)="onChangeNoteWidth($event)">
+        <input type="number" min="0" max="10" step="0.05" [ngModel]="noteWidth"  (ngModelChange)="onChangeNoteWidth($event)" [disabled]="disableNoteWidth()">
       </label>
       <label class="cell">
         <h4>Note height:</h4> 
@@ -114,10 +114,10 @@
           <!--Notes-->
           <g id="notes">
             <template [ngIf]="isCircleNoteType()">
-              <ellipse *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.cx]="getNoteX(n)" [attr.cy]="getNoteY(n)" [attr.rx]="getNoteWidth()" [attr.ry]="getNoteHeight()" />
+              <ellipse *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.cx]="getNoteX(n)" [attr.cy]="getNoteY(n)" [attr.rx]="getNoteWidth(n)" [attr.ry]="getNoteHeight()" />
             </template>
             <template [ngIf]="!isCircleNoteType()">
-              <rect *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.x]="getNoteX(n)" [attr.y]="getNoteY(n)" [attr.width]="getNoteWidth()" [attr.height]="getNoteHeight()" />
+              <rect *ngFor="let n of notes" [hint]="getHint(n)" (contextmenu)="onClickContextMenu($event, n)" [attr.fill]="getNoteFillColor(n)" stroke="#000" stroke-width="0.5" [attr.x]="getNoteX(n)" [attr.y]="getNoteY(n)" [attr.width]="getNoteWidth(n)" [attr.height]="getNoteHeight()" />
             </template>
           </g>
 
