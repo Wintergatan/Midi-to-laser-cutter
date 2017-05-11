@@ -258,7 +258,7 @@ var knownDevices = {
     },
     "W20AMinor": {
         "deviceName": "20 Channel A minor",
-        "descriptions": "Modified 20 note mechanism. A minor",
+        "description": "Modified 20 note mechanism. A minor",
         "paperSpeed": 1,
         "minDistBetweenNotes": 8.0,
         "channelHeight": 3.0,
