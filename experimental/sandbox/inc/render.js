@@ -322,6 +322,16 @@ Device.prototype.clearValidChannels = function () {
     this.validChannels = [];
 };
 
+// Device helper function
+Array.prototype.move = function(from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
+Device.prototype.moveChannel = function(fromIndex, toIndex){
+    console.log(fromIndex + " : " + toIndex);
+    this.validChannels.move(fromIndex, toIndex);
+};
+
 
 ////////////////////////////////////
 // DeviceChannel object and methods
