@@ -11,6 +11,7 @@ var knownDevices = {
         "rightPadding": 50.0,
         "bottomPadding": 20.0,
         "leftPadding": 50.0,
+        "units": "px",
         "validChannels": [
             {"noteNumber": 0, "name": "C0" ,"description": ""},
             {"noteNumber": 1, "name": "C#0" ,"description": ""},
@@ -154,6 +155,7 @@ var knownDevices = {
         "rightPadding": 30.0,
         "bottomPadding": 6.0,
         "leftPadding": 30.0,
+        "units": "mm",
         "validChannels": [
             {"noteNumber": 60, "name": "C5", "description": ""},
             {"noteNumber": 62, "name": "D5", "description": ""},
@@ -189,6 +191,7 @@ var knownDevices = {
         "rightPadding": 30.0,
         "bottomPadding": 6.0,
         "leftPadding": 30.0,
+        "units": "mm",
         "validChannels": [
             {"noteNumber": 53, "name":  "F4", "description": ""},
             {"noteNumber": 55, "name":  "G4", "description": ""},
@@ -234,6 +237,7 @@ var knownDevices = {
         "rightPadding": 30.0,
         "bottomPadding": 6.0,
         "leftPadding": 30.0,
+        "units": "mm",
         "validChannels": [
             {"noteNumber": 48, "name":  "C4", "description": ""},
             {"noteNumber": 50, "name":  "D4", "description": ""},
@@ -264,6 +268,7 @@ var knownDevices = {
         "rightPadding": 30.0,
         "bottomPadding": 6.0,
         "leftPadding": 30.0,
+        "units": "mm",
         "validChannels": [
             {"noteNumber": 60, "name":  "C5", "description": ""},
             {"noteNumber": 62, "name":  "D5", "description": ""},
