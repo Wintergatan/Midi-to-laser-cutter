@@ -1,20 +1,21 @@
-
 // Global variables and constants
 var noteNames = ["C", "Db/C#", "D", "Eb/D#", "F", "Gb/F#", "G", "Ab/G#", "A", "B"];
-
-// Testing variables
-var GI20ValidChannels = [60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79, 81, 83, 84, 86, 88, 89, 91, 93];
 var templatesDirectory = "../templates/";
 
-
+// Global objects
 var workingTrack = undefined;
 var screenDevice = undefined;
 var workingDevice = undefined;
 
-var renderType = "screen"; // temp way of keeping track what render type to use
+// Interface settings
+var currentRenderType = "screenRender";
+var showLongNotes = true;
 
 
-// Utility functions
+///////////////////////////////
+// Utility Functions
+///////////////////////////////
+
 function compare(a, b) {
     if (a > b) return 1;
     if (a < b) return -1;
@@ -39,9 +40,19 @@ function noteNumberToNoteName(noteNumber, showOctave) {
     return noteName;
 }
 
+// Temporary helper function
+function getNode(n, v) {
+    n = document.createElementNS("http://www.w3.org/2000/svg", n);
+    for (var p in v)
+        n.setAttributeNS(null, p, v[p]);
+    return n
+}
 
 
-// MidiTrack
+///////////////////////////////
+// MidiTrack object and methods
+///////////////////////////////
+
 function MidiTrack() {
     this.ppq = 256;
     this.currentTempo = 500000;
@@ -168,26 +179,10 @@ MidiTrack.prototype.getChannelName = function (noteNumber) {
     return this.channels[noteNumber].channelName;
 };
 
+///////////////////////////////
+// MidiChannel object and methods
+///////////////////////////////
 
-// MidiEvent
-function MidiEvent(eventType, noteAction, tick, note, tempo, eventData) {
-    this.eventType = eventType;
-    this.noteAction = noteAction;
-    this.tick = tick;
-    this.noteNumber = note;
-    this.tempo = tempo;
-    this.eventData = eventData;
-
-}
-
-MidiEvent.prototype.getNoteName = function (showOctave) {
-
-    return noteNumberToNoteName(this.noteNumber, showOctave);
-
-};
-
-
-// MidiChannel
 function MidiChannel(noteNumber, channelName, isValid) {
     this.noteNumber = noteNumber;
     this.channelName = channelName;
@@ -217,7 +212,32 @@ MidiChannel.prototype.recalculateDeltaTs = function () {
 
 };
 
-// Devices
+
+///////////////////////////////
+// MidiEvent object and methods
+///////////////////////////////
+
+function MidiEvent(eventType, noteAction, tick, note, tempo, eventData) {
+    this.eventType = eventType;
+    this.noteAction = noteAction;
+    this.tick = tick;
+    this.noteNumber = note;
+    this.tempo = tempo;
+    this.eventData = eventData;
+
+}
+
+MidiEvent.prototype.getNoteName = function (showOctave) {
+
+    return noteNumberToNoteName(this.noteNumber, showOctave);
+
+};
+
+
+///////////////////////////////
+// Device object and methods
+///////////////////////////////
+
 function Device(deviceName) {
 
     this.deviceName = deviceName;
@@ -234,84 +254,91 @@ function Device(deviceName) {
     this.bottomPadding = 6;
     this.leftPadding = 50;
 
-    // Array to store ordered list of channel offsets from bottom margin
-    this.channelOffsets = [];
-
-    // Array to store channel numbers for valid channels ie note numbers
+    // Array to store DeviceChannels
     this.validChannels = [];
 
-    // Array to hold description for each channel
-    this.channelDescriptions = [];
-
 }
 
-Device.prototype.setChannelOffset = function (channelNumber, offset) {
+Device.prototype.applySettings = function(deviceSettings){
 
-    for (var i = 0; i < this.validChannels.length; i++) {
-        if (this.validChannels[i] == channelNumber) {
-            this.channelOffsets[i] = offset;
+    for (var property in deviceSettings) {
+        if (deviceSettings.hasOwnProperty(property)) {
+
+            if(property == "validChannels"){
+
+                this.validChannels = [];
+
+                // Create DeviceChannel objects
+                for(var i = 0; i < deviceSettings['validChannels'].length; i++){
+                    //console.log(deviceSettings['validChannels'][i]['noteNumber']);
+                    var noteNumber = deviceSettings['validChannels'][i]['noteNumber'];
+                    var noteName = deviceSettings['validChannels'][i]['name'];
+                    var description = deviceSettings['validChannels'][i]['description'];
+
+                    var deviceChannel = new DeviceChannel(noteNumber, noteName, description);
+                    this.validChannels.push(deviceChannel);
+                }
+            } else {
+                this[property] = deviceSettings[property];
+            }
         }
     }
-    // Any other device stuff need to be recalculated????
+};
+
+Device.prototype.setChannelOffset = function (channelIndex, offset) {
+
+    var deviceChannel = this.validChannels[channelIndex];
+    deviceChannel["offset"] = offset;
 
 };
 
-Device.prototype.isValidDeviceChannel = function (channelNumber) {
+Device.prototype.isValidDeviceChannel = function (noteNumber) {
 
-    return this.validChannels.indexOf(channelNumber) > -1;
+    // Return true if the MIDI note number has been assigned to any
+    // channel in this.validChannels
 
-};
-
-Device.prototype.setDeviceChannelValidity = function (channelNumber, isValid) { // array of
-
-    var channelAlreadyValid = this.isValidDeviceChannel(channelNumber);
-
-    if (channelAlreadyValid) {
-
-        // ... and we want to set it to invalid
-        if (isValid == false) {
-            // Remove it from array
-            var index = this.validChannels.indexOf(channelNumber);
-            this.validChannels.splice(index, 1);
-
-        } else {
-            return;
-        }
-
-    } else {
-        // not already valid
-        if (isValid) {
-            // add it to array
-            this.validChannels.push(channelNumber);
+    var channelIsValid = false;
+    var validChannels = this.validChannels;
+    for (var i = 0; i < validChannels.length; i++) {
+        var channelToCheck = this.validChannels[i];
+        if (channelToCheck['noteNumber'] == noteNumber) {
+            channelIsValid = true;
         }
     }
 
+    return channelIsValid;
+
 };
 
-Device.prototype.clearValidChannels = function(){
-  this.validChannels = [];
+Device.prototype.addValidChannel = function (deviceChannel) {
+    this.validChannels.push(deviceChannel);
+};
+
+Device.prototype.removeValidChannel = function (channelIndex) {
+    this.validChannels.splice(channelIndex, 1);
+};
+
+Device.prototype.clearValidChannels = function () {
+    this.validChannels = [];
 };
 
 
-// Interface
+////////////////////////////////////
+// DeviceChannel object and methods
+////////////////////////////////////
 
-function noteClick(e) {
-
-    var output = document.getElementById('output');
-
-    console.dir(e.target);
-    //var noteData = e.target.getAttribute('data-notedata');
-    //var noteNumber = e.target.getAttribute('data-notenumber');
-
-    //var channelName = workingTrack.getChannelName(noteNumber);
-    //output.innerHTML = noteData + " " + channelName;
+function DeviceChannel(noteNumber, channelName, description) {
+    this.noteNumber = noteNumber;
+    this.name = channelName;
+    this.description = description;
+    this.offset = 0;
+    this.height = 0;
 }
 
-function svgNoteClick(e) {
-    var noteData = e.target.getAttribute('mididata:notedata');
-    var outputPara = document.getElementById("output");
-    outputPara.innerHTML = noteData;
-}
+
+////////////////////////////////////
+// Rendering
+////////////////////////////////////
 
 function clearRender(elem) {
     if (elem.hasChildNodes) {
@@ -321,16 +348,7 @@ function clearRender(elem) {
     }
 }
 
-// Temporary helper function
-function getNode(n, v) {
-    n = document.createElementNS("http://www.w3.org/2000/svg", n);
-    for (var p in v)
-        n.setAttributeNS(null, p, v[p]);
-    return n
-}
-
-
-function renderTrack(elem, track, device) {
+function renderTrack(elem, track, renderType) {
 
     clearRender(elem);
 
@@ -338,26 +356,32 @@ function renderTrack(elem, track, device) {
     // -decide whether or not to use a library for SVG rendering
     // -get topmost and bottommost element with events centre vertical scroll between them
     // -render track headers - notes, channel names, (toggle validity, double-click-edit)
+    // - lots of refactoring to do here
+    // - decisions on final look-and-feel, styles and methods of rendering
 
-
-    var minimumDistanceBetweenNotes = device.minDistBetweenNotes;
 
     // TODO figure out what this does...
     //var paperSpeed = device.paperSpeed;
-    var paperSpeed = device.minDistBetweenNotes / track.shortestDeltaT;
+
+    var paperSpeed = workingDevice.minDistBetweenNotes / track.shortestDeltaT;
+    var screenPaperSpeed = screenDevice.minDistBetweenNotes / track.shortestDeltaT;
 
     // Temporary render function for testing
     // This will be replaced by code that builds a Maker.js model
 
-    var channels = track.channels;
+    var trackChannels = track.channels;
     var maxX = 0;  // to set final width space for display
 
-
+    // Some variables to allow auto-scrolling to bring events into view
     var minY = 2000;
     var maxY = 0;
     var midY = 1000;
 
-    if (renderType == "screen") {
+    if (renderType == "screenRender") {
+
+        // Renders all 128 MIDI channels from MIDI track
+        // If device is set highlights invalid/valid channels
+        // Screen device dimension settings used
 
         var svgPianoRoll = getNode('svg');
         svgPianoRoll.setAttribute('id', 'svg-piano-roll');
@@ -366,12 +390,11 @@ function renderTrack(elem, track, device) {
         svgPianoRoll.setAttribute('width', '3000px');
         svgPianoRoll.setAttribute('height', '2000px');
 
+        for (var i = 0; i < trackChannels.length; i++) {
 
-        for (var i = 0; i < channels.length; i++) {
-
-            var channel = channels[i];
-            var events = channels[i].events;
-            var channelName = channels[i].channelName;
+            var channel = trackChannels[i];
+            var events = trackChannels[i].events;
+            var channelName = trackChannels[i].channelName;
 
             var svgChannelId = "channel_" + i;
             var svgChannel = getNode('g');
@@ -383,7 +406,7 @@ function renderTrack(elem, track, device) {
 
             var channelClass = 'svg-channel';
             // Set class based on validity of channel
-            if (screenDevice.isValidDeviceChannel(i)) {
+            if (workingDevice.isValidDeviceChannel(i)) {
                 channelClass += " valid";
             } else {
                 channelClass += " invalid";
@@ -411,21 +434,31 @@ function renderTrack(elem, track, device) {
 
                 if (evt.noteAction == "on") {
 
+                    var noteOffEvent = events[j + 1];
+                    var noteLength = ((noteOffEvent.tick - evt.tick) * screenPaperSpeed);
+
                     var noteData = evt.noteNumber + "_" + channelName + "_" + evt.noteAction + "_" + evt.tick;
 
-                    var evtXPos = (evt.tick * paperSpeed);  // scale this to units we want e.g pixels or mm
+                    var evtXPos = (evt.tick * screenPaperSpeed);  // scale this to units we want e.g pixels or mm
 
                     // Add a bit of space after - maybe get from device
                     if (evtXPos > maxX) {
                         maxX = evtXPos + screenDevice.rightPadding;
                     }
 
+                    var noteHeight = screenDevice.eventHeight;
+
+                    var noteWidth = screenDevice.eventWidth;
+                    if (showLongNotes) {
+                        noteWidth = noteLength;
+                    }
+
                     var svgEvent = getNode('rect');
                     var eventId = "note_" + i + "_" + j;
                     svgEvent.setAttribute('id', eventId);
                     svgEvent.setAttribute('mididata:notedata', noteData);
-                    svgEvent.setAttribute('width', screenDevice.eventWidth + "px");
-                    svgEvent.setAttribute('height', screenDevice.eventHeight + "px");
+                    svgEvent.setAttribute('width', noteWidth + "px");
+                    svgEvent.setAttribute('height', noteHeight + "px");
                     svgEvent.setAttribute('x', evtXPos);
                     svgEvent.setAttribute('y', '0');
                     svgEvent.setAttribute('rx', '3');
@@ -435,10 +468,10 @@ function renderTrack(elem, track, device) {
                     svgEvent.addEventListener('click', svgNoteClick);
 
                     // Keep track of event Ys to enable scrolling to where events appear
-                    if(channelY < minY){
+                    if (channelY < minY) {
                         minY = channelY;
                     }
-                    if(channelY > maxY){
+                    if (channelY > maxY) {
                         maxY = channelY;
                     }
 
@@ -457,12 +490,16 @@ function renderTrack(elem, track, device) {
         midY = (minY + maxY) / 2;
         // Scroll to where events are in Piano Roll
         document.getElementById('track-output').scrollTop = minY;
+        document.getElementById('secondary-view').scrollTop = minY;
 
-        console.log("Minimum Y: " + minY + " Maximum Y: " + maxY + " Middle Y: " + midY);
+        //console.log("Minimum Y: " + minY + " Maximum Y: " + maxY + " Middle Y: " + midY);
 
     }
 
-    if (renderType == "screenCollapsed") {
+    if (renderType == "screenCollapsedRender") {
+
+        // Renders only the MIDI tracks that match the selected devices valid channels
+        // Screen device dimension settings used
 
         var numValidChannels = screenDevice.validChannels.length;
         var pianoRollHeight = numValidChannels * screenDevice.channelHeight;
@@ -476,17 +513,15 @@ function renderTrack(elem, track, device) {
 
         var channelsProcessed = 0;
 
-        for (var i = 0; i < channels.length; i++) {
+        for (var i = 0; i < trackChannels.length; i++) {
 
-            if (screenDevice.isValidDeviceChannel(i)) {
-
-                console.log("valid channel" + screenDevice.isValidDeviceChannel(i));
+            if (workingDevice.isValidDeviceChannel(i)) {
 
                 // Only render valid device channels
 
-                var channel = channels[i];
-                var events = channels[i].events;
-                var channelName = channels[i].channelName;
+                var channel = trackChannels[i];
+                var events = trackChannels[i].events;
+                var channelName = trackChannels[i].channelName;
 
                 var svgChannelId = "channel_" + i;
                 var svgChannel = getNode('g');
@@ -498,7 +533,7 @@ function renderTrack(elem, track, device) {
 
                 var channelClass = 'svg-channel';
                 // Set class based on validity of channel
-                if (screenDevice.isValidDeviceChannel(i)) {
+                if (workingDevice.isValidDeviceChannel(i)) {
                     channelClass += " valid";
                 } else {
                     channelClass += " invalid";
@@ -528,7 +563,7 @@ function renderTrack(elem, track, device) {
 
                         var noteData = evt.noteNumber + "_" + channelName + "_" + evt.noteAction + "_" + evt.tick;
 
-                        var evtXPos = (evt.tick * paperSpeed);  // scale this to units we want e.g pixels or mm
+                        var evtXPos = (evt.tick * screenPaperSpeed);  // scale this to units we want e.g pixels or mm
 
                         // Add a bit of space after - maybe get from device
                         if (evtXPos > maxX) {
@@ -549,35 +584,48 @@ function renderTrack(elem, track, device) {
 
                         svgEvent.addEventListener('click', svgNoteClick);
 
+                        // Keep track of event Ys to enable scrolling to where events appear
+                        if (channelY < minY) {
+                            minY = channelY;
+                        }
+                        if (channelY > maxY) {
+                            maxY = channelY;
+                        }
+
                         svgChannel.appendChild(svgEvent);
 
                     }
 
                 }
 
-
                 svgPianoRoll.appendChild(svgChannel);
                 channelsProcessed++;
             }
 
             elem.appendChild(svgPianoRoll);
+
+            midY = (minY + maxY) / 2;
+            // Scroll to where events are in Piano Roll
+            document.getElementById('track-output').scrollTop = minY;
+            document.getElementById('secondary-view').scrollTop = minY;
         }
 
     }
 
-    if (renderType == "strip") {
+    if (renderType == "stripRender") {
 
-        if(workingDevice == undefined){
-            workingDevice = new Device("screen");
-            initializeScreenDevice(workingDevice);
-        }
+        // Renders only the MIDI tracks that match the selected devices valid channels
+        // User's device dimension settings used
+        // Renders single strip for whole track
 
         var units = "mm";
 
-        if(workingDevice["deviceName"] == "screen"){
+        // If user hasn't selected a device yet use pixels
+        // if they have selected a device use mm so output can be saved to file
+        if (workingDevice["deviceName"].toLocaleLowerCase() == "screen") {
+            console.log("Working device is screen");
             units = "px";
         }
-
 
         var numValidChannels = workingDevice.validChannels.length;
 
@@ -592,15 +640,15 @@ function renderTrack(elem, track, device) {
 
         var channelsProcessed = 0;
 
-        for (var i = 0; i < channels.length; i++) {
+        for (var i = 0; i < trackChannels.length; i++) {
 
-            if (device.isValidDeviceChannel(i)) {
+            if (workingDevice.isValidDeviceChannel(i)) {
 
                 // Only render valid device channels
 
-                var channel = channels[i];
-                var events = channels[i].events;
-                var channelName = channels[i].channelName;
+                var channel = trackChannels[i];
+                var events = trackChannels[i].events;
+                var channelName = trackChannels[i].channelName;
 
                 var svgChannelId = "channel_" + i;
                 var svgChannel = getNode('g');
@@ -613,7 +661,7 @@ function renderTrack(elem, track, device) {
                 var channelClass = 'svg-channel strip';
 
                 var channelY = ((channelsProcessed + 1) * workingDevice.channelHeight) + workingDevice.bottomPadding;
-                if (units == "mm"){
+                if (units == "mm") {
                     channelY *= 3.543307; // convert user units to mm
                 }
                 var transformValue = "translate(0," + channelY + ")";
@@ -662,21 +710,31 @@ function renderTrack(elem, track, device) {
 
                         svgEvent.addEventListener('click', svgNoteClick);
 
+                        // Keep track of event Ys to enable scrolling to where events appear
+                        if (channelY < minY) {
+                            minY = channelY;
+                        }
+                        if (channelY > maxY) {
+                            maxY = channelY;
+                        }
+
                         svgChannel.appendChild(svgEvent);
 
                     }
-
                 }
-
 
                 svgPianoRoll.appendChild(svgChannel);
                 channelsProcessed++;
             }
 
-
-
             elem.appendChild(svgPianoRoll);
+
+            midY = (minY + maxY) / 2;
+            // Scroll to where events are in Piano Roll
+            document.getElementById('track-output').scrollTop = minY;
+            document.getElementById('secondary-view').scrollTop = minY;
         }
+
         // Add strip border rect
         var stripRect = getNode('rect');
         stripRect.setAttribute('id', "strip-rect");
@@ -694,70 +752,27 @@ function renderTrack(elem, track, device) {
 
     }
 
-    if (renderType == "page") {
+    if (renderType == "pageRender") {
 
+        // Renders strip 'chunks' tiled on selected paper size
+        // TODO create page layout objects and use here
     }
 
-    if (renderType == "screenOld") {
-
-        for (var i = 0; i < channels.length; i++) {
-
-            var htmlChannel = document.createElement('div');
-
-            htmlChannel.setAttribute('id', 'channel_' + i);
-
-            var channelClass = 'channel';
-            // Set class based on validity of channel
-            if (device.isValidDeviceChannel(i)) {
-                channelClass += " valid-channel";
-            } else {
-                channelClass += " invalid-channel";
-            }
-
-            htmlChannel.setAttribute('class', channelClass);
-
-            var events = channels[i].events;
-            var channelName = channels[i].channelName;
-
-            for (var j = 0; j < events.length; j++) {
-
-                var evt = events[j];
-
-                if (evt.noteAction == "on") {
-
-                    var noteData = evt.noteNumber + "_" + channelName + "_" + evt.noteAction + "_" + evt.tick;
-
-                    var htmlEvent = document.createElement('div');
-                    htmlEvent.setAttribute('data-notedata', noteData);
-                    htmlEvent.setAttribute('data-notenumber', evt.noteNumber);
-                    htmlEvent.setAttribute('class', 'event-dot');
-
-                    var evtXPos = (evt.tick * paperSpeed);  // scale this to units we want e.g pixels or mm
-
-                    // Add a bit of space after - maybe get from device
-                    if (evtXPos > maxX) {
-                        maxX = evtXPos + device.rightPadding;
-                    }
-
-                    var positionStyle = "left:" + evtXPos + "px;";
-                    htmlEvent.setAttribute('style', positionStyle);
-
-                    htmlEvent.addEventListener('click', noteClick);
-
-                    htmlChannel.appendChild(htmlEvent);
-                }
-
-
-            }
-
-            elem.appendChild(htmlChannel);
-        }
-
-        elem.setAttribute('style', 'width:' + maxX + "px;");
-    }
 
 }
 
+
+
+
+////////////////////////////////////
+// User interaction and interface
+////////////////////////////////////
+
+function svgNoteClick(e) {
+    var noteData = e.target.getAttribute('mididata:notedata');
+    var outputPara = document.getElementById("output");
+    outputPara.innerHTML = noteData;
+}
 
 function loadMidiFile(file) {
     if (!file) {
@@ -771,59 +786,70 @@ function loadMidiFile(file) {
 
     reader.onload = function (e) {
 
+        // Parse MIDI data from file
         var midiData = MIDIParser.Uint8(new Uint8Array(e.target.result));
-
+        // Create new MidiTrack object
         workingTrack = new MidiTrack();
         workingTrack.setEvents(midiData, false);
         workingTrack.eventsToChannels(workingTrack.events, true);
 
-        renderTrack(document.getElementById('piano-roll'), workingTrack, screenDevice);
+        // Render with MIDI track loaded
+        renderTrack(document.getElementById('piano-roll'), workingTrack, "screenRender");
 
-        //prepareFiles();
+        var secondaryView = document.getElementById("secondary-view");
+        renderTrack(secondaryView, workingTrack, "stripRender");
+
     };
 
     return true;
 }
 
-function applySettingsToDevice(device, deviceSetting){
+function setDevice() {
 
-    for (var property in deviceSetting) {
-        if (deviceSetting.hasOwnProperty(property)) {
-            //console.log(property);
-            device[property] = deviceSetting[property];
-        }
-    }
-}
-
-function setDevice(){
-
+    // Get user choice of known devices
     var deviceSelect = document.getElementById('device-select');
     var deviceChoice = deviceSelect.options[deviceSelect.selectedIndex].value;
 
     // Use choice to select a known device
-    if (deviceChoice != "none"){
+    if (deviceChoice != "none") {
 
-        var userDevice = knownDevices[deviceChoice];
-
-        if(workingDevice == undefined){
-            workingDevice = new Device(userDevice["deviceName"]);
-        }
+        // Grab settings from devices.js
+        var userDeviceSettings = knownDevices[deviceChoice];
 
         // Copy properties of known device to working device
-        applySettingsToDevice(workingDevice, userDevice);
-
+        workingDevice.applySettings(userDeviceSettings);
 
         // Set screen device valid channels to match user device to enable view of valid channels
         screenDevice.clearValidChannels();
         screenDevice.validChannels = workingDevice.validChannels;
 
-        renderTrack(document.getElementById("piano-roll"), workingTrack, workingDevice);
-    }
+        renderTrack(document.getElementById("piano-roll"), workingTrack, currentRenderType);
 
+        var secondaryView = document.getElementById("secondary-view");
+        renderTrack(secondaryView, workingTrack, "stripRender");
+    }
+}
+
+function changeRenderType(e) {
+
+    // Keep track of current render type so if user changes device then the
+    // render they are looking at stays the same
+    currentRenderType = e.target.id;
+    renderTrack(document.getElementById("piano-roll"), workingTrack, e.target.id);
 
 }
 
+function changeLongNoteValue(){
+    showLongNotes = document.getElementById('show-long-notes').checked;
+    console.log(showLongNotes);
 
+    renderTrack(document.getElementById("piano-roll"), workingTrack, currentRenderType);
+
+    var secondaryView = document.getElementById("secondary-view");
+    renderTrack(secondaryView, workingTrack, "stripRender");
+}
+
+// Testing and dev experiments
 function testChannelChange() {
 
     var channelNumber = parseInt(document.getElementById('channel-number').value);
@@ -834,50 +860,6 @@ function testChannelChange() {
     workingTrack.setChannelName(channelNumber, channelName);
 }
 
-function initializeScreenDevice(device) {
 
-    var shortestDeltaT = workingTrack.shortestDeltaT;
-
-    device.minDistBetweenNotes = 15;
-    device.paperSpeed = device.minDistBetweenNotes / shortestDeltaT;
-    device.channelHeight = 15;
-    device.eventHeight = device.channelHeight;
-    device.eventWidth = 15;
-    device.bottomPadding = 20;
-    device.topPadding = 20;
-
-    // Set all offsets ???? is this necessary for screen device??
-    for (var j = 0; j < 128; j++) {
-        device.channelOffsets.push(20 * j);
-    }
-
-    // All channels initially valid
-    for (var i = 0; i < 128; i++) {
-        device.setDeviceChannelValidity(i, true);
-    }
-
-}
-
-
-
-function changeRenderType(e) {
-
-    var viewBtnId = e.target.id;
-    if(viewBtnId == "screen-btn"){
-        renderType = "screen";
-    }
-    if(viewBtnId == "screen-collapsed-btn"){
-        renderType = "screenCollapsed";
-    }
-    if (viewBtnId == "strip-btn"){
-        renderType = "strip";
-    }
-    if(viewBtnId == "page-btn"){
-        renderType = "page";
-    }
-
-    renderTrack(document.getElementById("piano-roll"), workingTrack, screenDevice);
-
-}
 
 

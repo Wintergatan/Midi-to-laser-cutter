@@ -8,9 +8,12 @@
 
     <script src="inc/devices.js"></script>
     <script src="inc/render.js"></script>
+
     <script type="application/javascript">
 
         window.onload = function () {
+
+            // Add eventListeners to interface elements
 
             var fileBtn = document.getElementById('file-picker-midi');
             fileBtn.addEventListener('change', function () {
@@ -20,20 +23,33 @@
             var deviceSelect = document.getElementById('device-select');
             deviceSelect.addEventListener('change', setDevice);
 
-            //var displaySelect = document.getElementById('display-select');
-            //displaySelect.addEventListener('change', changeRenderType);
-
             var viewControls = document.getElementById('view-controls');
             viewControls.addEventListener('click', changeRenderType);
 
-            var pianoRoll = document.getElementById("piano-roll");
+            var useLongNotesControls = document.getElementById('show-long-notes');
+            useLongNotesControls.addEventListener('change', changeLongNoteValue);
 
+            // Set up globals - track, screenDevice and workingDevice
+            // screenDevice == settings for Piano Roll renders
+            // workingDevice == device to hold user specified device settings
             workingTrack = new MidiTrack();
             screenDevice = new Device("screen");
+            workingDevice = new Device("screen");
 
-            initializeScreenDevice(screenDevice);
-            renderTrack(pianoRoll, workingTrack, screenDevice);
+            // Apply stored settings object to screenDevice (from devices.js)
+            var screenDeviceSettings = knownDevices['screen'];
+            screenDevice.applySettings(screenDeviceSettings);
 
+            // Initially start with a workingDevice that matches the screenDevice
+            workingDevice.applySettings(screenDevice);
+
+            // Grab element to render to
+            var pianoRoll = document.getElementById("piano-roll");
+            // Intial render of screen with no track loaded
+            renderTrack(pianoRoll, workingTrack, "screenRender");
+
+            var secondaryView = document.getElementById("secondary-view");
+            renderTrack(secondaryView, workingTrack, "stripRender");
 
         };
 
@@ -42,10 +58,9 @@
     <link rel="stylesheet" href="styles/styles.css">
 
 
-
 </head>
 <body>
-<svg id="svg-defs" viewBox="0 0 0 0"  xmlns:mididata="xmlns='http://yuleblinker.com/midimusicbox'"
+<svg id="svg-defs" viewBox="0 0 0 0" xmlns:mididata="xmlns='http://yuleblinker.com/midimusicbox'"
      width="0px"
      height="0px">
     <defs>
@@ -68,6 +83,7 @@
             <p class="label">2: Specify Device </p>
             <select id="device-select">
                 <option value="none">Select Device...</option>
+                <option value="screen">Screen</option>
                 <option value="GI20">GI 20</option>
                 <option value="GI30">GI 30</option>
                 <option value="GI15">GI 15</option>
@@ -76,19 +92,30 @@
         </div>
         <div id="view-controls">
             <p class="label">3: Render View (click buttons) </p>
-            <button id="screen-btn" title="Screen Un-collapsed" class="view-btn"><img src="images/screen.png"/></button>
-            <button id="screen-collapsed-btn" title="Screen Collapsed" class="view-btn"><img
+            <button id="screenRender" title="Screen Un-collapsed" class="view-btn"><img src="images/screen.png"/>
+            </button>
+            <button id="screenCollapsedRender" title="Screen Collapsed" class="view-btn"><img
                     src="images/screen_collapsed.png"/></button>
-            <button id="strip-btn" title="Strip" class="view-btn"><img src="images/strip.png"/></button>
-            <button id="page-btn" title="Page" class="view-btn"><img src="images/page.png"/></button>
+            <button id="stripRender" title="Strip" class="view-btn"><img src="images/strip.png"/></button>
+            <button id="pageRender" title="Page" class="view-btn"><img src="images/page.png"/></button>
         </div>
+        <div id="other-controls">
+            <p id="output">Click on events</p>
+            <label id="show-long-notes-label" for="show-long-notes">Show long notes
+                <input id="show-long-notes" type="checkbox"/>
+            </label>
 
-        <p id="output">Click on events</p>
+        </div>
 
     </div>
 
     <div id="track-output">
         <div id="piano-roll">
+
+        </div>
+    </div>
+    <div id="other-view">
+        <div id="secondary-view">
 
         </div>
     </div>
