@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MidiConvert.js Object Viewer</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        #container {
+            position: relative;
+            width: 85%;
+            min-height: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        #controls {
+            position: relative;
+            width: 16%;
+            float: left;
+        }
+
+        #output {
+            position: relative;
+            border: 1px solid darkgray;
+            float: right;
+            width: 75%;
+            min-height: 680px;
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1em;
+        }
+
+        p {
+
+            width: 100px;
+            height: 40px;
+            display: block;
+
+            font-size: 0.6em;
+        }
+
+        #json-view {
+            position: relative;
+            width: 99%;
+            min-height: 680px;
+            overflow: scroll;
+        }
+
+    </style>
+
+    <script src="inc/MidiConvert.js"></script>
+
+    <script type="application/javascript">
+
+
+        function parseFile(file){
+            //read the file
+            var reader = new FileReader();
+            reader.onload = function(e){
+
+                var partsData = MidiConvert.parse(e.target.result);
+                document.getElementById("json-view").value = JSON.stringify(partsData, undefined, 2);
+            };
+            reader.readAsBinaryString(file);
+        }
+
+
+
+        function loadMidiFile(e) {
+
+            //get the files
+            var files = e.target.files;
+            if (files.length > 0){
+                var file = files[0];
+                parseFile(file);
+            };
+
+        }
+
+        window.onload = function () {
+
+            var fileBtn = document.getElementById('file-input');
+            fileBtn.addEventListener('change', loadMidiFile);
+        };
+
+    </script>
+
+
+
+</head>
+<body>
+<div id="container">
+    <div id="controls">
+        <h1>MidiConvert.js object viewer</h1>
+        <input id="file-input" type="file"/>
+        <p>Load a MIDI file. A JSON reprsentation of the parsed MIDI will be displayed below.</p>
+
+    </div>
+    <div id="output">
+        <textarea id="json-view"/></textarea>
+    </div>
+</div>
+</body>
+</html>
