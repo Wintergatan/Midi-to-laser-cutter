@@ -21,24 +21,62 @@ function compare(a, b) {
     if (a < b) return -1;
     return 0;
 }
+////////////////////////////////////////////////////////////////
 
-function noteNumberToNoteName(noteNumber, showOctave) {
 
-    // TODO allow french note names and drum instrument names
 
-    var noteNameIndex = noteNumber % 10;
 
-    // TODO check logic below for calculating octave number
-    var octave = (Math.floor(noteNumber / 12)).toString();
 
-    var noteName = noteNames[noteNameIndex];
+//
+// var midi_pitches_letter =  { '12':'c', '13':'c#', '14':'d', '15':'d#', '16':'e', '17':'f', '18':'f#', '19':'g', '20':'g#', '21':'a', '22':'a#', '23':'b' };
+// var midi_flattened_notes = { 'a#':'bb', 'c#':'db', 'd#':'eb', 'f#':'gb', 'g#':'ab' };
+//
+//
+// function noteNumberToNoteName(noteNumber, showOctave,  returnFlattened) {
+//     var octave = 0;
+//     var noteNum = noteNumber;
+//     var noteName;
+//
+//     if (noteNumber > 23) {
+//         // noteNum is on octave 1 or more
+//         octave = Math.floor(noteNumber/12) - 1;
+//         // subtract number of octaves from noteNum
+//         noteNum = noteNumber - octave * 12;
+//     }
+//
+//     // get note name (c#, d, f# etc)
+//     noteName = midi_pitches_letter[noteNum];
+//     // Use flattened notes if requested (e.g. f# should be output as gb)
+//     if (returnFlattened && noteName.indexOf('#') > 0) {
+//         noteName = midi_flattened_notes[noteName];
+//     }
+//     if(showOctave){
+//         noteName += octave;
+//     }
+//     return noteName;
+// }
 
-    if (showOctave == true) {
-        noteName += octave;
-    }
 
-    return noteName;
-}
+/////////////////////////////////////////////////////////
+
+
+// function noteNumberToNoteName(noteNumber, showOctave) {
+//
+//     // TODO allow french note names and drum instrument names
+//
+//     var noteNameIndex = noteNumber % 10;
+//
+//     // TODO check logic below for calculating octave number
+//     var octave = (Math.floor(noteNumber / 12)).toString();
+//
+//     var noteName = noteNames[noteNameIndex];
+//
+//     if (showOctave == true) {
+//         noteName += octave;
+//     }
+//
+//     return noteName;
+// }
 
 // Temporary helper function
 function getNode(n, v) {
@@ -109,7 +147,7 @@ MidiTrack.prototype.clearChannels = function () {
 MidiTrack.prototype.createChannels = function () {
     for (var i = 0; i < 128; i++) {
 
-        var channelName = noteNumberToNoteName(i);
+        var channelName = noteNumberToNoteName(i,true);
         var channel = new MidiChannel(i, channelName, true);
         this.channels.push(channel);
     }
