@@ -48,3 +48,24 @@ p {
     min-height: 680px;
     overflow: scroll;
 }
+header{
+    margin-top:10px;
+    position: relative;
+    width: 85%;
+    height: 20px;
+    margin-left:auto;
+    margin-right:auto;
+    padding-left: 25%;
+}
+header a{
+
+    display:inline-block;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    background-color: darkgray;
+    color:white;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 5px;
+}
