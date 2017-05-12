@@ -8,7 +8,7 @@
     <script src="inc/midi-parser.js"></script>
     <script src="inc/render.js"></script>
 
-    <script src="inc/scales.js"></script>
+    <script src="inc/scalesandnotes.js"></script>
 
 
     <script type="application/javascript">
@@ -224,19 +224,42 @@
             var scaleModeSelect = document.getElementById('new-device-mode');
             var mode = scaleModeSelect.options[scaleModeSelect.selectedIndex].value;
 
-            console.log(deviceId + " " + numChannels + " " + startNoteNumber + " " + startNote +  " " + scale + " "+ mode);
 
-            // TODO figure out how to calculate a list of valid MIDI notes from the info above???
-            var scaleNotes = generateScale(60, scale, mode);
-            console.log(scaleNotes);
+            var modeArray = scaleModes[scale][mode];
 
-            var newDevice = new Device("");
+            var currentNote = startNoteNumber;
+            var notesNumbers = [currentNote];
+            var noteNames = [noteNumberToNoteName(currentNote)];
+
+            console.log("currentNote: " + currentNote);
+
+            for(var j = 0; j < numChannels; j++){
+
+                var intervalIndex = j % 7; // position in mode array
+                currentNote += modeArray[intervalIndex];
+
+                notesNumbers.push(currentNote);
+                noteNames.push(noteNumberToNoteName(currentNote, true, false))
+            }
+
+            for(var k =0; k < notesNumbers.length; k++){
+                console.log("noteNumber: " + notesNumbers[k]  + " name:" +  noteNames[k]);
+            }
+
+
+            var newDevice = new Device("My Device");
             defaultDevice.applySettings(newDevice);
 
-            for(var i = 0; i < numChannels; i++){
-                var validChannel = new DeviceChannel(startNoteNumber, noteNumberToNoteName(startNoteNumber, true), "");
+            for(var i = 0; i < notesNumbers.length; i++){
+
+                var newNoteNumber = notesNumbers[i];
+                var newNoteName = noteNumberToNoteName(notesNumbers[i], true);
+
+                var validChannel = new DeviceChannel(newNoteNumber, newNoteName , "");
                 defaultDevice.addValidChannel(validChannel);
             }
+
+
 
             renderDeviceJSON();
             updateControls();
@@ -619,6 +642,7 @@
     </script>
 
     <link rel="stylesheet" href="styles/device_concept.css">
+
 
 
 </head>
