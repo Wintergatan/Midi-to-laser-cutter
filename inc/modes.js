@@ -162,4 +162,5 @@ var intervals = [
   }
 ];
 
-Console.log( intervals[5]['name'] );
+/* quick test */
+document.write( intervals[5]['augdim_name'] );
