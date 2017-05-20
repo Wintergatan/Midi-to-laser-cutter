@@ -32,3 +32,19 @@ Open a new CMD and type and run `npm run server`
 This will server the file from a small server and it should open a browser on the correct page.
 
 Happy coding.
+
+# Build new version
+
+Type and run `npm run build:prod`
+
+Open a new CMD and type and run `npm run server`
+
+Test application.
+
+Copy the content in build folder.
+
+Remove app.[hash].js and polyfills.[hash].js from dist folder.
+
+Paste clipboard to dist folder. Overwrite every file.
+
+Commit, push and check if your changes appears on the website.
