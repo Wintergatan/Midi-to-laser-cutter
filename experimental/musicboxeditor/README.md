@@ -27,6 +27,8 @@ This will build the project to the dist folder and watch the project files.
 First run will takes some time but the next after that will be way faster.
 If you make changes to the files it will automatically rebuild the project.
 
+You will get some typing errors. Do not mind those. They have no effect on the acctual code.
+
 Open a new CMD and type and run `npm run server`
 
 This will server the file from a small server and it should open a browser on the correct page.
