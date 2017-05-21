@@ -31,6 +31,7 @@ export class AppComponent {
 
     header: IHeader;
     notes: INote[];
+    ghostNote: INote = null;
 
     /*
         C  |C# |D  |D# |E  |F  |F# |G  |G# |A  |A# |B 
@@ -134,10 +135,6 @@ export class AppComponent {
                     this.dialogService.openMessage('Help',
                         `This application is under development. 
 Expect bugs and incomplete features.
-
-Missing features:
-- Add notes.
-- Move notes.
 
 Getting started:
 Import one or more midi files.
@@ -503,6 +500,96 @@ Or right click on note to delete it.
 
     }
 
+    //Ghost note
+    showGhostNote(): boolean{
+        if(this.ghostNote != null){
+            return true;
+        }
+        return false;
+    }
+
+    onMouseEnterSvg(event: MouseEvent){
+        this.createGhostNote();
+        event.preventDefault();
+    }
+
+    onMouseLeaveSvg(event: MouseEvent){
+        this.ghostNote = null;
+        event.preventDefault();
+    }   
+
+    onClickSvg(event: MouseEvent){
+        this.notes.push(this.ghostNote);
+        this.sortNotes();
+        this.createGhostNote();
+        event.preventDefault();
+    }
+
+    onMouseOverSvg(event: MouseEvent){
+        var loc = this.getCursorInSvg(event);
+        var x = loc.x;
+        var y = loc.y - this.trackPadding;
+
+        //clamp
+        if(x < 0){
+            x = 0;
+        }
+
+        if(y < 0){
+            y = 0;
+        }
+
+        var test = this.noteDistance * (this.noteScale.length - 1);
+        if(y > test){
+            y = test;
+        }
+
+        //get data
+        var noteScaleIndex = (this.noteScale.length - 1) - Math.round(y / this.noteDistance);
+        var time = x / 16;
+
+        this.updateGhostNote(noteScaleIndex, time);
+        
+        //console.log(`Position: { x: ${x}, y:${y} midi: ${noteScaleIndex}}`);
+        event.preventDefault();
+    }
+
+    getCursorInSvg(evt) {
+        var svg:SVGSVGElement = <any>document.getElementById("musicbox-svg");//slow
+        var pt=svg.createSVGPoint();
+        pt.x=evt.clientX;
+        pt.y=evt.clientY;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+    }
+
+    createGhostNote(){
+        if(this.ghostNote != null){
+            var g: INote = {
+                name: this.ghostNote.name.toString(),
+                midi: this.ghostNote.midi,
+                time: this.ghostNote.time,
+                velocity: this.ghostNote.velocity,
+                duration: this.ghostNote.duration
+            };
+
+            this.ghostNote = g;
+        }else{
+            this.ghostNote = {
+                name: this.midiToNote(0),
+                midi: 0,
+                time: 0,
+                velocity: 0.5,
+                duration: 0.25
+            }
+        }
+    }
+
+    updateGhostNote(noteScaleIndex: number, time: number){
+        this.ghostNote.midi = this.noteScale[noteScaleIndex];
+        this.ghostNote.name = this.midiToNote(this.ghostNote.midi);
+        this.ghostNote.time = time;
+    }
+
     generateSvg(): string {
         var svg = document.getElementById('musicbox-svg');
         var clone = svg.cloneNode(true);
@@ -516,6 +603,10 @@ Or right click on note to delete it.
         clone.removeChild(element);
         element = this.getChildById('track-part-divider', <Element>clone);
         clone.removeChild(element);
+        element = this.getChildById('ghost-note', <Element>clone);
+        if(element != null){
+            clone.removeChild(element);
+        }
 
         var s = (<HTMLElement>clone).outerHTML.toString();
 

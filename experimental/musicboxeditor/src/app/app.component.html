@@ -94,7 +94,7 @@
         <text class="note" *ngFor="let ns of noteScale" (click)="onClickScale($event, ns)" style="font-size: 1mm; vertical-align: middle;" text-anchor="start" x="2" [attr.y]="getTextY(ns)" [textContent]="midiToNote(ns)"></text>
       </svg>  
       <div class="track">
-        <svg id="musicbox-svg" *ngIf="showTrack()" [attr.width]="getViewBoxWidth()" [attr.height]="getViewBoxHeight()" [attr.viewBox]="getTrackViewBox()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+        <svg id="musicbox-svg" *ngIf="showTrack()" [attr.width]="getViewBoxWidth()" [attr.height]="getViewBoxHeight()" [attr.viewBox]="getTrackViewBox()" (click)="onClickSvg($event)" (mouseenter)="onMouseEnterSvg($event)" (mouseleave)="onMouseLeaveSvg($event)" (mousemove)="onMouseOverSvg($event)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
           <!--Pattern-->
           <defs id="defs">
             <pattern id="map" width="8" height="3" patternUnits="userSpaceOnUse">
@@ -111,6 +111,16 @@
             <rect fill="url(#map)" [attr.x]="getNoteGuideX()" [attr.y]="getNoteGuideY()" [attr.width]="getNoteGuideWidth()" [attr.height]="getNoteGuideHeight()"/>
           </g> 
           
+          <!--Ghost Note-->
+          <g id="ghost-note" *ngIf="showGhostNote()"> 
+            <template [ngIf]="isCircleNoteType()">
+              <ellipse [attr.fill]="getNoteFillColor(ghostNote)" stroke="#000" stroke-width="0.5" [attr.cx]="getNoteX(ghostNote)" [attr.cy]="getNoteY(ghostNote)" [attr.rx]="getNoteWidth(ghostNote)" [attr.ry]="getNoteHeight()" />
+            </template>
+            <template [ngIf]="!isCircleNoteType()">
+              <rect [attr.fill]="getNoteFillColor(ghostNote)" stroke="#000" stroke-width="0.5" [attr.x]="getNoteX(ghostNote)" [attr.y]="getNoteY(ghostNote)" [attr.width]="getNoteWidth(ghostNote)" [attr.height]="getNoteHeight()" />
+            </template>
+          </g>
+
           <!--Notes-->
           <g id="notes">
             <template [ngIf]="isCircleNoteType()">
