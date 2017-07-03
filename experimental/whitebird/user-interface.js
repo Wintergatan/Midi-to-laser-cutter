@@ -6,6 +6,9 @@ $(document).ready(function () {
     var MIDI_MIN_NOTE_NUMBER = 0;
     var MIDI_MAX_NOTE_NUMBER = 127;
     var MIDI_NUMBER_OF_NOTES = 12;
+    // To be replaced by a setting
+    var STROKE_WIDTH = 1;
+
     var song;
 
     $("#file-picker-midi").change(function () {
@@ -118,8 +121,11 @@ $(document).ready(function () {
     });
 
     function refreshPreview() {
+        snap.clear();
+
         var lowestNote = MIDI_MAX_NOTE_NUMBER;
         var highestNote = MIDI_MIN_NOTE_NUMBER;
+
         $.each(song, function (i, note) {
             if (note.midi < lowestNote)
                 lowestNote = note.midi;
@@ -128,11 +134,28 @@ $(document).ready(function () {
             console.log(note);
         });
 
-        $.each(song, function (i, note) {
-            // x y r
-            snap.circle(20 + note.time * 100, note.midi, 5);
+        var notesGroup = snap.g();
+        notesGroup.attr({
+            fill: "none",
+            stroke: "#000000",
+            strokeWidth: STROKE_WIDTH
         });
-        
+
+        $.each(song, function (i, note) {
+            var x = 20 + note.time * 100;
+            var y = note.midi;
+            var radius = 5;
+            notesGroup.add(snap.circle(x, y, radius));
+        });
+
+        snap.text(1,10, "1C");
+
+        snap.polyline([0, 0, 300, 0, 1800, 500]).attr({
+            fill: "none",
+            stroke: "#000000",
+            strokeWidth: STROKE_WIDTH
+        });
+
     }
 
     /*
