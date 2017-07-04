@@ -7,9 +7,14 @@ $(document).ready(function () {
     var MIDI_MAX_NOTE_NUMBER = 127;
     var MIDI_NUMBER_OF_NOTES = 12;
     // To be replaced by a setting
+    var WORKPIECE_WIDTH = "600mm";
+    var WORKPIECE_HEIGHT = "300mm";
     var STROKE_WIDTH = 1;
 
     var BPM = 120;
+    var AMOUNT_OF_PINS = 20;
+
+    var VOLUME_VALUE = -6;
 
     var song;
 
@@ -17,10 +22,13 @@ $(document).ready(function () {
         var fileName = $(this).val();
         $("#midi-file").val(fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length));
         var file = $('#file-picker-midi')[0].files[0];
-        loadMidiFile(file)
+        console.log(file);
+        loadMidiFile(file);
         //$("#download-btn").prop('disabled', false)
     });
 
+    // TO REMOVE
+    //loadMidiFile("");
     function loadMidiFile(file) {
         console.log('Uploading file detected in INPUT ELEMENT, processing data..');
         var reader = new FileReader();
@@ -31,7 +39,7 @@ $(document).ready(function () {
                 alert("Error loading midi file.")
                 return;
             }
-            console.log(song);
+            //console.log(song);
             var tracks = song.tracks.map(function (a) {
                 if (a.name)
                     return a.name;
@@ -54,7 +62,12 @@ $(document).ready(function () {
 
         };
         reader.readAsBinaryString(file);
-        return true;
+
+        /*MidiConvert.load("bwv-846.mid", function (midi) {
+            console.log(midi)
+            song = midi.tracks[1].notes;
+            console.log(song);
+        })*/
     }
 
     $('#selectTrackForm').submit(function (e) {
@@ -62,7 +75,7 @@ $(document).ready(function () {
         $('#trackModal').modal('hide');
         var i = $('#trackPicker option:selected').val();
         song = song.tracks[i].notes;
-        console.log(song)
+        //console.log(song)
     });
 
     // Based on the table at http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm
@@ -116,14 +129,26 @@ $(document).ready(function () {
     /*
      * Showing preview
      */
+
     var snap = Snap("#preview");
+    snap.zpd();
+    var canvas = Snap.select('#snapsvg-zpd-'+snap.id);
 
     $("#show-preview").click(function () {
         refreshPreview();
     });
 
     function refreshPreview() {
-        snap.clear();
+
+
+            canvas.clear();
+        //snap.clear();
+
+        canvas.rect(0, 0, WORKPIECE_WIDTH, WORKPIECE_HEIGHT).attr({
+            fill: "none",
+            stroke: "#000000",
+            strokeWidth: STROKE_WIDTH
+        });
 
         var lowestNote = MIDI_MAX_NOTE_NUMBER;
         var highestNote = MIDI_MIN_NOTE_NUMBER;
@@ -136,7 +161,7 @@ $(document).ready(function () {
             console.log(note);
         });
 
-        var notesGroup = snap.g();
+        var notesGroup = canvas.g();
         notesGroup.attr({
             fill: "none",
             stroke: "#000000",
@@ -147,16 +172,21 @@ $(document).ready(function () {
             var x = 20 + note.time * 5 + "mm";
             var y = note.midi + "mm";
             var radius = 1 + "mm";
-            notesGroup.add(snap.circle(x, y, radius));
+            notesGroup.add(canvas.circle(x, y, radius));
+            notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
         });
 
-        snap.text(1, 10, "1C");
+        canvas.text(1, 10, "1C");
 
-        snap.polyline([0, 0, 300, 0, 1800, 500]).attr({
+        var cardGroup = canvas.g().attr({
             fill: "none",
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
         });
+        cardGroup.add(canvas.line("10mm", "5mm", "100mm", "5mm"));
+        cardGroup.add(canvas.line("100mm", "5mm", "95mm", "40mm"));
+        cardGroup.add(canvas.line("95mm", "40mm", "5mm", "40mm"));
+        cardGroup.add(canvas.line("5mm", "40mm", "10mm", "5mm"));
 
     }
 
@@ -166,17 +196,25 @@ $(document).ready(function () {
     var playBackLine;
     $("#play").click(function () {
         refreshPreview();
-        playBackLine = snap.line("2mm", "2mm", "2mm", "80mm").attr({
+        playBackLine = canvas.line("2mm", "2mm", "2mm", "80mm").attr({
             fill: "none",
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
         });
-        Tone.Transport.stop()
+        Tone.Transport.stop();
 
-        var synth = new Tone.PolySynth(8).toMaster()
+        var synth = new Tone.PolySynth(AMOUNT_OF_PINS, Tone.Synth, {
+            "oscillator": {
+                "type": "square",
+                "count": 3,
+                "spread": 30
+            }
+        }).toMaster();
+        var vol = new Tone.Volume(VOLUME_VALUE);
+        synth.chain(vol, Tone.Master);
         Tone.Transport.bpm.value = BPM;
         new Tone.Part(function (time, note) {
-            synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+            synth.triggerAttackRelease(note.name, .1, time, 1);
 
         }, song).start()
 
@@ -187,7 +225,8 @@ $(document).ready(function () {
     $("#stop").click(function () {
         Tone.Transport.stop()
         playBackLine.stop();
-        playBackLine.attr({ x1: "2mm", x2: "2mm" });
+        playBackLine.remove();
+        //playBackLine.attr({ x1: "2mm", x2: "2mm" });
     });
 
     /*
