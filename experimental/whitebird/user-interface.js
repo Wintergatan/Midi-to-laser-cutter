@@ -9,6 +9,8 @@ $(document).ready(function () {
     // To be replaced by a setting
     var STROKE_WIDTH = 1;
 
+    var BPM = 120;
+
     var song;
 
     $("#file-picker-midi").change(function () {
@@ -148,7 +150,7 @@ $(document).ready(function () {
             notesGroup.add(snap.circle(x, y, radius));
         });
 
-        snap.text(1,10, "1C");
+        snap.text(1, 10, "1C");
 
         snap.polyline([0, 0, 300, 0, 1800, 500]).attr({
             fill: "none",
@@ -157,6 +159,27 @@ $(document).ready(function () {
         });
 
     }
+
+    /*
+     *
+     */
+
+    $("#play").click(function () {
+        Tone.Transport.stop()
+        
+        var synth = new Tone.PolySynth(8).toMaster()
+        Tone.Transport.bpm.value = BPM;
+        new Tone.Part(function (time, note) {
+            synth.triggerAttackRelease(note.name, note.duration, time, note.velocity)
+
+        }, song).start()
+
+        Tone.Transport.start()
+    });
+
+    $("#stop").click(function () {
+        Tone.Transport.stop()
+    });
 
     /*
      * Exporting options
