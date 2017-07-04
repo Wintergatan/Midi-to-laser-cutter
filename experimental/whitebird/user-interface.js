@@ -144,9 +144,9 @@ $(document).ready(function () {
         });
 
         $.each(song, function (i, note) {
-            var x = 20 + note.time * 100;
-            var y = note.midi;
-            var radius = 5;
+            var x = 20 + note.time * 5 + "mm";
+            var y = note.midi + "mm";
+            var radius = 1 + "mm";
             notesGroup.add(snap.circle(x, y, radius));
         });
 
@@ -161,12 +161,18 @@ $(document).ready(function () {
     }
 
     /*
-     *
+     * Playback of the notes
      */
-
+    var playBackLine;
     $("#play").click(function () {
+        refreshPreview();
+        playBackLine = snap.line("2mm", "2mm", "2mm", "80mm").attr({
+            fill: "none",
+            stroke: "#000000",
+            strokeWidth: STROKE_WIDTH
+        });
         Tone.Transport.stop()
-        
+
         var synth = new Tone.PolySynth(8).toMaster()
         Tone.Transport.bpm.value = BPM;
         new Tone.Part(function (time, note) {
@@ -174,11 +180,14 @@ $(document).ready(function () {
 
         }, song).start()
 
-        Tone.Transport.start()
+        Tone.Transport.start();
+        playBackLine.animate({ x1: "100mm", x2: "100mm" }, 5000);
     });
 
     $("#stop").click(function () {
         Tone.Transport.stop()
+        playBackLine.stop();
+        playBackLine.attr({ x1: "2mm", x2: "2mm" });
     });
 
     /*
