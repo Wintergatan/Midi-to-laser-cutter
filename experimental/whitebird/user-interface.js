@@ -85,45 +85,8 @@ $(document).ready(function () {
             throw "Not a valid note number";
 
         var note = parseInt(noteNumber / MIDI_NUMBER_OF_NOTES).toString();
-
-        switch (noteNumber % MIDI_NUMBER_OF_NOTES) {
-            case 0:
-                note += "C";
-                break;
-            case 1:
-                note += "C#";
-                break;
-            case 2:
-                note += "D";
-                break;
-            case 3:
-                note += "D#";
-                break;
-            case 4:
-                note += "E";
-                break;
-            case 5:
-                note += "F";
-                break;
-            case 6:
-                note += "F#";
-                break;
-            case 7:
-                note += "G";
-                break;
-            case 8:
-                note += "G#";
-                break;
-            case 9:
-                note += "A";
-                break;
-            case 10:
-                note += "A#";
-                break;
-            case 11:
-                note += "B";
-                break;
-        }
+        var scaleIndexToNote = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        note += scaleIndexToNote[noteNumber % MIDI_NUMBER_OF_NOTES];
         return note;
     }
 
@@ -140,8 +103,6 @@ $(document).ready(function () {
     });
 
     function refreshPreview() {
-
-
         canvas.clear();
         //snap.clear();
 
@@ -169,22 +130,11 @@ $(document).ready(function () {
             strokeWidth: STROKE_WIDTH
         });
 
-        $.each(song, function (i, note) {
-            var x = 20 + note.time * 5 + "mm";
-            var y = note.midi + "mm";
-            var radius = 1 + "mm";
-            notesGroup.add(canvas.circle(x, y, radius));
-            notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
-        });
-
-        canvas.text(1, 10, "1C");
-
         var cardGroup = canvas.g().attr({
             fill: "none",
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
         });
-
 
         var startX = 5;
         var endX = 200;
@@ -196,6 +146,18 @@ $(document).ready(function () {
         cardGroup.add(canvas.line(endX + "mm", startY + "mm", endX - edgeDifference + "mm", endY + "mm"));
         cardGroup.add(canvas.line(endX - edgeDifference + "mm", endY + "mm", startX + "mm", endY + "mm"));
         cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
+
+        $.each(song, function (i, note) {
+            var x = 20 + note.time * 5 + "mm";
+            var y = note.midi + "mm";
+            var radius = 1 + "mm";
+            notesGroup.add(canvas.circle(x, y, radius));
+            notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
+        });
+
+        canvas.text(1, 10, "1C");
+
+
 
     }
 
