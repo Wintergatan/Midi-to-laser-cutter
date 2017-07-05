@@ -13,6 +13,8 @@ $(document).ready(function () {
 
     var BPM = 120;
     var AMOUNT_OF_PINS = 20;
+    var BOARD_PRESET = ["A7", "G7", "F7", "E7", "D7", "C7", "B6", "A6", "G6", "F6", "E6", "D6", "C6", "B5", "A5", "G5", "F5", "E5", "D5", "C5"];
+    var BOARD_PRESET_MIDI = [93, 91, 89, 88, 86, 84, 83, 81, 79, 77, 76, 74, 72, 71, 69, 67, 65, 64, 62, 60];
 
     var VOLUME_VALUE = -6;
 
@@ -107,8 +109,9 @@ $(document).ready(function () {
             options += '<option value="' + noteKey + '">' + note + '</option>';
         });
 
-        $(".note").each(function () {
+        $(".note").each(function (i) {
             $(this).append(options);
+            $(this).val(BOARD_PRESET_MIDI[i]);
         });
     }
 
@@ -169,18 +172,27 @@ $(document).ready(function () {
         cardGroup.add(canvas.line(endX - edgeDifference + "mm", endY + "mm", startX + "mm", endY + "mm"));
         cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
 
+        for (var i = 0; i < BOARD_PRESET.length; i++) {
+            var y = 2 + (i * 5) + "mm";
+            canvas.add(canvas.text("1mm", y, BOARD_PRESET[i]));
+        }
+
         $.each(song, function (i, note) {
             var x = 20 + note.time * 5 + "mm";
-            var y = note.midi + "mm";
+            var y;// = note.midi + "mm";
             var radius = 1 + "mm";
-            notesGroup.add(canvas.circle(x, y, radius));
-            notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
+
+            var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+            if (boardIndex != -1) {
+                console.log("added " + note.name);
+                y = 2 + (boardIndex * 5) + "mm";
+                notesGroup.add(canvas.circle(x, y, radius));
+                //notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
+            }
+
+
+
         });
-
-        canvas.text(1, 10, "1C");
-
-
-
     }
 
     /*
