@@ -20,3 +20,7 @@ body {
     height:98%;
     border: 1px solid black;
 }
+
+.note-selector {
+    margin-bottom:6px;
+}

@@ -28,9 +28,9 @@ $(document).ready(function () {
     });
 
     // TO REMOVE
-    //loadMidiFile("");
+    loadMidiFile("");
     function loadMidiFile(file) {
-        console.log('Uploading file detected in INPUT ELEMENT, processing data..');
+        /*console.log('Uploading file detected in INPUT ELEMENT, processing data..');
         var reader = new FileReader();
         reader.onload = function (e) {
             try {
@@ -61,13 +61,14 @@ $(document).ready(function () {
             //console.log(jsonResult);
 
         };
-        reader.readAsBinaryString(file);
+        reader.readAsBinaryString(file);*/
 
-        /*MidiConvert.load("bwv-846.mid", function (midi) {
+        MidiConvert.load("a.mid", function (midi) {
             console.log(midi)
             song = midi.tracks[1].notes;
             console.log(song);
-        })*/
+            refreshPreview();
+        })
     }
 
     $('#selectTrackForm').submit(function (e) {
@@ -132,7 +133,7 @@ $(document).ready(function () {
 
     var snap = Snap("#preview");
     snap.zpd();
-    var canvas = Snap.select('#snapsvg-zpd-'+snap.id);
+    var canvas = Snap.select('#snapsvg-zpd-' + snap.id);
 
     $("#show-preview").click(function () {
         refreshPreview();
@@ -141,7 +142,7 @@ $(document).ready(function () {
     function refreshPreview() {
 
 
-            canvas.clear();
+        canvas.clear();
         //snap.clear();
 
         canvas.rect(0, 0, WORKPIECE_WIDTH, WORKPIECE_HEIGHT).attr({
@@ -158,7 +159,7 @@ $(document).ready(function () {
                 lowestNote = note.midi;
             if (note.midi > highestNote)
                 highestNote = note.midi;
-            console.log(note);
+            //console.log(note);
         });
 
         var notesGroup = canvas.g();
@@ -183,10 +184,18 @@ $(document).ready(function () {
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
         });
-        cardGroup.add(canvas.line("10mm", "5mm", "100mm", "5mm"));
-        cardGroup.add(canvas.line("100mm", "5mm", "95mm", "40mm"));
-        cardGroup.add(canvas.line("95mm", "40mm", "5mm", "40mm"));
-        cardGroup.add(canvas.line("5mm", "40mm", "10mm", "5mm"));
+
+
+        var startX = 5;
+        var endX = 200;
+        var startY = 5;
+        var endY = startY + 69.7;
+        var edgeDifference = 10;
+
+        cardGroup.add(canvas.line(startX + edgeDifference + "mm", startY + "mm", endX + "mm", startY + "mm"));
+        cardGroup.add(canvas.line(endX + "mm", startY + "mm", endX - edgeDifference + "mm", endY + "mm"));
+        cardGroup.add(canvas.line(endX - edgeDifference + "mm", endY + "mm", startX + "mm", endY + "mm"));
+        cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
 
     }
 
