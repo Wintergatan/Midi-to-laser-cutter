@@ -166,33 +166,71 @@ $(document).ready(function () {
         var startY = 5;
         var endY = startY + 69.7;
         var edgeDifference = 10;
+        var lineHeight = 3;
+        var topMargin = 6.35;
+        var fontSize = 12;
 
         cardGroup.add(canvas.line(startX + edgeDifference + "mm", startY + "mm", endX + "mm", startY + "mm"));
         cardGroup.add(canvas.line(endX + "mm", startY + "mm", endX - edgeDifference + "mm", endY + "mm"));
         cardGroup.add(canvas.line(endX - edgeDifference + "mm", endY + "mm", startX + "mm", endY + "mm"));
         cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
 
+        var noteNamesGroup = canvas.g().attr({
+            'font-size': fontSize
+        });
+
+        var noteLinesGroup = canvas.g().attr({
+            fill: "none",
+            stroke: "#000000",
+            strokeWidth: STROKE_WIDTH
+        });
+
         for (var i = 0; i < BOARD_PRESET.length; i++) {
-            var y = 2 + (i * 5) + "mm";
-            canvas.add(canvas.text("1mm", y, BOARD_PRESET[i]));
+            var y = startY + topMargin + (i * lineHeight) + "mm";
+            var test = noteLinesGroup.line(0, y, 500, y);
+            noteNamesGroup.text("1mm", y, BOARD_PRESET[i]);
         }
 
-        $.each(song, function (i, note) {
-            var x = 20 + note.time * 5 + "mm";
-            var y;// = note.midi + "mm";
-            var radius = 1 + "mm";
 
-            var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
-            if (boardIndex != -1) {
-                console.log("added " + note.name);
-                y = 2 + (boardIndex * 5) + "mm";
-                notesGroup.add(canvas.circle(x, y, radius));
-                //notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
-            }
+        /* $.each(song, function (i, note) {
+             var x = 20 + note.time * 5 + "mm";
+             x=10;
+             var y;// = note.midi + "mm";
+             var radius = 1 + "mm";
+ 
+             var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+             if (boardIndex != -1) {
+                 console.log("added " + note.name);
+                 y = startY + topMargin + (boardIndex * lineHeight) + "mm";
+                 notesGroup.add(canvas.circle(x, y, radius));
+                 //notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
+             }
+         });*/
+        var x = 2;
+        var y;
+        var noteHeight = 3;
+        var noteWidth = 8;
+        var noteRounding = 2;
 
+        var note = { "name": "A7", "midi": 93 };
 
+        var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+        if (boardIndex != -1) {
+            console.log("added " + note.name);
+            y = startY + topMargin + (boardIndex * lineHeight);
+            notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
+            notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
+        }
 
-        });
+        note = { "name": "C5", "midi": 60 };
+
+        boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+        if (boardIndex != -1) {
+            console.log("added " + note.name);
+            y = startY + topMargin + (boardIndex * lineHeight);
+            notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
+            notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
+        }
     }
 
     /*
