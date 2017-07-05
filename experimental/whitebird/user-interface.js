@@ -91,6 +91,28 @@ $(document).ready(function () {
     }
 
     /*
+     * Notes select
+     */
+
+    fillNoteSelect();
+
+    function fillNoteSelect() {
+        var notes = [];
+        for (var i = MIDI_MIN_NOTE_NUMBER; i <= MIDI_MAX_NOTE_NUMBER; i++) {
+            notes.push(noteNumberToNote(i));
+        }
+        console.log(notes);
+        var options = "";
+        $.each(notes, function (noteKey, note) {
+            options += '<option value="' + noteKey + '">' + note + '</option>';
+        });
+
+        $(".note").each(function () {
+            $(this).append(options);
+        });
+    }
+
+    /*
      * Showing preview
      */
 
