@@ -15,8 +15,10 @@ $(document).ready(function () {
     var AMOUNT_OF_PINS = 20;
     var BOARD_PRESET = ["A7", "G7", "F7", "E7", "D7", "C7", "B6", "A6", "G6", "F6", "E6", "D6", "C6", "B5", "A5", "G5", "F5", "E5", "D5", "C5"];
     var BOARD_PRESET_MIDI = [93, 91, 89, 88, 86, 84, 83, 81, 79, 77, 76, 74, 72, 71, 69, 67, 65, 64, 62, 60];
-
+    var START_OFFSET = 10;
+    var END_OFFSET = 10;
     var VOLUME_VALUE = -6;
+    var noteWidth = 8;
 
     var song;
 
@@ -86,9 +88,9 @@ $(document).ready(function () {
         if (noteNumber < MIDI_MIN_NOTE_NUMBER || noteNumber > MIDI_MAX_NOTE_NUMBER)
             throw "Not a valid note number";
 
-        var note = parseInt(noteNumber / MIDI_NUMBER_OF_NOTES).toString();
         var scaleIndexToNote = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-        note += scaleIndexToNote[noteNumber % MIDI_NUMBER_OF_NOTES];
+        note = scaleIndexToNote[noteNumber % MIDI_NUMBER_OF_NOTES];
+        note += parseInt(noteNumber / MIDI_NUMBER_OF_NOTES).toString();
         return note;
     }
 
@@ -161,76 +163,68 @@ $(document).ready(function () {
             strokeWidth: STROKE_WIDTH
         });
 
+
+        var edgeDifference = 10;
         var startX = 5;
-        var endX = 200;
+        var endX = startX + edgeDifference + START_OFFSET + (song[song.length - 1].time * 20) + noteWidth + END_OFFSET;
         var startY = 5;
         var endY = startY + 69.7;
-        var edgeDifference = 10;
+
+
         var lineHeight = 3;
         var topMargin = 6.35;
-        var fontSize = 12;
+        var fontSize = 3;
 
-        cardGroup.add(canvas.line(startX + edgeDifference + "mm", startY + "mm", endX + "mm", startY + "mm"));
-        cardGroup.add(canvas.line(endX + "mm", startY + "mm", endX - edgeDifference + "mm", endY + "mm"));
-        cardGroup.add(canvas.line(endX - edgeDifference + "mm", endY + "mm", startX + "mm", endY + "mm"));
+        cardGroup.add(canvas.line(startX + edgeDifference + "mm", startY + "mm", endX + END_OFFSET + "mm", startY + "mm"));
+        cardGroup.add(canvas.line(endX + END_OFFSET + "mm", startY + "mm", endX - edgeDifference + END_OFFSET + "mm", endY + "mm"));
+        cardGroup.add(canvas.line(endX - edgeDifference + END_OFFSET + "mm", endY + "mm", startX + "mm", endY + "mm"));
         cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
 
         var noteNamesGroup = canvas.g().attr({
-            'font-size': fontSize
+            'font-size': fontSize + "mm",
+            'text-anchor': "end"
         });
 
-        var noteLinesGroup = canvas.g().attr({
+        var gridLinesGroup = canvas.g().attr({
             fill: "none",
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
         });
 
+        // Note lines
         for (var i = 0; i < BOARD_PRESET.length; i++) {
-            var y = startY + topMargin + (i * lineHeight) + "mm";
-            var test = noteLinesGroup.line(0, y, 500, y);
-            noteNamesGroup.text("1mm", y, BOARD_PRESET[i]);
+            var x = startX + edgeDifference + START_OFFSET;
+            var y = startY + topMargin + (i * lineHeight);
+            gridLinesGroup.line(x + "mm", y + "mm", endX - edgeDifference + "mm", y + "mm");
+            noteNamesGroup.text(x - 1 + "mm", y + (fontSize / 3) + "mm", BOARD_PRESET[i]);
+        }
+
+        // Vertical lines
+        var verticalLineY1 = startY + topMargin;
+        var verticalLineY2 = verticalLineY1 + ((AMOUNT_OF_PINS - 1) * lineHeight);
+        var verticalLineX = startX + edgeDifference + START_OFFSET;
+        while (verticalLineX < endX - edgeDifference) {
+            gridLinesGroup.line(verticalLineX + "mm", verticalLineY1 + "mm", verticalLineX + "mm", verticalLineY2 + "mm");
+            verticalLineX += (10);
         }
 
 
-        /* $.each(song, function (i, note) {
-             var x = 20 + note.time * 5 + "mm";
-             x=10;
-             var y;// = note.midi + "mm";
-             var radius = 1 + "mm";
- 
-             var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
-             if (boardIndex != -1) {
-                 console.log("added " + note.name);
-                 y = startY + topMargin + (boardIndex * lineHeight) + "mm";
-                 notesGroup.add(canvas.circle(x, y, radius));
-                 //notesGroup.add(canvas.rect(x, y, "3mm", "2.5mm", "2mm"));
-             }
-         });*/
-        var x = 2;
-        var y;
-        var noteHeight = 3;
-        var noteWidth = 8;
-        var noteRounding = 2;
+        $.each(song, function (i, note) {
+            var x = startX + edgeDifference + START_OFFSET + note.time * 20;
+            //x=10;
+            var y;// = note.midi + "mm";
+            var noteHeight = 3;
+            
+            var noteRounding = 2;
 
-        var note = { "name": "A7", "midi": 93 };
-
-        var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
-        if (boardIndex != -1) {
-            console.log("added " + note.name);
-            y = startY + topMargin + (boardIndex * lineHeight);
-            notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
-            notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
-        }
-
-        note = { "name": "C5", "midi": 60 };
-
-        boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
-        if (boardIndex != -1) {
-            console.log("added " + note.name);
-            y = startY + topMargin + (boardIndex * lineHeight);
-            notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
-            notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
-        }
+            var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+            if (boardIndex != -1) {
+                console.log("added " + note.name);
+                y = startY + topMargin + (boardIndex * lineHeight);
+                //notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
+                notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
+            }
+        });
     }
 
     /*
@@ -239,7 +233,7 @@ $(document).ready(function () {
     var playBackLine;
     $("#play").click(function () {
         refreshPreview();
-        playBackLine = canvas.line("2mm", "2mm", "2mm", "80mm").attr({
+        playBackLine = canvas.line(START_OFFSET + "mm", "2mm", START_OFFSET + "mm", "80mm").attr({
             fill: "none",
             stroke: "#000000",
             strokeWidth: STROKE_WIDTH
