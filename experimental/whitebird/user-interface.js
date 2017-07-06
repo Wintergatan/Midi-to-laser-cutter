@@ -16,10 +16,25 @@ $(document).ready(function () {
             height: 300
         },
         note: {
-            width: 8,
-            height: 3,
+            width: 6,
+            height: 2.5,
             rounding: 2
         },
+        // Margin is workpiece offsets
+        margin: {
+            top: 5,
+            right: 5,
+            bottom: 5,
+            left: 6
+        },
+        // Padding is offset inside the music strip
+        padding: {
+            top: 6.35,
+            right: 5,
+            bottom: 5,
+            left: 6
+        },
+        stripHeight: 69.7,
         unit: unitEnum.millimeters,
         volume: -6,
         bpm: 120,
@@ -28,6 +43,9 @@ $(document).ready(function () {
         endOffset: 10,
         edgeDifference: 10
     };
+
+    // Currently it is the length of the music strip, has to be replaced with the length of the longest strip.
+    var endX;
 
     var song;
     var goodNotes;
@@ -107,7 +125,7 @@ $(document).ready(function () {
     /*
      * Notes select
      */
-     // Can be replaced by HTML, less taxing on javascript
+    // Can be replaced by HTML, less taxing on javascript
     fillNoteSelect();
     function fillNoteSelect() {
         var noteNames = [];
@@ -179,36 +197,34 @@ $(document).ready(function () {
             strokeWidth: settings.strokeWidth
         });
 
-        var startX = 5;
-        var endX = startX + settings.edgeDifference + settings.startOffset + (notes[notes.length - 1].time * 20) + settings.note.width + settings.endOffset;
-        var startY = 5;
-        var endY = startY + 69.7;
-
+        endX = settings.margin.left + (2 * settings.edgeDifference) + settings.startOffset + (notes[notes.length - 1].time * 20) + settings.note.width + settings.padding.right;
+        var endY = settings.margin.top + settings.stripHeight;
 
         var lineHeight = 3;
-        var topMargin = 6.35;
         var fontSize = 3;
 
         cardGroup.add(canvas.line(
-            addUnit(startX + settings.edgeDifference),
-            addUnit(startY),
-            addUnit(endX + settings.endOffset),
-            addUnit(startY)
+            addUnit(settings.margin.left + settings.edgeDifference),
+            addUnit(settings.margin.top),
+            addUnit(endX + settings.padding.right),
+            addUnit(settings.margin.top)
         ));
         cardGroup.add(canvas.line(
-            addUnit(endX + settings.endOffset),
-            addUnit(startY),
-            addUnit(endX - settings.edgeDifference + settings.endOffset),
+            addUnit(endX + settings.padding.right),
+            addUnit(settings.margin.top),
+            addUnit(endX - settings.edgeDifference + settings.padding.right),
             addUnit(endY)));
-        cardGroup.add(canvas.line(addUnit(endX - settings.edgeDifference + settings.endOffset),
+        cardGroup.add(canvas.line(
+            addUnit(endX - settings.edgeDifference + settings.padding.right),
             addUnit(endY),
-            addUnit(startX),
+            addUnit(settings.margin.left),
             addUnit(endY)
         ));
-        cardGroup.add(canvas.line(addUnit(startX),
+        cardGroup.add(canvas.line(
+            addUnit(settings.margin.left),
             addUnit(endY),
-            addUnit(startX + settings.edgeDifference),
-            addUnit(startY)
+            addUnit(settings.margin.left + settings.edgeDifference),
+            addUnit(settings.margin.top)
         ));
 
         var noteNamesGroup = canvas.g().attr({
@@ -224,16 +240,16 @@ $(document).ready(function () {
 
         // Note lines
         for (var i = 0; i < settings.board.length; i++) {
-            var x = startX + settings.edgeDifference + settings.startOffset;
-            var y = startY + topMargin + (i * lineHeight);
+            var x = settings.margin.left + settings.edgeDifference + settings.startOffset;
+            var y = settings.margin.top + settings.padding.top + (i * lineHeight);
             gridLinesGroup.line(addUnit(x), addUnit(y), addUnit(endX - settings.edgeDifference), addUnit(y));
             noteNamesGroup.text(addUnit(x - 1), addUnit(y + (fontSize / 3)), settings.board[i].name);
         }
 
         // Vertical lines
-        var verticalLineY1 = startY + topMargin;
+        var verticalLineY1 = settings.margin.top + settings.padding.top;
         var verticalLineY2 = verticalLineY1 + ((settings.board.length - 1) * lineHeight);
-        var verticalLineX = startX + settings.edgeDifference + settings.startOffset;
+        var verticalLineX = settings.margin.left + settings.edgeDifference + settings.startOffset;
         while (verticalLineX < endX - settings.edgeDifference) {
             gridLinesGroup.line(addUnit(verticalLineX), addUnit(verticalLineY1), addUnit(verticalLineX), addUnit(verticalLineY2));
             verticalLineX += (10);
@@ -242,7 +258,7 @@ $(document).ready(function () {
         goodNotes = [];
         var amountOfBadNotes = 0;
         $.each(notes, function (i, note) {
-            var x = startX + settings.edgeDifference + settings.startOffset + note.time * 20;
+            var x = settings.margin.left + settings.edgeDifference + settings.startOffset + note.time * 20;
             var y;
 
             var boardIndex = -1;
@@ -254,7 +270,7 @@ $(document).ready(function () {
             }
             if (boardIndex != -1) {
                 goodNotes.push(note);
-                y = startY + topMargin + (boardIndex * lineHeight);
+                y = settings.margin.top + settings.padding.top + (boardIndex * lineHeight);
                 //notesGroup.add(canvas.circle(addUnit(x), addUnit(y), addUnit(noteHeight / 2)));
                 notesGroup.add(canvas.rect(
                     addUnit(x),
@@ -267,7 +283,7 @@ $(document).ready(function () {
                 amountOfBadNotes++;
                 badNotesGroup.add(canvas.rect(
                     addUnit(x),
-                    addUnit(startY),
+                    addUnit(settings.margin.top),
                     addUnit(settings.note.width),
                     addUnit(settings.note.height),
                     addUnit(settings.note.rounding)
@@ -283,9 +299,15 @@ $(document).ready(function () {
     var playBackLine;
     $("#play").click(function () {
         refreshPreview();
-        playBackLine = canvas.line(addUnit(settings.startOffset), "2mm", addUnit(settings.startOffset), "80mm").attr({
+        var playBackLineStart = addUnit(settings.margin.left + settings.edgeDifference + settings.startOffset);
+        playBackLine = canvas.line(
+            playBackLineStart,
+            addUnit(settings.margin.top),
+            playBackLineStart,
+            addUnit(settings.margin.top + settings.stripHeight)
+        ).attr({
             fill: "none",
-            stroke: "#000000",
+            stroke: "#0000FF",
             strokeWidth: settings.strokeWidth
         });
         Tone.Transport.stop();
@@ -300,6 +322,7 @@ $(document).ready(function () {
         // Not working yet
         var vol = new Tone.Volume(settings.volume);
         synth.chain(vol, Tone.Master);
+        // TODO bpm is not changing?
         Tone.Transport.bpm.value = settings.bpm;
         new Tone.Part(function (time, note) {
             synth.triggerAttackRelease(note.name, .1, time, 1);
@@ -307,7 +330,13 @@ $(document).ready(function () {
         }, goodNotes).start()
 
         Tone.Transport.start();
-        playBackLine.animate({ x1: "100mm", x2: "100mm" }, 5000);
+        var playBackLineEnd = addUnit(settings.margin.left + settings.edgeDifference + settings.startOffset);
+        var playBackLineEnd = addUnit(endX - settings.edgeDifference - settings.padding.right);
+        console.log(settings.margin.left)
+        console.log(settings.edgeDifference)
+        console.log(settings.startOffset)
+        // TODO: how to calculate speed in relation to BPM
+        playBackLine.animate({ x1: playBackLineEnd, x2: playBackLineEnd }, 110000);
     });
 
     $("#stop").click(function () {
