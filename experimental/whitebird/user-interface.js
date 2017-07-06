@@ -1,40 +1,62 @@
 $(document).ready(function () {
+    // No magic numbers
+    var MIDI_MIN_NOTE_NUMBER = 0;
+    var MIDI_MAX_NOTE_NUMBER = 127;
+    var MIDI_NUMBER_OF_NOTES = 12;
+
+    // Enums, settings, variables and help functions used throughout the document
+    var unitEnum = {
+        "millimeters": "mm",
+        "inches": "in"
+    };
+    var settings = {
+        board: [{ name: "A7", midi: 93 }, { name: "G7", midi: 91 }, { name: "F7", midi: 89 }, { name: "E7", midi: 88 }, { name: "D7", midi: 86 }, { name: "C7", midi: 84 }, { name: "B6", midi: 83 }, { name: "A6", midi: 81 }, { name: "G6", midi: 79 }, { name: "F6", midi: 77 }, { name: "E6", midi: 76 }, { name: "D6", midi: 74 }, { name: "C6", midi: 72 }, { name: "B5", midi: 71 }, { name: "A5", midi: 69 }, { name: "G5", midi: 67 }, { name: "F5", midi: 65 }, { name: "E5", midi: 64 }, { name: "D5", midi: 62 }, { name: "C5", midi: 60 }],
+        workpiece: {
+            width: 600,
+            height: 300
+        },
+        note: {
+            width: 8,
+            height: 3,
+            rounding: 2
+        },
+        unit: unitEnum.millimeters,
+        volume: -6,
+        bpm: 120,
+        strokeWidth: 1,
+        startOffset: 10,
+        endOffset: 10,
+        edgeDifference: 10
+    };
+
+    var song;
+    var goodNotes;
+
+    function addUnit(distance) {
+        return distance + settings.unit;
+    }
 
     /*
      * Load Midi file and select track
      */
-    var MIDI_MIN_NOTE_NUMBER = 0;
-    var MIDI_MAX_NOTE_NUMBER = 127;
-    var MIDI_NUMBER_OF_NOTES = 12;
-    // To be replaced by a setting
-    var WORKPIECE_WIDTH = "600mm";
-    var WORKPIECE_HEIGHT = "300mm";
-    var STROKE_WIDTH = 1;
-
-    var BPM = 120;
-    var AMOUNT_OF_PINS = 20;
-    var BOARD_PRESET = ["A7", "G7", "F7", "E7", "D7", "C7", "B6", "A6", "G6", "F6", "E6", "D6", "C6", "B5", "A5", "G5", "F5", "E5", "D5", "C5"];
-    var BOARD_PRESET_MIDI = [93, 91, 89, 88, 86, 84, 83, 81, 79, 77, 76, 74, 72, 71, 69, 67, 65, 64, 62, 60];
-    var START_OFFSET = 10;
-    var END_OFFSET = 10;
-    var VOLUME_VALUE = -6;
-    var noteWidth = 8;
-
-    var song;
 
     $("#file-picker-midi").change(function () {
         var fileName = $(this).val();
         $("#midi-file").val(fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length));
         var file = $('#file-picker-midi')[0].files[0];
-        console.log(file);
         loadMidiFile(file);
         //$("#download-btn").prop('disabled', false)
     });
 
     // TO REMOVE
-    loadMidiFile("");
+    MidiConvert.load("a.mid", function (midi) {
+        song = midi;
+        song.selectedTrack = 1;
+        refreshPreview();
+    })
+    // END TO REMOVE
     function loadMidiFile(file) {
-        /*console.log('Uploading file detected in INPUT ELEMENT, processing data..');
+        console.log('Uploading file detected in INPUT ELEMENT, processing data..');
         var reader = new FileReader();
         reader.onload = function (e) {
             try {
@@ -43,7 +65,6 @@ $(document).ready(function () {
                 alert("Error loading midi file.")
                 return;
             }
-            //console.log(song);
             var tracks = song.tracks.map(function (a) {
                 if (a.name)
                     return a.name;
@@ -61,26 +82,15 @@ $(document).ready(function () {
             }
             trackPicker.selectpicker('refresh');
             $('#trackModal').modal('show');
-            //var jsonResult = JSON.stringify(partsData, undefined, 2);
-            //console.log(jsonResult);
-
         };
-        reader.readAsBinaryString(file);*/
-
-        MidiConvert.load("a.mid", function (midi) {
-            console.log(midi)
-            song = midi.tracks[1].notes;
-            console.log(song);
-            refreshPreview();
-        })
+        reader.readAsBinaryString(file);
     }
 
     $('#selectTrackForm').submit(function (e) {
         e.preventDefault();
         $('#trackModal').modal('hide');
-        var i = $('#trackPicker option:selected').val();
-        song = song.tracks[i].notes;
-        //console.log(song)
+        song.selectedTrack = $('#trackPicker option:selected').val();
+        refreshPreview();
     });
 
     // Based on the table at http://www.electronics.dit.ie/staff/tscarff/Music_technology/midi/midi_note_numbers_for_octaves.htm
@@ -97,23 +107,21 @@ $(document).ready(function () {
     /*
      * Notes select
      */
-
+     // Can be replaced by HTML, less taxing on javascript
     fillNoteSelect();
-
     function fillNoteSelect() {
-        var notes = [];
+        var noteNames = [];
         for (var i = MIDI_MIN_NOTE_NUMBER; i <= MIDI_MAX_NOTE_NUMBER; i++) {
-            notes.push(noteNumberToNote(i));
+            noteNames.push(noteNumberToNote(i));
         }
-        console.log(notes);
         var options = "";
-        $.each(notes, function (noteKey, note) {
-            options += '<option value="' + noteKey + '">' + note + '</option>';
+        $.each(noteNames, function (noteKey, noteName) {
+            options += '<option value="' + noteKey + '">' + noteName + '</option>';
         });
 
         $(".note").each(function (i) {
             $(this).append(options);
-            $(this).val(BOARD_PRESET_MIDI[i]);
+            $(this).val(settings.board[i].midi);
         });
     }
 
@@ -130,43 +138,49 @@ $(document).ready(function () {
     });
 
     function refreshPreview() {
+        var notes = song.tracks[song.selectedTrack].notes;
+
         canvas.clear();
         //snap.clear();
 
-        canvas.rect(0, 0, WORKPIECE_WIDTH, WORKPIECE_HEIGHT).attr({
+        canvas.rect(0, 0, addUnit(settings.workpiece.width), addUnit(settings.workpiece.height)).attr({
             fill: "none",
             stroke: "#000000",
-            strokeWidth: STROKE_WIDTH
+            strokeWidth: settings.strokeWidth
         });
 
         var lowestNote = MIDI_MAX_NOTE_NUMBER;
         var highestNote = MIDI_MIN_NOTE_NUMBER;
 
-        $.each(song, function (i, note) {
+        $.each(notes, function (i, note) {
             if (note.midi < lowestNote)
                 lowestNote = note.midi;
             if (note.midi > highestNote)
                 highestNote = note.midi;
-            //console.log(note);
         });
 
         var notesGroup = canvas.g();
         notesGroup.attr({
             fill: "none",
             stroke: "#000000",
-            strokeWidth: STROKE_WIDTH
+            strokeWidth: settings.strokeWidth
+        });
+
+        var badNotesGroup = canvas.g();
+        badNotesGroup.attr({
+            fill: "none",
+            stroke: "#FF0000",
+            strokeWidth: settings.strokeWidth
         });
 
         var cardGroup = canvas.g().attr({
             fill: "none",
             stroke: "#000000",
-            strokeWidth: STROKE_WIDTH
+            strokeWidth: settings.strokeWidth
         });
 
-
-        var edgeDifference = 10;
         var startX = 5;
-        var endX = startX + edgeDifference + START_OFFSET + (song[song.length - 1].time * 20) + noteWidth + END_OFFSET;
+        var endX = startX + settings.edgeDifference + settings.startOffset + (notes[notes.length - 1].time * 20) + settings.note.width + settings.endOffset;
         var startY = 5;
         var endY = startY + 69.7;
 
@@ -175,56 +189,92 @@ $(document).ready(function () {
         var topMargin = 6.35;
         var fontSize = 3;
 
-        cardGroup.add(canvas.line(startX + edgeDifference + "mm", startY + "mm", endX + END_OFFSET + "mm", startY + "mm"));
-        cardGroup.add(canvas.line(endX + END_OFFSET + "mm", startY + "mm", endX - edgeDifference + END_OFFSET + "mm", endY + "mm"));
-        cardGroup.add(canvas.line(endX - edgeDifference + END_OFFSET + "mm", endY + "mm", startX + "mm", endY + "mm"));
-        cardGroup.add(canvas.line(startX + "mm", endY + "mm", startX + edgeDifference + "mm", startY + "mm"));
+        cardGroup.add(canvas.line(
+            addUnit(startX + settings.edgeDifference),
+            addUnit(startY),
+            addUnit(endX + settings.endOffset),
+            addUnit(startY)
+        ));
+        cardGroup.add(canvas.line(
+            addUnit(endX + settings.endOffset),
+            addUnit(startY),
+            addUnit(endX - settings.edgeDifference + settings.endOffset),
+            addUnit(endY)));
+        cardGroup.add(canvas.line(addUnit(endX - settings.edgeDifference + settings.endOffset),
+            addUnit(endY),
+            addUnit(startX),
+            addUnit(endY)
+        ));
+        cardGroup.add(canvas.line(addUnit(startX),
+            addUnit(endY),
+            addUnit(startX + settings.edgeDifference),
+            addUnit(startY)
+        ));
 
         var noteNamesGroup = canvas.g().attr({
-            'font-size': fontSize + "mm",
+            'font-size': addUnit(fontSize),
             'text-anchor': "end"
         });
 
         var gridLinesGroup = canvas.g().attr({
             fill: "none",
             stroke: "#000000",
-            strokeWidth: STROKE_WIDTH
+            strokeWidth: settings.strokeWidth
         });
 
         // Note lines
-        for (var i = 0; i < BOARD_PRESET.length; i++) {
-            var x = startX + edgeDifference + START_OFFSET;
+        for (var i = 0; i < settings.board.length; i++) {
+            var x = startX + settings.edgeDifference + settings.startOffset;
             var y = startY + topMargin + (i * lineHeight);
-            gridLinesGroup.line(x + "mm", y + "mm", endX - edgeDifference + "mm", y + "mm");
-            noteNamesGroup.text(x - 1 + "mm", y + (fontSize / 3) + "mm", BOARD_PRESET[i]);
+            gridLinesGroup.line(addUnit(x), addUnit(y), addUnit(endX - settings.edgeDifference), addUnit(y));
+            noteNamesGroup.text(addUnit(x - 1), addUnit(y + (fontSize / 3)), settings.board[i].name);
         }
 
         // Vertical lines
         var verticalLineY1 = startY + topMargin;
-        var verticalLineY2 = verticalLineY1 + ((AMOUNT_OF_PINS - 1) * lineHeight);
-        var verticalLineX = startX + edgeDifference + START_OFFSET;
-        while (verticalLineX < endX - edgeDifference) {
-            gridLinesGroup.line(verticalLineX + "mm", verticalLineY1 + "mm", verticalLineX + "mm", verticalLineY2 + "mm");
+        var verticalLineY2 = verticalLineY1 + ((settings.board.length - 1) * lineHeight);
+        var verticalLineX = startX + settings.edgeDifference + settings.startOffset;
+        while (verticalLineX < endX - settings.edgeDifference) {
+            gridLinesGroup.line(addUnit(verticalLineX), addUnit(verticalLineY1), addUnit(verticalLineX), addUnit(verticalLineY2));
             verticalLineX += (10);
         }
 
+        goodNotes = [];
+        var amountOfBadNotes = 0;
+        $.each(notes, function (i, note) {
+            var x = startX + settings.edgeDifference + settings.startOffset + note.time * 20;
+            var y;
 
-        $.each(song, function (i, note) {
-            var x = startX + edgeDifference + START_OFFSET + note.time * 20;
-            //x=10;
-            var y;// = note.midi + "mm";
-            var noteHeight = 3;
-            
-            var noteRounding = 2;
-
-            var boardIndex = BOARD_PRESET_MIDI.indexOf(note.midi);
+            var boardIndex = -1;
+            for (var i = 0; i < settings.board.length; i++) {
+                if (settings.board[i].midi === note.midi) {
+                    boardIndex = i;
+                    break;
+                }
+            }
             if (boardIndex != -1) {
-                console.log("added " + note.name);
+                goodNotes.push(note);
                 y = startY + topMargin + (boardIndex * lineHeight);
-                //notesGroup.add(canvas.circle(x + "mm", y + "mm", noteHeight / 2 + "mm"));
-                notesGroup.add(canvas.rect(x + "mm", y - (noteHeight / 2) + "mm", noteWidth + "mm", noteHeight + "mm", noteRounding + "mm"));
+                //notesGroup.add(canvas.circle(addUnit(x), addUnit(y), addUnit(noteHeight / 2)));
+                notesGroup.add(canvas.rect(
+                    addUnit(x),
+                    addUnit(y - (settings.note.height / 2)),
+                    addUnit(settings.note.width),
+                    addUnit(settings.note.height),
+                    addUnit(settings.note.rounding)
+                ));
+            } else {
+                amountOfBadNotes++;
+                badNotesGroup.add(canvas.rect(
+                    addUnit(x),
+                    addUnit(startY),
+                    addUnit(settings.note.width),
+                    addUnit(settings.note.height),
+                    addUnit(settings.note.rounding)
+                ));
             }
         });
+        console.log("There are " + amountOfBadNotes + " bad notes")
     }
 
     /*
@@ -233,27 +283,28 @@ $(document).ready(function () {
     var playBackLine;
     $("#play").click(function () {
         refreshPreview();
-        playBackLine = canvas.line(START_OFFSET + "mm", "2mm", START_OFFSET + "mm", "80mm").attr({
+        playBackLine = canvas.line(addUnit(settings.startOffset), "2mm", addUnit(settings.startOffset), "80mm").attr({
             fill: "none",
             stroke: "#000000",
-            strokeWidth: STROKE_WIDTH
+            strokeWidth: settings.strokeWidth
         });
         Tone.Transport.stop();
 
-        var synth = new Tone.PolySynth(AMOUNT_OF_PINS, Tone.Synth, {
+        var synth = new Tone.PolySynth(settings.board.length, Tone.Synth, {
             "oscillator": {
                 "type": "square",
                 "count": 3,
                 "spread": 30
             }
         }).toMaster();
-        var vol = new Tone.Volume(VOLUME_VALUE);
+        // Not working yet
+        var vol = new Tone.Volume(settings.volume);
         synth.chain(vol, Tone.Master);
-        Tone.Transport.bpm.value = BPM;
+        Tone.Transport.bpm.value = settings.bpm;
         new Tone.Part(function (time, note) {
             synth.triggerAttackRelease(note.name, .1, time, 1);
 
-        }, song).start()
+        }, goodNotes).start()
 
         Tone.Transport.start();
         playBackLine.animate({ x1: "100mm", x2: "100mm" }, 5000);
