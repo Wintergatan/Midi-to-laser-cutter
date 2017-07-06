@@ -47,7 +47,7 @@ $(document).ready(function () {
         strokeWidth: 1,
         endOffset: 10,
         edgeDifference: 10,
-        showBadNotes: false,
+        showBadNotes: true,
         export: {
             fileFormat: fileFormatEnum.svg
         }
@@ -64,6 +64,19 @@ $(document).ready(function () {
     function addUnit(distance) {
         return distance + settings.unit;
     }
+
+    /*
+     * Configuration user interface
+     */
+    $("#units").change(function () {
+        if ($("#units option:selected").val() == unitEnum.inches) {
+            $('.unit-suffix').text(unitEnum.inches);
+        } else {
+            $('.unit-suffix').text(unitEnum.millimeters);
+        }
+        settings.unit = $("#units option:selected").val();
+
+    });
 
     /*
      * Load Midi file and select track
