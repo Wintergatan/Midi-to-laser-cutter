@@ -6,9 +6,13 @@ $(document).ready(function () {
 
     // Enums, settings, variables and help functions used throughout the document
     var unitEnum = {
-        "millimeters": "mm",
-        "inches": "in"
+        millimeters: "mm",
+        inches: "in"
     };
+    var fileFormatEnum = {
+        SVG: "SVG",
+        DXF: "DXF"
+    }
     var settings = {
         board: [{ name: "A7", midi: 93 }, { name: "G7", midi: 91 }, { name: "F7", midi: 89 }, { name: "E7", midi: 88 }, { name: "D7", midi: 86 }, { name: "C7", midi: 84 }, { name: "B6", midi: 83 }, { name: "A6", midi: 81 }, { name: "G6", midi: 79 }, { name: "F6", midi: 77 }, { name: "E6", midi: 76 }, { name: "D6", midi: 74 }, { name: "C6", midi: 72 }, { name: "B5", midi: 71 }, { name: "A5", midi: 69 }, { name: "G5", midi: 67 }, { name: "F5", midi: 65 }, { name: "E5", midi: 64 }, { name: "D5", midi: 62 }, { name: "C5", midi: 60 }],
         workpiece: {
@@ -32,20 +36,27 @@ $(document).ready(function () {
             top: 6.35,
             right: 5,
             bottom: 5,
-            left: 6
+            left: 10
         },
+        fontSize: 3,
         stripHeight: 69.7,
+        lineHeight: 3,
         unit: unitEnum.millimeters,
         volume: -6,
         bpm: 120,
         strokeWidth: 1,
-        startOffset: 10,
         endOffset: 10,
-        edgeDifference: 10
+        edgeDifference: 10,
+        showBadNotes: false,
+        export: {
+            fileFormat: fileFormatEnum.svg
+        }
     };
 
     // Currently it is the length of the music strip, has to be replaced with the length of the longest strip.
     var endX;
+    // same for height
+    var endY;
 
     var song;
     var goodNotes;
@@ -167,16 +178,6 @@ $(document).ready(function () {
             strokeWidth: settings.strokeWidth
         });
 
-        var lowestNote = MIDI_MAX_NOTE_NUMBER;
-        var highestNote = MIDI_MIN_NOTE_NUMBER;
-
-        $.each(notes, function (i, note) {
-            if (note.midi < lowestNote)
-                lowestNote = note.midi;
-            if (note.midi > highestNote)
-                highestNote = note.midi;
-        });
-
         var notesGroup = canvas.g();
         notesGroup.attr({
             fill: "none",
@@ -197,11 +198,8 @@ $(document).ready(function () {
             strokeWidth: settings.strokeWidth
         });
 
-        endX = settings.margin.left + (2 * settings.edgeDifference) + settings.startOffset + (notes[notes.length - 1].time * 20) + settings.note.width + settings.padding.right;
-        var endY = settings.margin.top + settings.stripHeight;
-
-        var lineHeight = 3;
-        var fontSize = 3;
+        endX = settings.margin.left + (2 * settings.edgeDifference) + settings.padding.left + (notes[notes.length - 1].time * 20) + settings.note.width + settings.padding.right;
+        endY = settings.margin.top + settings.stripHeight;
 
         cardGroup.add(canvas.line(
             addUnit(settings.margin.left + settings.edgeDifference),
@@ -228,7 +226,7 @@ $(document).ready(function () {
         ));
 
         var noteNamesGroup = canvas.g().attr({
-            'font-size': addUnit(fontSize),
+            'font-size': addUnit(settings.fontSize),
             'text-anchor': "end"
         });
 
@@ -240,16 +238,16 @@ $(document).ready(function () {
 
         // Note lines
         for (var i = 0; i < settings.board.length; i++) {
-            var x = settings.margin.left + settings.edgeDifference + settings.startOffset;
-            var y = settings.margin.top + settings.padding.top + (i * lineHeight);
+            var x = settings.margin.left + settings.edgeDifference + settings.padding.left;
+            var y = settings.margin.top + settings.padding.top + (i * settings.lineHeight);
             gridLinesGroup.line(addUnit(x), addUnit(y), addUnit(endX - settings.edgeDifference), addUnit(y));
-            noteNamesGroup.text(addUnit(x - 1), addUnit(y + (fontSize / 3)), settings.board[i].name);
+            noteNamesGroup.text(addUnit(x - 1), addUnit(y + (settings.fontSize / 3)), settings.board[i].name);
         }
 
         // Vertical lines
         var verticalLineY1 = settings.margin.top + settings.padding.top;
-        var verticalLineY2 = verticalLineY1 + ((settings.board.length - 1) * lineHeight);
-        var verticalLineX = settings.margin.left + settings.edgeDifference + settings.startOffset;
+        var verticalLineY2 = verticalLineY1 + ((settings.board.length - 1) * settings.lineHeight);
+        var verticalLineX = settings.margin.left + settings.edgeDifference + settings.padding.left;
         while (verticalLineX < endX - settings.edgeDifference) {
             gridLinesGroup.line(addUnit(verticalLineX), addUnit(verticalLineY1), addUnit(verticalLineX), addUnit(verticalLineY2));
             verticalLineX += (10);
@@ -258,7 +256,7 @@ $(document).ready(function () {
         goodNotes = [];
         var amountOfBadNotes = 0;
         $.each(notes, function (i, note) {
-            var x = settings.margin.left + settings.edgeDifference + settings.startOffset + note.time * 20;
+            var x = settings.margin.left + settings.edgeDifference + settings.padding.left + note.time * 20;
             var y;
 
             var boardIndex = -1;
@@ -270,7 +268,7 @@ $(document).ready(function () {
             }
             if (boardIndex != -1) {
                 goodNotes.push(note);
-                y = settings.margin.top + settings.padding.top + (boardIndex * lineHeight);
+                y = settings.margin.top + settings.padding.top + (boardIndex * settings.lineHeight);
                 //notesGroup.add(canvas.circle(addUnit(x), addUnit(y), addUnit(noteHeight / 2)));
                 notesGroup.add(canvas.rect(
                     addUnit(x),
@@ -281,16 +279,22 @@ $(document).ready(function () {
                 ));
             } else {
                 amountOfBadNotes++;
-                badNotesGroup.add(canvas.rect(
-                    addUnit(x),
-                    addUnit(settings.margin.top),
-                    addUnit(settings.note.width),
-                    addUnit(settings.note.height),
-                    addUnit(settings.note.rounding)
-                ));
+                if (settings.showBadNotes) {
+                    badNotesGroup.add(canvas.rect(
+                        addUnit(x),
+                        addUnit(settings.margin.top),
+                        addUnit(settings.note.width),
+                        addUnit(settings.note.height),
+                        addUnit(settings.note.rounding)
+                    ));
+                }
             }
         });
         console.log("There are " + amountOfBadNotes + " bad notes")
+    }
+
+    function drawGrid(target) {
+
     }
 
     /*
@@ -299,7 +303,7 @@ $(document).ready(function () {
     var playBackLine;
     $("#play").click(function () {
         refreshPreview();
-        var playBackLineStart = addUnit(settings.margin.left + settings.edgeDifference + settings.startOffset);
+        var playBackLineStart = addUnit(settings.margin.left + settings.edgeDifference + settings.padding.left);
         playBackLine = canvas.line(
             playBackLineStart,
             addUnit(settings.margin.top),
@@ -330,11 +334,8 @@ $(document).ready(function () {
         }, goodNotes).start()
 
         Tone.Transport.start();
-        var playBackLineEnd = addUnit(settings.margin.left + settings.edgeDifference + settings.startOffset);
+        var playBackLineEnd = addUnit(settings.margin.left + settings.edgeDifference + settings.padding.left);
         var playBackLineEnd = addUnit(endX - settings.edgeDifference - settings.padding.right);
-        console.log(settings.margin.left)
-        console.log(settings.edgeDifference)
-        console.log(settings.startOffset)
         // TODO: how to calculate speed in relation to BPM
         playBackLine.animate({ x1: playBackLineEnd, x2: playBackLineEnd }, 110000);
     });
@@ -347,11 +348,25 @@ $(document).ready(function () {
     });
 
     /*
-     * Exporting options
+     * Exporting 
      */
 
     $("#line-color").change(function () {
         var lineColor = $(this).val().toUpperCase();
         $("#color-suffix").text(lineColor);
+    });
+
+    $("#download-btn").click(function () {
+        switch ($('#export-format option:selected').val()) {
+            case "svg":
+                // to be replaced with export SVG
+                var rawSvg = snap.outerSVG();
+                var svg = new Blob([rawSvg], { type: "image/svg+xml;charset=utf-8" })
+                saveAs(svg, "output.svg");
+                break;
+            case "dxf":
+                break;
+        }
+
     });
 });
