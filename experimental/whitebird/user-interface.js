@@ -1,3 +1,4 @@
+var makerjs = require('makerjs');
 $(document).ready(function () {
     // No magic numbers
     var MIDI_MIN_NOTE_NUMBER = 0;
@@ -5,10 +6,16 @@ $(document).ready(function () {
     var MIDI_NUMBER_OF_NOTES = 12;
 
     // Enums, settings, variables and help functions used throughout the document
-    var unitEnum = {
+    /*var unitEnum = {
         millimeters: "mm",
         inches: "in"
-    };
+    };*/
+    var noteShapeEnum = {
+        round: "round",
+        square: "square",
+        rectangle: "rectangle",
+        roundedRectangle: "roundedRectangle"
+    }
     var fileFormatEnum = {
         SVG: "SVG",
         DXF: "DXF"
@@ -34,22 +41,25 @@ $(document).ready(function () {
         // Padding is offset inside the music strip
         padding: {
             top: 6.35,
-            right: 5,
+            right: 10,
             bottom: 5,
             left: 10
         },
         fontSize: 3,
         stripHeight: 69.7,
         lineHeight: 3,
-        unit: unitEnum.millimeters,
+        gridWidth: 4,
+        unit: makerjs.unitType.Millimeter,
         volume: -6,
         bpm: 120,
         strokeWidth: 1,
         endOffset: 10,
         edgeDifference: 10,
+        noteShape: noteShapeEnum.round,
         showBadNotes: true,
         export: {
-            fileFormat: fileFormatEnum.svg
+            fileFormat: fileFormatEnum.svg,
+            strokeColor: "#FF0000"
         }
     };
 
@@ -170,8 +180,78 @@ $(document).ready(function () {
     /*
      * Showing preview
      */
+    function refreshPreview() {
+        var notesWidth = 50;
+        var height = settings.stripHeight;
 
-    var snap = Snap("#preview");
+        function skewedRectangle() {
+            return new makerjs.models.ConnectTheDots(true, [
+                [0, 0],
+                [settings.edgeDifference, height],
+                [settings.edgeDifference + settings.padding.left + notesWidth + settings.padding.right + settings.edgeDifference, height],
+                [settings.edgeDifference + settings.padding.left + notesWidth + settings.padding.right, 0]
+            ]);
+        }
+
+        function note(x, y, ) {
+            var note = circle = {
+                type: 'circle',
+                origin: [5, 5],
+                radius: 5
+            };
+            var pathObject = { test: note };
+            this.paths = pathObject;
+        }
+
+        function generateGrid() {
+            var gridObject = [];
+
+            // Vertical lines
+            var verticalLineX = settings.edgeDifference + settings.padding.left;
+            var gridHeight = (settings.lineHeight * (settings.board.length - 1));
+            var gridBottom = (height - gridHeight) / 2;
+            var gridTop = gridHeight + gridBottom;
+            console.log();
+            while (verticalLineX <  settings.edgeDifference + settings.padding.left + notesWidth) {
+                var line = {
+                    type: 'line',
+                    origin: [verticalLineX, gridBottom],
+                    end: [verticalLineX, gridTop]
+                };
+                verticalLineX += settings.gridWidth;
+                gridObject.push(line);
+            }
+
+            // Horizontal lines
+            for (var i = 0; i < settings.board.length; i++) {
+                var y = gridBottom + i * (settings.lineHeight);
+                var line = {
+                    type: 'line',
+                    origin: [settings.edgeDifference + settings.padding.left, y],
+                    end: [settings.edgeDifference + settings.padding.left + notesWidth, y]
+                };
+                gridObject.push(line);
+            }
+
+            this.paths = gridObject;
+        }
+
+        var strip = skewedRectangle(notesWidth, height);
+        var grid = new generateGrid();
+        var model = {
+            models: [strip, grid]
+        };
+
+        var svgOptions = {
+            units: settings.unit,
+            useSvgPathOnly: false,
+            svgAttrs: { xmlns: "http://www.w3.org/2000/svg" }
+        };
+        var svg = makerjs.exporter.toSVG(model, svgOptions);
+        $("#preview-wrapper").html(svg);
+    }
+
+    /*var snap = Snap("#preview");
     snap.zpd();
     var canvas = Snap.select('#snapsvg-zpd-' + snap.id);
 
@@ -308,12 +388,12 @@ $(document).ready(function () {
 
     function drawGrid(target) {
 
-    }
+    }*/
 
     /*
      * Playback of the notes
      */
-    var playBackLine;
+    /*var playBackLine;
     $("#play").click(function () {
         refreshPreview();
         var playBackLineStart = addUnit(settings.margin.left + settings.edgeDifference + settings.padding.left);
@@ -359,7 +439,7 @@ $(document).ready(function () {
         playBackLine.remove();
         //playBackLine.attr({ x1: "2mm", x2: "2mm" });
     });
-
+    */
     /*
      * Exporting 
      */
