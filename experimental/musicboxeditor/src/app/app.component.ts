@@ -32,6 +32,7 @@ export class AppComponent {
     header: IHeader;
     notes: INote[];
     ghostNote: INote = null;
+    removingNote: boolean = false;
 
     /*
         C  |C# |D  |D# |E  |F  |F# |G  |G# |A  |A# |B 
@@ -516,12 +517,23 @@ Or right click on note to delete it.
     onMouseLeaveSvg(event: MouseEvent){
         this.ghostNote = null;
         event.preventDefault();
-    }   
+    }
 
-    onClickSvg(event: MouseEvent){
-        this.notes.push(this.ghostNote);
-        this.sortNotes();
-        this.createGhostNote();
+    onMouseDownNote(note: INote){
+        this.removingNote = true;
+        let i = this.notes.indexOf(note);
+        this.notes.splice(i, 1);
+        event.preventDefault();
+    }
+
+    onMouseUpSvg(event: MouseEvent){
+        if (!this.removingNote) {
+            this.notes.push(this.ghostNote);
+            this.sortNotes();
+            this.createGhostNote();
+        } else {
+            this.removingNote = false;
+        }
         event.preventDefault();
     }
 
